@@ -12,7 +12,7 @@
 [data-theme="light"]{--bg-primary:#F3F4F6;--bg-secondary:#FFF;--bg-card:#FFF;--bg-card-hover:#F9FAFB;--bg-input:#F3F4F6;--border-color:#E5E7EB;--border-light:#D1D5DB;--text-primary:#111827;--text-secondary:#4B5563;--text-muted:#9CA3AF;--accent:#D97706;--accent-light:#F59E0B;--accent-dark:#B45309;--accent-glow:rgba(217,119,6,0.1);--success:#059669;--success-bg:rgba(5,150,105,0.08);--danger:#DC2626;--danger-bg:rgba(220,38,38,0.08);--info:#2563EB;--info-bg:rgba(37,99,235,0.08);--purple:#7C3AED;--purple-bg:rgba(124,58,237,0.08);--shadow:0 4px 24px rgba(0,0,0,0.08);--shadow-sm:0 2px 8px rgba(0,0,0,0.06);--login-bg:linear-gradient(135deg,#F3F4F6,#E5E7EB,#F9FAFB);--login-glow1:rgba(217,119,6,0.06);--login-glow2:rgba(37,99,235,0.04);--chart-grid:#E5E7EB;--chart-text:#6B7280;--chart-legend:#4B5563;--sidebar-bg:#FFF;--table-header-bg:#F9FAFB;--modal-backdrop:rgba(0,0,0,0.3)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--font);background:var(--bg-primary);color:var(--text-primary);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}a{color:var(--accent);text-decoration:none}input,select,textarea,button{font-family:var(--font)}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}@keyframes spin{to{transform:rotate(360deg)}}.fade-in{animation:fadeIn .5s ease both}.slide-up{animation:slideUp .5s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}.fade-in{animation:fadeIn .5s ease both}.slide-up{animation:slideUp .5s ease both}.shake{animation:shake .4s ease}
 #loading-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}.loader-spinner{width:48px;height:48px;border:3px solid var(--border-color);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}.loader-text{color:var(--text-secondary);font-size:14px}
 #toast-container{position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:8px}.toast{padding:14px 20px;border-radius:var(--radius);color:#fff;font-size:14px;font-weight:500;box-shadow:var(--shadow);animation:fadeIn .3s ease both;display:flex;align-items:center;gap:10px;max-width:380px}.toast.success{background:#059669}.toast.error{background:#DC2626}.toast.info{background:#2563EB}
 #page-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--login-bg);position:relative;overflow:hidden}#page-login::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 20% 50%,var(--login-glow1),transparent),radial-gradient(ellipse 500px 350px at 80% 30%,var(--login-glow2),transparent);pointer-events:none}
@@ -33,6 +33,10 @@
 .price-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:13px;font-weight:700;background:var(--accent-glow);color:var(--accent);border:1px solid rgba(245,158,11,0.2)}
 .sub-tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:2px solid var(--border-color);padding-bottom:0}.sub-tab{padding:10px 20px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:var(--transition)}.sub-tab:hover{color:var(--text-primary)}.sub-tab.active{color:var(--accent);border-bottom-color:var(--accent)}.sub-panel{display:none}.sub-panel.active{display:block;animation:fadeIn .3s ease both}
 .stock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px}.stock-item{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius);padding:16px;text-align:center}.stock-item .stock-label{font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase}.stock-item .stock-value{font-size:24px;font-weight:800}.stock-positive{color:var(--success)}.stock-negative{color:var(--danger)}.stock-zero{color:var(--text-muted)}
+/* Password lock modal */
+.lock-icon{font-size:48px;color:var(--accent);text-align:center;margin-bottom:16px}.lock-msg{text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:20px}.pwd-error{color:var(--danger);font-size:12px;font-weight:600;text-align:center;margin-top:8px;display:none}
+/* Security card admin */
+.security-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:24px;max-width:480px}.security-card .sec-icon{font-size:40px;color:var(--accent);margin-bottom:12px}.security-card h4{font-size:16px;font-weight:700;margin-bottom:4px}.security-card p{font-size:13px;color:var(--text-muted);margin-bottom:20px}
 @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.mobile-toggle{display:flex}.mobile-overlay.show{display:block}.main-content{margin-left:0;padding:16px;padding-top:60px}.stats-grid{grid-template-columns:repeat(2,1fr)}.charts-grid{grid-template-columns:1fr}.page-title{font-size:20px}.stat-card .stat-value{font-size:18px}.theme-toggle{top:12px;right:12px;width:38px;height:38px;font-size:16px}.sub-tabs{overflow-x:auto}}@media(max-width:480px){.stats-grid{grid-template-columns:1fr}.stock-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -50,7 +54,7 @@
 <div class="form-group"><label>Mot de passe</label><div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" id="login-pass" class="form-control" placeholder="Mot de passe" required/></div></div>
 <button type="submit" class="btn btn-primary" id="login-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
 </form>
-<div class="login-footer">&copy; <span>JolofLab EPR</span> v 1.0.1</div>
+<div class="login-footer">&copy; <span>JolofLab EPR</span> v 1.0.5</div>
 </div></div></div>
 
 <!-- APP -->
@@ -62,10 +66,9 @@
 <nav class="sidebar-nav" id="sidebar-nav"></nav>
 <div class="sidebar-footer"><div class="user-badge"><div class="user-avatar" id="user-avatar">M</div><div class="user-info"><div class="user-name" id="user-display-name">—</div><div class="user-role" id="user-display-role">—</div></div></div><button class="btn-logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button></div>
 </aside>
-
 <main class="main-content" id="main-content">
 
-<!-- DASHBOARD ADMIN -->
+<!-- DASHBOARD -->
 <div class="page-section" id="section-dashboard">
 <div class="page-header"><div class="page-title">Tableau de bord</div><div class="page-subtitle">Vue d'ensemble</div></div>
 <div class="filter-bar"><label><i class="fas fa-calendar-alt"></i>&nbsp;Du</label><input type="date" id="dash-from"/><label>Au</label><input type="date" id="dash-to"/><button class="btn btn-sm btn-primary" onclick="loadDashboard()"><i class="fas fa-sync-alt"></i> Actualiser</button></div>
@@ -89,6 +92,19 @@
 <div class="card"><div class="table-wrapper"><table><thead><tr><th>Produit</th><th class="text-right">Prix (FCFA/L)</th><th>Modifié</th><th>Actions</th></tr></thead><tbody id="config-produits-table"></tbody></table></div></div>
 </div>
 
+<!-- SECURITY (Admin) -->
+<div class="page-section" id="section-security">
+<div class="page-header"><div class="page-title"><i class="fas fa-shield-alt"></i> Sécurité</div><div class="page-subtitle">Protection des ventes par mot de passe</div></div>
+<div class="security-card">
+<div class="sec-icon"><i class="fas fa-lock"></i></div>
+<h4>Mot de passe de modification des ventes</h4>
+<p>Ce mot de passe est requis pour modifier ou supprimer les ventes enregistrées par les gérants et pompistes. Seul l'administrateur peut le changer.</p>
+<div class="form-group"><label>Mot de passe actuel</label><div style="display:flex;align-items:center;gap:10px"><input type="text" id="sec-current-pwd" class="form-control-plain" readonly style="flex:1"/><button class="btn btn-sm btn-secondary" onclick="loadSecurityPassword()"><i class="fas fa-eye"></i></button></div></div>
+<div class="form-group"><label>Nouveau mot de passe</label><input type="text" id="sec-new-pwd" class="form-control-plain" placeholder="Minimum 3 caractères"/></div>
+<button class="btn btn-sm btn-primary" onclick="saveSecurityPassword()" style="width:auto"><i class="fas fa-save"></i> Enregistrer</button>
+</div>
+</div>
+
 <!-- USERS -->
 <div class="page-section" id="section-users">
 <div class="page-header"><div class="page-title">Utilisateurs</div></div>
@@ -110,36 +126,25 @@
 <div class="card"><div class="table-wrapper"><table><thead><tr><th>Date</th><th class="text-right">Livraison</th><th class="text-right">J. départ</th><th class="text-right">J. arrivée</th><th class="text-right">Sortie</th></tr></thead><tbody id="conso-table"></tbody></table></div></div>
 </div>
 
-<!-- STATION (Agent interface with sub-tabs: Ventes / Livraison / Versement) -->
+<!-- STATION -->
 <div class="page-section" id="section-station">
 <div class="page-header"><div class="page-title" id="station-page-title">Station</div><div class="page-subtitle" id="station-page-subtitle"></div></div>
 <div class="station-tabs" id="station-tabs"></div>
-
-<!-- Resume cards -->
 <div class="stats-grid" id="station-resume-stats"></div>
-<!-- Stock cards -->
 <div class="card mt-16" id="station-stock-card" style="margin-bottom:20px"><div class="card-title"><i class="fas fa-cubes"></i> Stock actuel (Litres)</div><div class="stock-grid" id="station-stock-grid"></div></div>
-
-<!-- Sub-tabs -->
 <div class="sub-tabs">
 <div class="sub-tab active" data-panel="panel-ventes" onclick="switchSubTab(this)"><i class="fas fa-receipt"></i>&nbsp; Ventes</div>
 <div class="sub-tab" data-panel="panel-livraisons" onclick="switchSubTab(this)"><i class="fas fa-truck"></i>&nbsp; Livraisons</div>
 <div class="sub-tab" data-panel="panel-versements" onclick="switchSubTab(this)"><i class="fas fa-hand-holding-usd"></i>&nbsp; Versements</div>
 </div>
-
-<!-- VENTES panel -->
 <div class="sub-panel active" id="panel-ventes">
 <div class="filter-bar"><label><i class="fas fa-calendar-alt"></i>&nbsp;Du</label><input type="date" id="st-from"/><label>Au</label><input type="date" id="st-to"/><button class="btn btn-sm btn-primary" onclick="loadStationSales()"><i class="fas fa-filter"></i> Filtrer</button><div class="spacer"></div><button class="btn btn-sm btn-success" onclick="openSaleModal()"><i class="fas fa-plus"></i> Nouvelle vente</button></div>
 <div class="card"><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Date</th><th>Produit</th><th class="text-right">P.U.</th><th class="text-right">Qté</th><th class="text-right">Montant</th><th>Paiement</th><th>Client</th><th>Pompiste</th><th>Actions</th></tr></thead><tbody id="station-table"></tbody></table></div></div>
 </div>
-
-<!-- LIVRAISONS panel -->
 <div class="sub-panel" id="panel-livraisons">
 <div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openLivraisonModal()"><i class="fas fa-plus"></i> Nouvelle livraison</button><div class="spacer"></div><button class="btn btn-sm btn-secondary" onclick="loadLivraisons()"><i class="fas fa-sync-alt"></i></button></div>
 <div class="card"><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Date</th><th>Produit</th><th class="text-right">Qté (L)</th><th class="text-right">P.U.</th><th class="text-right">Montant</th><th>Saisi par</th><th>Actions</th></tr></thead><tbody id="livraisons-table"></tbody></table></div></div>
 </div>
-
-<!-- VERSEMENTS panel -->
 <div class="sub-panel" id="panel-versements">
 <div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openVersementModal()"><i class="fas fa-plus"></i> Nouveau versement</button><div class="spacer"></div><button class="btn btn-sm btn-secondary" onclick="loadVersements()"><i class="fas fa-sync-alt"></i></button></div>
 <div class="card"><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Date</th><th class="text-right">Montant versé</th><th>Mode</th><th>Référence</th><th>Saisi par</th><th>Actions</th></tr></thead><tbody id="versements-table"></tbody></table></div></div>
@@ -155,19 +160,30 @@
 <div class="modal-overlay" id="modal-gestion"><div class="modal"><div class="modal-header"><h3>Gestion</h3><button class="modal-close" onclick="closeModal('modal-gestion')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mg-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><input type="text" id="mg-produit" class="form-control-plain"/></div><div class="form-group"><label>Réception (L)</label><input type="number" id="mg-reception" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Montant</label><input type="number" id="mg-montant" class="form-control-plain"/></div><div class="form-group"><label>Date versement</label><input type="date" id="mg-versement" class="form-control-plain"/></div><div class="form-group"><label>Banque</label><input type="text" id="mg-banque" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-gestion')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveGestion()">Enregistrer</button></div></div></div>
 <div class="modal-overlay" id="modal-conso"><div class="modal"><div class="modal-header"><h3>Consommation</h3><button class="modal-close" onclick="closeModal('modal-conso')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mc-date" class="form-control-plain"/></div><div class="form-group"><label>Livraison</label><input type="number" id="mc-livraison" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Jauge départ</label><input type="number" id="mc-jdepart" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Jauge arrivée</label><input type="number" id="mc-jarrivee" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Sortie</label><input type="number" id="mc-sortie" class="form-control-plain" step="0.01"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-conso')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveConso()">Enregistrer</button></div></div></div>
 <div class="modal-overlay" id="modal-sale"><div class="modal"><div class="modal-header"><h3 id="modal-sale-title">Vente</h3><button class="modal-close" onclick="closeModal('modal-sale')">&times;</button></div><div class="modal-body"><input type="hidden" id="ms-id"/><div class="form-group"><label>Date</label><input type="date" id="ms-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><select id="ms-produit" class="form-control-plain" onchange="onProductChange()"><option value="">--</option></select></div><div class="form-group"><label>Prix unitaire</label><input type="number" id="ms-prix" class="form-control-plain" step="1"/></div><div class="form-group"><label>Quantité (L)</label><input type="number" id="ms-qte" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Paiement</label><select id="ms-paiement" class="form-control-plain"><option value="">--</option><option>Espèce</option><option>Crédit</option><option>Wave</option><option value="OM">Orange Money</option><option>Carte</option></select></div><div class="form-group"><label>Client</label><input type="text" id="ms-client" class="form-control-plain"/></div><div class="form-group"><label>Pompiste</label><input type="text" id="ms-pompiste" class="form-control-plain"/></div><div class="form-group"><label>Observations</label><input type="text" id="ms-obs" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-sale')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveSale()">Enregistrer</button></div></div></div>
-<div class="modal-overlay" id="modal-livraison"><div class="modal"><div class="modal-header"><h3>Nouvelle livraison</h3><button class="modal-close" onclick="closeModal('modal-livraison')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="ml-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><select id="ml-produit" class="form-control-plain" onchange="onLivProdChange()"><option value="">--</option></select></div><div class="form-group"><label>Quantité reçue (L)</label><input type="number" id="ml-qte" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Prix unitaire (FCFA/L)</label><input type="number" id="ml-prix" class="form-control-plain" step="1"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-livraison')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveLivraison()">Enregistrer</button></div></div></div>
-<div class="modal-overlay" id="modal-versement"><div class="modal"><div class="modal-header"><h3>Nouveau versement</h3><button class="modal-close" onclick="closeModal('modal-versement')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mv-date" class="form-control-plain"/></div><div class="form-group"><label>Montant versé (FCFA)</label><input type="number" id="mv-montant" class="form-control-plain" step="1"/></div><div class="form-group"><label>Mode</label><select id="mv-mode" class="form-control-plain"><option value="">--</option><option>Espèce</option><option>Banque</option><option>Wave</option><option value="OM">Orange Money</option><option>Chèque</option></select></div><div class="form-group"><label>Référence</label><input type="text" id="mv-ref" class="form-control-plain" placeholder="N° reçu, bordereau…"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-versement')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveVersement()">Enregistrer</button></div></div></div>
+<div class="modal-overlay" id="modal-livraison"><div class="modal"><div class="modal-header"><h3>Nouvelle livraison</h3><button class="modal-close" onclick="closeModal('modal-livraison')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="ml-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><select id="ml-produit" class="form-control-plain" onchange="onLivProdChange()"><option value="">--</option></select></div><div class="form-group"><label>Quantité reçue (L)</label><input type="number" id="ml-qte" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Prix unitaire</label><input type="number" id="ml-prix" class="form-control-plain" step="1"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-livraison')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveLivraison()">Enregistrer</button></div></div></div>
+<div class="modal-overlay" id="modal-versement"><div class="modal"><div class="modal-header"><h3>Nouveau versement</h3><button class="modal-close" onclick="closeModal('modal-versement')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mv-date" class="form-control-plain"/></div><div class="form-group"><label>Montant versé (FCFA)</label><input type="number" id="mv-montant" class="form-control-plain" step="1"/></div><div class="form-group"><label>Mode</label><select id="mv-mode" class="form-control-plain"><option value="">--</option><option>Espèce</option><option>Banque</option><option>Wave</option><option value="OM">Orange Money</option><option>Chèque</option></select></div><div class="form-group"><label>Référence</label><input type="text" id="mv-ref" class="form-control-plain" placeholder="N° reçu…"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-versement')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveVersement()">Enregistrer</button></div></div></div>
+
+<!-- PASSWORD PROTECTION MODAL -->
+<div class="modal-overlay" id="modal-sales-pwd">
+<div class="modal" style="max-width:400px">
+<div class="modal-header"><h3><i class="fas fa-shield-alt"></i>&nbsp; Vérification requise</h3><button class="modal-close" onclick="cancelPwdAction()">&times;</button></div>
+<div class="modal-body" style="text-align:center">
+<div class="lock-icon"><i class="fas fa-lock"></i></div>
+<div class="lock-msg">Les ventes sont protégées.<br/>Entrez le mot de passe pour continuer.</div>
+<div class="form-group" style="text-align:left"><label>Mot de passe</label><div class="input-wrapper"><i class="fas fa-key"></i><input type="password" id="spwd-input" class="form-control" placeholder="Mot de passe de modification" onkeydown="if(event.key==='Enter')confirmPwdAction()"/></div></div>
+<div class="pwd-error" id="spwd-error">Mot de passe incorrect</div>
+</div>
+<div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="cancelPwdAction()">Annuler</button><button class="btn btn-sm btn-primary" onclick="confirmPwdAction()" style="width:auto"><i class="fas fa-unlock"></i> Confirmer</button></div>
+</div></div>
 
 <script>
-/* ========== CONFIG ========== */
-// REMPLACEZ cette URL par votre URL de déploiement Google Apps Script
-var GAS_URL = https://script.google.com/macros/s/AKfycbzfjElDnuW_3jFcFqjZcvu05i4_6PE6G1359FdXbyh-B1hnSQ5ktBkUJohnHfioH_U/exec;
-// Exemple: "https://script.google.com/macros/s/AKfycbx.../exec"
-// Mode GAS iframe: si on est dans Google Apps Script, utiliser google.script.run
-var IS_GAS = (typeof google !== "undefined" && google.script && google.script.run);
-
+var GAS_URL="https://script.google.com/macros/s/AKfycbzfjElDnuW_3jFcFqjZcvu05i4_6PE6G1359FdXbyh-B1hnSQ5ktBkUJohnHfioH_U/exec";
+var IS_GAS=(typeof google!=="undefined"&&google.script&&google.script.run);
 var S={token:null,user:null,stations:[],produits:[],currentStation:null,currentPage:null,salesCache:[],charts:{}};
 var PAL=['#F59E0B','#3B82F6','#10B981','#8B5CF6','#EF4444','#06B6D4','#EC4899','#14B8A6'];
+// Pending password action
+var _pwdAction=null; // {type:'edit'|'delete', data:{...}}
+
 function fmt(n){return Number(n||0).toLocaleString('fr-FR')}
 function fmtF(n){return fmt(n)+' F'}
 function today(){return new Date().toISOString().split('T')[0]}
@@ -180,91 +196,124 @@ function toggleSidebar(){document.getElementById('sidebar').classList.toggle('op
 function getTheme(){return localStorage.getItem('marjan_theme')||'dark'}
 function applyTheme(t){document.documentElement.setAttribute('data-theme',t);var i=document.getElementById('theme-icon');if(i)i.className=t==='light'?'fas fa-moon':'fas fa-sun'}
 function toggleTheme(){var n=getTheme()==='dark'?'light':'dark';localStorage.setItem('marjan_theme',n);applyTheme(n)}
-function switchSubTab(el){el.parentNode.querySelectorAll('.sub-tab').forEach(function(e){e.classList.remove('active')});el.classList.add('active');var panels=el.parentNode.parentNode.querySelectorAll('.sub-panel');panels.forEach(function(p){p.classList.remove('active')});document.getElementById(el.dataset.panel).classList.add('active')}
+function switchSubTab(el){el.parentNode.querySelectorAll('.sub-tab').forEach(function(e){e.classList.remove('active')});el.classList.add('active');el.parentNode.parentNode.querySelectorAll('.sub-panel').forEach(function(p){p.classList.remove('active')});document.getElementById(el.dataset.panel).classList.add('active')}
 
-/* ========== SERVER CALL ========== */
-function callServer(action, params){
+/* === PASSWORD PROTECTION === */
+function requireSalesPassword(actionType, actionData){
+  if(S.user.role==='admin'){
+    // Admin bypasse le mot de passe
+    executePwdAction(actionType, actionData, null);
+    return;
+  }
+  _pwdAction={type:actionType, data:actionData};
+  document.getElementById('spwd-input').value='';
+  document.getElementById('spwd-error').style.display='none';
+  openModal('modal-sales-pwd');
+  setTimeout(function(){document.getElementById('spwd-input').focus()},200);
+}
+function cancelPwdAction(){_pwdAction=null;closeModal('modal-sales-pwd')}
+function confirmPwdAction(){
+  if(!_pwdAction)return;
+  var pwd=document.getElementById('spwd-input').value;
+  if(!pwd){document.getElementById('spwd-error').textContent='Veuillez entrer le mot de passe';document.getElementById('spwd-error').style.display='block';document.getElementById('spwd-input').parentNode.classList.add('shake');setTimeout(function(){document.getElementById('spwd-input').parentNode.classList.remove('shake')},400);return}
+  executePwdAction(_pwdAction.type, _pwdAction.data, pwd);
+}
+function executePwdAction(type, data, pwd){
+  if(type==='edit'){
+    doSaveSale(data, pwd);
+  } else if(type==='delete'){
+    doDeleteSale(data.id, pwd);
+  }
+  _pwdAction=null;
+  closeModal('modal-sales-pwd');
+}
+
+/* === SERVER CALL === */
+function callServer(action,params){
   if(IS_GAS){
-    // Mode Google Apps Script iframe
     var args=[];
     switch(action){
-      case 'apiLogin': args=[params.username,params.password]; break;
-      case 'apiLogout': args=[params.token]; break;
-      case 'apiGetMe': args=[params.token]; break;
-      case 'apiListUsers': args=[params.token]; break;
-      case 'apiUpsertUser': args=[params.token,params.userObj]; break;
-      case 'apiDeleteUser': args=[params.token,params.username]; break;
-      case 'apiListConfigStations': args=[params.token]; break;
-      case 'apiAddStation': args=[params.token,params.nomStation]; break;
-      case 'apiDeleteStation': args=[params.token,params.nomStation]; break;
-      case 'apiListProduits': args=[params.token]; break;
-      case 'apiUpsertProduit': args=[params.token,params.obj]; break;
-      case 'apiDeleteProduit': args=[params.token,params.produit]; break;
-      case 'apiListGestion': args=[params.token]; break;
-      case 'apiAddGestion': args=[params.token,params.obj]; break;
-      case 'apiListConso': args=[params.token]; break;
-      case 'apiAddConso': args=[params.token,params.obj]; break;
-      case 'apiListStationSales': args=[params.token,params.stationName,params.fromDate,params.toDate]; break;
-      case 'apiUpsertStationSale': args=[params.token,params.stationName,params.obj]; break;
-      case 'apiDeleteStationSale': args=[params.token,params.stationName,params.id]; break;
-      case 'apiListLivraisons': args=[params.token,params.stationName]; break;
-      case 'apiAddLivraison': args=[params.token,params.obj]; break;
-      case 'apiDeleteLivraison': args=[params.token,params.id]; break;
-      case 'apiListVersements': args=[params.token,params.stationName]; break;
-      case 'apiAddVersement': args=[params.token,params.obj]; break;
-      case 'apiDeleteVersement': args=[params.token,params.id]; break;
-      case 'apiGetStationResume': args=[params.token,params.stationName]; break;
-      case 'apiGetDashboard': args=[params.token,params.fromDate,params.toDate]; break;
+      case 'apiLogin':args=[params.username,params.password];break;
+      case 'apiLogout':args=[params.token];break;
+      case 'apiGetMe':args=[params.token];break;
+      case 'apiListUsers':args=[params.token];break;
+      case 'apiUpsertUser':args=[params.token,params.userObj];break;
+      case 'apiDeleteUser':args=[params.token,params.username];break;
+      case 'apiListConfigStations':args=[params.token];break;
+      case 'apiAddStation':args=[params.token,params.nomStation];break;
+      case 'apiDeleteStation':args=[params.token,params.nomStation];break;
+      case 'apiListProduits':args=[params.token];break;
+      case 'apiUpsertProduit':args=[params.token,params.obj];break;
+      case 'apiDeleteProduit':args=[params.token,params.produit];break;
+      case 'apiListGestion':args=[params.token];break;
+      case 'apiAddGestion':args=[params.token,params.obj];break;
+      case 'apiListConso':args=[params.token];break;
+      case 'apiAddConso':args=[params.token,params.obj];break;
+      case 'apiListStationSales':args=[params.token,params.stationName,params.fromDate,params.toDate];break;
+      case 'apiUpsertStationSale':args=[params.token,params.stationName,params.obj,params.salesPassword];break;
+      case 'apiDeleteStationSale':args=[params.token,params.stationName,params.id,params.salesPassword];break;
+      case 'apiListLivraisons':args=[params.token,params.stationName];break;
+      case 'apiAddLivraison':args=[params.token,params.obj];break;
+      case 'apiDeleteLivraison':args=[params.token,params.id];break;
+      case 'apiListVersements':args=[params.token,params.stationName];break;
+      case 'apiAddVersement':args=[params.token,params.obj];break;
+      case 'apiDeleteVersement':args=[params.token,params.id];break;
+      case 'apiGetStationResume':args=[params.token,params.stationName];break;
+      case 'apiGetDashboard':args=[params.token,params.fromDate,params.toDate];break;
+      case 'apiGetSalesPassword':args=[params.token];break;
+      case 'apiSetSalesPassword':args=[params.token,params.newPassword];break;
     }
     return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(res).withFailureHandler(rej);r[action].apply(r,args)});
   } else {
-    // Mode Netlify / fetch
     var body=Object.assign({action:action},params);
     return fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json()}).then(function(r){if(r.ok===false&&r.message)throw new Error(r.message);return r});
   }
 }
 
-/* ========== AUTH ========== */
+/* === AUTH === */
 function handleLogin(e){e.preventDefault();var u=document.getElementById('login-user').value.trim(),p=document.getElementById('login-pass').value;if(!u||!p)return toast('Remplissez tous les champs','error');var b=document.getElementById('login-btn');b.disabled=true;b.innerHTML='<span class="inline-loader"></span> Connexion…';callServer('apiLogin',{username:u,password:p}).then(function(r){if(!r.ok)return toast(r.message,'error');S.token=r.token;S.user=r.user;S.stations=r.stations||[];S.produits=r.produits||[];sessionStorage.setItem('mt',r.token);initApp()}).catch(function(e){toast(e.message||'Erreur','error')}).finally(function(){b.disabled=false;b.innerHTML='<i class="fas fa-sign-in-alt"></i> Se connecter'});return false}
 function handleLogout(){callServer('apiLogout',{token:S.token}).catch(function(){});sessionStorage.removeItem('mt');S.token=null;S.user=null;document.getElementById('app-container').style.display='none';document.getElementById('page-login').style.display='flex'}
 function checkSession(){applyTheme(getTheme());var t=sessionStorage.getItem('mt');if(!t){showLogin();return}callServer('apiGetMe',{token:t}).then(function(r){if(!r.ok){showLogin();return}S.token=t;S.user=r.user;S.stations=r.stations||[];S.produits=r.produits||[];initApp()}).catch(function(){showLogin()})}
 function showLogin(){hideLoading();document.getElementById('page-login').style.display='flex'}
-
 function initApp(){hideLoading();document.getElementById('page-login').style.display='none';document.getElementById('app-container').style.display='block';var n=S.user.nom_complet||S.user.username;document.getElementById('user-display-name').textContent=n;document.getElementById('user-display-role').textContent=S.user.role;document.getElementById('user-avatar').textContent=(n[0]||'M').toUpperCase();var ia=S.user.role==='admin';document.getElementById('sidebar-role-label').textContent=ia?'Administration':(S.user.station||'');buildSidebar();populateSelects();if(ia)navigateTo('dashboard');else{S.currentStation=S.user.station||S.stations[0]||'';navigateTo('station')}}
-function buildSidebar(){var nav=document.getElementById('sidebar-nav'),ia=S.user.role==='admin',h='';if(ia){h+='<div class="sidebar-section">Administration</div>';h+=NI('dashboard','fa-chart-pie','Tableau de bord');h+=NI('config-stations','fa-map-marker-alt','Stations');h+=NI('config-produits','fa-tags','Produits & Prix');h+=NI('users','fa-users-cog','Utilisateurs');h+=NI('gestion','fa-warehouse','Gestion');h+=NI('conso','fa-tachometer-alt','Rapport conso');h+='<div class="sidebar-section">Ventes</div>';h+=NI('station','fa-gas-pump','Ventes stations')}else{h+='<div class="sidebar-section">Ma station</div>';h+=NI('station','fa-gas-pump','Ventes / Livraison / Versement')}nav.innerHTML=h}
+function buildSidebar(){var nav=document.getElementById('sidebar-nav'),ia=S.user.role==='admin',h='';if(ia){h+='<div class="sidebar-section">Administration</div>';h+=NI('dashboard','fa-chart-pie','Tableau de bord');h+=NI('config-stations','fa-map-marker-alt','Stations');h+=NI('config-produits','fa-tags','Produits & Prix');h+=NI('security','fa-shield-alt','Sécurité');h+=NI('users','fa-users-cog','Utilisateurs');h+=NI('gestion','fa-warehouse','Gestion');h+=NI('conso','fa-tachometer-alt','Rapport conso');h+='<div class="sidebar-section">Ventes</div>';h+=NI('station','fa-gas-pump','Ventes stations')}else{h+='<div class="sidebar-section">Ma station</div>';h+=NI('station','fa-gas-pump','Ventes / Livraison / Versement')}nav.innerHTML=h}
 function NI(p,i,l){return'<div class="nav-item" data-page="'+p+'" onclick="navigateTo(\x27'+p+'\x27)"><i class="fas '+i+'"></i><span>'+l+'</span></div>'}
 function populateSelects(){var sl=S.stations||[];var s1=document.getElementById('mu-station');if(s1)s1.innerHTML='<option value="">--</option>'+sl.map(function(s){return'<option value="'+s+'">'+s+'</option>'}).join('');refreshProductSelects()}
 function refreshProductSelects(){var opts='<option value="">--</option>'+(S.produits||[]).map(function(p){return'<option value="'+p.produit+'" data-prix="'+p.prix_unitaire+'">'+p.produit+' ('+fmt(p.prix_unitaire)+' F/L)</option>'}).join('');document.getElementById('ms-produit').innerHTML=opts;document.getElementById('ml-produit').innerHTML=opts}
 function onProductChange(){var s=document.getElementById('ms-produit'),o=s.options[s.selectedIndex];if(o&&o.dataset.prix)document.getElementById('ms-prix').value=o.dataset.prix}
 function onLivProdChange(){var s=document.getElementById('ml-produit'),o=s.options[s.selectedIndex];if(o&&o.dataset.prix)document.getElementById('ml-prix').value=o.dataset.prix}
-function navigateTo(p){S.currentPage=p;document.querySelectorAll('.nav-item').forEach(function(e){e.classList.toggle('active',e.dataset.page===p)});document.querySelectorAll('.page-section').forEach(function(e){e.classList.remove('active')});var s=document.getElementById('section-'+p);if(s)s.classList.add('active');document.getElementById('sidebar').classList.remove('open');document.getElementById('mobile-overlay').classList.remove('show');switch(p){case'dashboard':loadDashboard();break;case'config-stations':loadConfigStations();break;case'config-produits':loadConfigProduits();break;case'users':loadUsers();break;case'gestion':loadGestion();break;case'conso':loadConso();break;case'station':initStationPage();break}}
+function navigateTo(p){S.currentPage=p;document.querySelectorAll('.nav-item').forEach(function(e){e.classList.toggle('active',e.dataset.page===p)});document.querySelectorAll('.page-section').forEach(function(e){e.classList.remove('active')});var s=document.getElementById('section-'+p);if(s)s.classList.add('active');document.getElementById('sidebar').classList.remove('open');document.getElementById('mobile-overlay').classList.remove('show');switch(p){case'dashboard':loadDashboard();break;case'config-stations':loadConfigStations();break;case'config-produits':loadConfigProduits();break;case'security':loadSecurityPassword();break;case'users':loadUsers();break;case'gestion':loadGestion();break;case'conso':loadConso();break;case'station':initStationPage();break}}
 
-/* ========== CONFIG STATIONS ========== */
+/* === SECURITY === */
+function loadSecurityPassword(){callServer('apiGetSalesPassword',{token:S.token}).then(function(r){if(r.ok)document.getElementById('sec-current-pwd').value=r.password}).catch(function(e){toast(e.message,'error')})}
+function saveSecurityPassword(){var np=document.getElementById('sec-new-pwd').value.trim();if(np.length<3)return toast('Minimum 3 caractères','error');callServer('apiSetSalesPassword',{token:S.token,newPassword:np}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){document.getElementById('sec-current-pwd').value=np;document.getElementById('sec-new-pwd').value=''}}).catch(function(e){toast(e.message,'error')})}
+
+/* === CONFIG STATIONS === */
 function loadConfigStations(){callServer('apiListConfigStations',{token:S.token}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(s,i){h+='<tr><td class="fw-600">'+(i+1)+'</td><td class="fw-600">'+s.nom_station+'</td><td>'+s.date_ajout+'</td><td class="actions-cell"><button class="btn-icon" onclick="deleteStation(\x27'+s.nom_station.replace(/'/g,"\x27")+'\x27)" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button></td></tr>'});document.getElementById('config-stations-table').innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:30px">Aucune</td></tr>'}).catch(function(e){toast(e.message,'error')})}
 function openAddStationModal(){document.getElementById('mas-nom').value='';openModal('modal-add-station')}
 function saveStation(){var n=document.getElementById('mas-nom').value.trim();if(!n)return toast('Nom requis','error');callServer('apiAddStation',{token:S.token,nomStation:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-add-station');S.stations=r.stations;populateSelects();loadConfigStations()}}).catch(function(e){toast(e.message,'error')})}
-function deleteStation(n){if(!confirm('Retirer "'+n+'" ?'))return;callServer('apiDeleteStation',{token:S.token,nomStation:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){S.stations=r.stations;populateSelects();loadConfigStations()}}).catch(function(e){toast(e.message,'error')})}
+function deleteStation(n){if(!confirm('Retirer "'+n+'"?'))return;callServer('apiDeleteStation',{token:S.token,nomStation:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){S.stations=r.stations;populateSelects();loadConfigStations()}}).catch(function(e){toast(e.message,'error')})}
 
-/* ========== CONFIG PRODUITS ========== */
+/* === CONFIG PRODUITS === */
 function loadConfigProduits(){callServer('apiListProduits',{token:S.token}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(p){h+='<tr><td class="fw-600">'+p.produit+'</td><td class="text-right"><span class="price-tag"><i class="fas fa-tag"></i> '+fmt(p.prix_unitaire)+' F</span></td><td>'+p.date_modif+'</td><td class="actions-cell"><button class="btn-icon" onclick="editProduit(\x27'+p.produit+'\x27,'+p.prix_unitaire+')"><i class="fas fa-pen"></i></button><button class="btn-icon" onclick="deleteProduit(\x27'+p.produit+'\x27)" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button></td></tr>'});document.getElementById('config-produits-table').innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:30px">Aucun</td></tr>'}).catch(function(e){toast(e.message,'error')})}
 function openProduitModal(d){document.getElementById('modal-produit-title').textContent=d?'Modifier prix':'Nouveau produit';document.getElementById('mp-nom').value=d?d.produit:'';document.getElementById('mp-nom').readOnly=!!d;document.getElementById('mp-prix').value=d?d.prix:'';openModal('modal-produit')}
 function editProduit(n,p){openProduitModal({produit:n,prix:p})}
 function saveProduit(){var o={produit:document.getElementById('mp-nom').value.trim(),prix_unitaire:document.getElementById('mp-prix').value};if(!o.produit)return toast('Nom requis','error');callServer('apiUpsertProduit',{token:S.token,obj:o}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-produit');S.produits=r.produits;refreshProductSelects();loadConfigProduits()}}).catch(function(e){toast(e.message,'error')})}
-function deleteProduit(n){if(!confirm('Supprimer "'+n+'" ?'))return;callServer('apiDeleteProduit',{token:S.token,produit:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){S.produits=r.produits;refreshProductSelects();loadConfigProduits()}}).catch(function(e){toast(e.message,'error')})}
+function deleteProduit(n){if(!confirm('Supprimer "'+n+'"?'))return;callServer('apiDeleteProduit',{token:S.token,produit:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){S.produits=r.produits;refreshProductSelects();loadConfigProduits()}}).catch(function(e){toast(e.message,'error')})}
 
-/* ========== DASHBOARD ========== */
+/* === DASHBOARD === */
 function loadDashboard(){var f=document.getElementById('dash-from').value,t=document.getElementById('dash-to').value;callServer('apiGetDashboard',{token:S.token,fromDate:f,toDate:t}).then(function(r){if(!r.ok)return;document.getElementById('dash-stats').innerHTML='<div class="stat-card slide-up"><div class="stat-icon amber"><i class="fas fa-coins"></i></div><div class="stat-label">CA</div><div class="stat-value text-accent">'+fmtF(r.summary.total_montant)+'</div></div><div class="stat-card slide-up"><div class="stat-icon blue"><i class="fas fa-gas-pump"></i></div><div class="stat-label">Volume</div><div class="stat-value">'+fmt(r.summary.total_litres)+' L</div></div><div class="stat-card slide-up"><div class="stat-icon green"><i class="fas fa-receipt"></i></div><div class="stat-label">Ventes</div><div class="stat-value">'+fmt(r.summary.total_ventes)+'</div></div><div class="stat-card slide-up"><div class="stat-icon purple"><i class="fas fa-building"></i></div><div class="stat-label">Stations</div><div class="stat-value">'+r.stations.filter(function(s){return s.ventes>0}).length+'/'+r.stations.length+'</div></div>';var tb='';r.stations.forEach(function(s,i){tb+='<tr><td class="fw-600">'+(i+1)+'</td><td class="fw-600">'+s.station.replace('Station Marjan ','')+'</td><td>'+fmt(s.ventes)+'</td><td class="text-right">'+fmt(s.litres)+'</td><td class="text-right fw-700 text-accent">'+fmtF(s.montant)+'</td></tr>'});document.getElementById('dash-stations-table').innerHTML=tb||'<tr><td colspan="5" style="text-align:center;padding:30px">—</td></tr>';renderCharts(r)}).catch(function(e){toast(e.message,'error')})}
 function gc(){var s=getComputedStyle(document.documentElement);return{grid:s.getPropertyValue('--chart-grid').trim(),text:s.getPropertyValue('--chart-text').trim(),legend:s.getPropertyValue('--chart-legend').trim()}}
 function renderCharts(d){Object.values(S.charts).forEach(function(c){if(c&&c.destroy)c.destroy()});S.charts={};var cc=gc(),lb=d.stations.map(function(s){return s.station.replace('Station Marjan ','')}),mo=d.stations.map(function(s){return s.montant}),li=d.stations.map(function(s){return s.litres}),df={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:cc.legend,font:{family:"'Plus Jakarta Sans'",size:12}}}}};S.charts.s=new Chart(document.getElementById('chart-stations'),{type:'bar',data:{labels:lb,datasets:[{label:'CA',data:mo,backgroundColor:PAL.map(function(c){return c+'33'}),borderColor:PAL,borderWidth:2,borderRadius:8}]},options:Object.assign({},df,{scales:{x:{ticks:{color:cc.text},grid:{display:false}},y:{ticks:{color:cc.text,callback:function(v){return fmt(v)}},grid:{color:cc.grid}}}})});var pl=d.topProducts.map(function(p){return p.produit}),pv=d.topProducts.map(function(p){return p.montant});S.charts.p=new Chart(document.getElementById('chart-products'),{type:'doughnut',data:{labels:pl,datasets:[{data:pv,backgroundColor:PAL.slice(0,pl.length),borderWidth:0,spacing:3,borderRadius:6}]},options:Object.assign({},df,{cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:cc.legend,padding:16,usePointStyle:true}}}})});var al=d.payments.map(function(p){return p.mode}),av=d.payments.map(function(p){return p.montant});S.charts.pa=new Chart(document.getElementById('chart-payments'),{type:'polarArea',data:{labels:al,datasets:[{data:av,backgroundColor:PAL.slice(0,al.length).map(function(c){return c+'99'}),borderColor:PAL.slice(0,al.length),borderWidth:2}]},options:Object.assign({},df,{scales:{r:{grid:{color:cc.grid},ticks:{display:false}}},plugins:{legend:{position:'bottom',labels:{color:cc.legend,padding:14,usePointStyle:true}}}})});S.charts.l=new Chart(document.getElementById('chart-litres'),{type:'bar',data:{labels:lb,datasets:[{label:'Litres',data:li,backgroundColor:'#3B82F633',borderColor:'#3B82F6',borderWidth:2,borderRadius:8}]},options:Object.assign({},df,{indexAxis:'y',scales:{x:{ticks:{color:cc.text,callback:function(v){return fmt(v)}},grid:{color:cc.grid}},y:{ticks:{color:cc.text},grid:{display:false}}}})})}
 
-/* ========== USERS ========== */
+/* === USERS === */
 function loadUsers(){callServer('apiListUsers',{token:S.token}).then(function(r){if(!r.ok)return;var h='';r.users.forEach(function(u){var rb=u.role==='admin'?'badge-amber':u.role==='gerant'?'badge-green':'badge-blue';h+='<tr><td class="fw-600">'+u.username+'</td><td>'+u.nom_complet+'</td><td><span class="badge '+rb+'">'+u.role+'</span></td><td>'+(u.station||'—')+'</td><td>'+(u.telephone||'—')+'</td><td class="actions-cell"><button class="btn-icon" onclick="editUser(\x27'+u.username+'\x27)"><i class="fas fa-pen"></i></button><button class="btn-icon" onclick="deleteUser(\x27'+u.username+'\x27)" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button></td></tr>'});document.getElementById('users-table').innerHTML=h||'<tr><td colspan="6" style="text-align:center;padding:30px">—</td></tr>'}).catch(function(e){toast(e.message,'error')})}
 function openUserModal(d){document.getElementById('modal-user-title').textContent=d?'Modifier':'Nouveau';document.getElementById('mu-username').value=d?d.username:'';document.getElementById('mu-username').readOnly=!!d;document.getElementById('mu-password').value='';document.getElementById('mu-nom').value=d?d.nom_complet:'';document.getElementById('mu-role').value=d?d.role:'';document.getElementById('mu-station').value=d?d.station:'';document.getElementById('mu-tel').value=d?d.telephone:'';openModal('modal-user')}
 function editUser(u){callServer('apiListUsers',{token:S.token}).then(function(r){if(!r.ok)return;var x=r.users.find(function(v){return v.username===u});if(x)openUserModal(x)})}
 function saveUser(){var o={username:document.getElementById('mu-username').value.trim(),password:document.getElementById('mu-password').value,nom_complet:document.getElementById('mu-nom').value.trim(),role:document.getElementById('mu-role').value,station:document.getElementById('mu-station').value,telephone:document.getElementById('mu-tel').value.trim()};if(!o.username)return toast('Username requis','error');callServer('apiUpsertUser',{token:S.token,userObj:o}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-user');loadUsers()}}).catch(function(e){toast(e.message,'error')})}
-function deleteUser(u){if(!confirm('Supprimer "'+u+'" ?'))return;callServer('apiDeleteUser',{token:S.token,username:u}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadUsers()}).catch(function(e){toast(e.message,'error')})}
+function deleteUser(u){if(!confirm('Supprimer "'+u+'"?'))return;callServer('apiDeleteUser',{token:S.token,username:u}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadUsers()}).catch(function(e){toast(e.message,'error')})}
 
-/* ========== GESTION / CONSO ========== */
+/* === GESTION / CONSO === */
 function loadGestion(){callServer('apiListGestion',{token:S.token}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(o){h+='<tr><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.reception)+'</td><td class="text-right fw-600 text-accent">'+fmtF(o.montant_reception)+'</td><td>'+o.date_versement+'</td><td>'+o.banque+'</td></tr>'});document.getElementById('gestion-table').innerHTML=h||'<tr><td colspan="6" style="text-align:center;padding:30px">—</td></tr>'}).catch(function(e){toast(e.message,'error')})}
 function openGestionModal(){document.getElementById('mg-date').value=today();['mg-produit','mg-reception','mg-montant','mg-versement','mg-banque'].forEach(function(id){document.getElementById(id).value=''});openModal('modal-gestion')}
 function saveGestion(){callServer('apiAddGestion',{token:S.token,obj:{date:document.getElementById('mg-date').value,produit:document.getElementById('mg-produit').value,reception:document.getElementById('mg-reception').value,montant_reception:document.getElementById('mg-montant').value,date_versement:document.getElementById('mg-versement').value,banque:document.getElementById('mg-banque').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-gestion');loadGestion()}}).catch(function(e){toast(e.message,'error')})}
@@ -272,33 +321,82 @@ function loadConso(){callServer('apiListConso',{token:S.token}).then(function(r)
 function openConsoModal(){document.getElementById('mc-date').value=today();['mc-livraison','mc-jdepart','mc-jarrivee','mc-sortie'].forEach(function(id){document.getElementById(id).value=''});openModal('modal-conso')}
 function saveConso(){callServer('apiAddConso',{token:S.token,obj:{date:document.getElementById('mc-date').value,livraison:document.getElementById('mc-livraison').value,jauge_depart:document.getElementById('mc-jdepart').value,jauge_arrivee:document.getElementById('mc-jarrivee').value,sortie:document.getElementById('mc-sortie').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-conso');loadConso()}}).catch(function(e){toast(e.message,'error')})}
 
-/* ========== STATION ========== */
+/* === STATION === */
 function initStationPage(){var ia=S.user.role==='admin',sl=ia?S.stations:[S.user.station],tb='';sl.forEach(function(st){var sh=st.replace('Station Marjan ',''),ac=st===S.currentStation?' active':'';tb+='<div class="station-tab'+ac+'" onclick="switchStation(\x27'+st+'\x27)">'+sh+'</div>'});document.getElementById('station-tabs').innerHTML=tb;if(!S.currentStation)S.currentStation=sl[0]||'';updateSH();loadAllStationData()}
 function switchStation(n){S.currentStation=n;document.querySelectorAll('.station-tab').forEach(function(e){e.classList.toggle('active',e.textContent===n.replace('Station Marjan ',''))});updateSH();loadAllStationData()}
-function updateSH(){var s=S.currentStation||'';document.getElementById('station-page-title').textContent=s||'Station';document.getElementById('station-page-subtitle').textContent=s.replace('Station Marjan ','')}
+function updateSH(){document.getElementById('station-page-title').textContent=S.currentStation||'Station';document.getElementById('station-page-subtitle').textContent=(S.currentStation||'').replace('Station Marjan ','')}
 function loadAllStationData(){loadStationResume();loadStationSales();loadLivraisons();loadVersements()}
 
-/* Resume / Stock */
-function loadStationResume(){if(!S.currentStation)return;callServer('apiGetStationResume',{token:S.token,stationName:S.currentStation}).then(function(r){if(!r.ok)return;var mr=r.montant_restant,mrCls=mr>0?'text-danger':mr<0?'text-success':'';document.getElementById('station-resume-stats').innerHTML='<div class="stat-card"><div class="stat-icon amber"><i class="fas fa-coins"></i></div><div class="stat-label">Total Ventes</div><div class="stat-value text-accent">'+fmtF(r.total_ventes)+'</div></div><div class="stat-card"><div class="stat-icon green"><i class="fas fa-hand-holding-usd"></i></div><div class="stat-label">Total Versements</div><div class="stat-value text-success">'+fmtF(r.total_versements)+'</div></div><div class="stat-card"><div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-label">Montant Restant</div><div class="stat-value '+mrCls+'">'+fmtF(mr)+'</div></div><div class="stat-card"><div class="stat-icon blue"><i class="fas fa-truck"></i></div><div class="stat-label">Total Livraisons</div><div class="stat-value">'+fmtF(r.total_livraisons)+'</div></div>';var sg='';r.stock.forEach(function(p){var cls=p.stock_litres>0?'stock-positive':p.stock_litres<0?'stock-negative':'stock-zero';sg+='<div class="stock-item"><div class="stock-label">'+p.produit+'</div><div class="stock-value '+cls+'">'+fmt(p.stock_litres)+' L</div></div>'});document.getElementById('station-stock-grid').innerHTML=sg||'<div style="padding:20px;color:var(--text-muted)">Aucun produit</div>'}).catch(function(e){console.error(e)})}
+function loadStationResume(){if(!S.currentStation)return;callServer('apiGetStationResume',{token:S.token,stationName:S.currentStation}).then(function(r){if(!r.ok)return;var mr=r.montant_restant,mc=mr>0?'text-danger':'text-success';document.getElementById('station-resume-stats').innerHTML='<div class="stat-card"><div class="stat-icon amber"><i class="fas fa-coins"></i></div><div class="stat-label">Total Ventes</div><div class="stat-value text-accent">'+fmtF(r.total_ventes)+'</div></div><div class="stat-card"><div class="stat-icon green"><i class="fas fa-hand-holding-usd"></i></div><div class="stat-label">Total Versements</div><div class="stat-value text-success">'+fmtF(r.total_versements)+'</div></div><div class="stat-card"><div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-label">Montant Restant</div><div class="stat-value '+mc+'">'+fmtF(mr)+'</div></div><div class="stat-card"><div class="stat-icon blue"><i class="fas fa-truck"></i></div><div class="stat-label">Total Livraisons</div><div class="stat-value">'+fmtF(r.total_livraisons)+'</div></div>';var sg='';r.stock.forEach(function(p){var cls=p.stock_litres>0?'stock-positive':p.stock_litres<0?'stock-negative':'stock-zero';sg+='<div class="stock-item"><div class="stock-label">'+p.produit+'</div><div class="stock-value '+cls+'">'+fmt(p.stock_litres)+' L</div></div>'});document.getElementById('station-stock-grid').innerHTML=sg||'<div style="padding:20px;color:var(--text-muted)">—</div>'}).catch(function(e){console.error(e)})}
 
-/* Ventes */
-function loadStationSales(){if(!S.currentStation)return;callServer('apiListStationSales',{token:S.token,stationName:S.currentStation,fromDate:document.getElementById('st-from').value,toDate:document.getElementById('st-to').value}).then(function(r){if(!r.ok)return;S.salesCache=r.items||[];var cd=S.user.role==='admin'||S.user.role==='gerant',h='';r.items.forEach(function(o){h+='<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.prix_unitaire)+'</td><td class="text-right">'+fmt(o.quantite_litres)+'</td><td class="text-right fw-700 text-accent">'+fmtF(o.montant_total)+'</td><td><span class="badge badge-blue">'+(o.mode_paiement||'—')+'</span></td><td>'+(o.client||'—')+'</td><td>'+(o.pompiste||'—')+'</td><td class="actions-cell"><button class="btn-icon" onclick="editSale('+o.id+')"><i class="fas fa-pen"></i></button>'+(cd?'<button class="btn-icon" onclick="deleteSale('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>'});document.getElementById('station-table').innerHTML=h||'<tr><td colspan="10" style="text-align:center;padding:30px">Aucune vente</td></tr>'}).catch(function(e){toast(e.message,'error')})}
+/* Ventes - PROTÉGÉES */
+function loadStationSales(){if(!S.currentStation)return;callServer('apiListStationSales',{token:S.token,stationName:S.currentStation,fromDate:document.getElementById('st-from').value,toDate:document.getElementById('st-to').value}).then(function(r){if(!r.ok)return;S.salesCache=r.items||[];var cd=S.user.role==='admin'||S.user.role==='gerant',h='';r.items.forEach(function(o){h+='<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.prix_unitaire)+'</td><td class="text-right">'+fmt(o.quantite_litres)+'</td><td class="text-right fw-700 text-accent">'+fmtF(o.montant_total)+'</td><td><span class="badge badge-blue">'+(o.mode_paiement||'—')+'</span></td><td>'+(o.client||'—')+'</td><td>'+(o.pompiste||'—')+'</td><td class="actions-cell"><button class="btn-icon" onclick="editSale('+o.id+')" title="Modifier (protégé)"><i class="fas fa-pen"></i></button>'+(cd?'<button class="btn-icon" onclick="deleteSale('+o.id+')" title="Supprimer (protégé)" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>'});document.getElementById('station-table').innerHTML=h||'<tr><td colspan="10" style="text-align:center;padding:30px">Aucune vente</td></tr>'}).catch(function(e){toast(e.message,'error')})}
 function openSaleModal(d){document.getElementById('modal-sale-title').textContent=d?'Modifier #'+d.id:'Nouvelle vente';document.getElementById('ms-id').value=d?d.id:'';document.getElementById('ms-date').value=d?d.date:today();refreshProductSelects();document.getElementById('ms-produit').value=d?d.produit:'';document.getElementById('ms-prix').value=d?d.prix_unitaire:'';document.getElementById('ms-qte').value=d?d.quantite_litres:'';document.getElementById('ms-paiement').value=d?d.mode_paiement:'';document.getElementById('ms-client').value=d?d.client:'';document.getElementById('ms-pompiste').value=d?d.pompiste:'';document.getElementById('ms-obs').value=d?d.observations:'';openModal('modal-sale')}
-function editSale(id){var i=S.salesCache.find(function(x){return x.id===id});if(i)openSaleModal(i)}
-function saveSale(){callServer('apiUpsertStationSale',{token:S.token,stationName:S.currentStation,obj:{id:document.getElementById('ms-id').value||0,date:document.getElementById('ms-date').value,produit:document.getElementById('ms-produit').value,prix_unitaire:document.getElementById('ms-prix').value,quantite_litres:document.getElementById('ms-qte').value,mode_paiement:document.getElementById('ms-paiement').value,client:document.getElementById('ms-client').value,pompiste:document.getElementById('ms-pompiste').value,observations:document.getElementById('ms-obs').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-sale');loadStationSales();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
-function deleteSale(id){if(!confirm('Supprimer #'+id+'?'))return;callServer('apiDeleteStationSale',{token:S.token,stationName:S.currentStation,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){loadStationSales();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
+
+function editSale(id){
+  var i=S.salesCache.find(function(x){return x.id===id});
+  if(!i)return;
+  // Si c'est une modification (vente existante) et pas admin => demander mdp
+  requireSalesPassword('edit', i);
+}
+
+function saveSale(){
+  var saleId=document.getElementById('ms-id').value||0;
+  var obj={id:saleId,date:document.getElementById('ms-date').value,produit:document.getElementById('ms-produit').value,prix_unitaire:document.getElementById('ms-prix').value,quantite_litres:document.getElementById('ms-qte').value,mode_paiement:document.getElementById('ms-paiement').value,client:document.getElementById('ms-client').value,pompiste:document.getElementById('ms-pompiste').value,observations:document.getElementById('ms-obs').value};
+  var isNew=!saleId||saleId==='0'||saleId===0;
+  if(isNew){
+    // Nouvelle vente = pas de protection
+    doSaveSale(obj, null);
+  } else {
+    // Modification = protégée, on a déjà le mdp via le flow editSale
+    doSaveSale(obj, S._lastSalesPwd||null);
+  }
+}
+
+function doSaveSale(obj, pwd){
+  // Si c'est un edit venant du flow password, obj est le sale data from cache, on ouvre le modal
+  if(obj.id && !document.getElementById('ms-id').value){
+    S._lastSalesPwd=pwd;
+    openSaleModal(obj);
+    return;
+  }
+  closeModal('modal-sale');
+  callServer('apiUpsertStationSale',{token:S.token,stationName:S.currentStation,obj:obj,salesPassword:pwd||S._lastSalesPwd||null}).then(function(r){
+    S._lastSalesPwd=null;
+    toast(r.message,r.ok?'success':'error');if(r.ok){loadStationSales();loadStationResume()}
+  }).catch(function(e){
+    S._lastSalesPwd=null;
+    if(e.message&&e.message.indexOf('mot de passe')>-1||e.message&&e.message.indexOf('Mot de passe')>-1){
+      toast('Mot de passe de modification incorrect','error');
+    } else {toast(e.message,'error')}
+  });
+}
+
+function deleteSale(id){
+  if(!confirm('Supprimer la vente #'+id+' ?'))return;
+  requireSalesPassword('delete', {id:id});
+}
+function doDeleteSale(id, pwd){
+  callServer('apiDeleteStationSale',{token:S.token,stationName:S.currentStation,id:id,salesPassword:pwd}).then(function(r){
+    toast(r.message,r.ok?'success':'error');if(r.ok){loadStationSales();loadStationResume()}
+  }).catch(function(e){
+    if(e.message&&(e.message.indexOf('mot de passe')>-1||e.message.indexOf('Mot de passe')>-1)){
+      toast('Mot de passe incorrect','error');
+    } else {toast(e.message,'error')}
+  });
+}
 
 /* Livraisons */
-function loadLivraisons(){if(!S.currentStation)return;callServer('apiListLivraisons',{token:S.token,stationName:S.currentStation}).then(function(r){if(!r.ok)return;var cd=S.user.role==='admin'||S.user.role==='gerant',h='',totQ=0,totM=0;r.items.forEach(function(o){totQ+=o.quantite_litres;totM+=o.montant_total;h+='<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.quantite_litres)+'</td><td class="text-right">'+fmt(o.prix_unitaire)+'</td><td class="text-right fw-600 text-accent">'+fmtF(o.montant_total)+'</td><td>'+o.saisi_par+'</td><td class="actions-cell">'+(cd?'<button class="btn-icon" onclick="deleteLivraison('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>'});if(r.items.length)h+='<tr style="font-weight:700;background:var(--accent-glow)"><td colspan="3">TOTAL</td><td class="text-right">'+fmt(totQ)+' L</td><td></td><td class="text-right text-accent">'+fmtF(totM)+'</td><td colspan="2"></td></tr>';document.getElementById('livraisons-table').innerHTML=h||'<tr><td colspan="8" style="text-align:center;padding:30px">Aucune livraison</td></tr>'}).catch(function(e){toast(e.message,'error')})}
+function loadLivraisons(){if(!S.currentStation)return;callServer('apiListLivraisons',{token:S.token,stationName:S.currentStation}).then(function(r){if(!r.ok)return;var cd=S.user.role==='admin'||S.user.role==='gerant',h='',tQ=0,tM=0;r.items.forEach(function(o){tQ+=o.quantite_litres;tM+=o.montant_total;h+='<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.quantite_litres)+'</td><td class="text-right">'+fmt(o.prix_unitaire)+'</td><td class="text-right fw-600 text-accent">'+fmtF(o.montant_total)+'</td><td>'+o.saisi_par+'</td><td class="actions-cell">'+(cd?'<button class="btn-icon" onclick="deleteLivraison('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>'});if(r.items.length)h+='<tr style="font-weight:700;background:var(--accent-glow)"><td colspan="3">TOTAL</td><td class="text-right">'+fmt(tQ)+' L</td><td></td><td class="text-right text-accent">'+fmtF(tM)+'</td><td colspan="2"></td></tr>';document.getElementById('livraisons-table').innerHTML=h||'<tr><td colspan="8" style="text-align:center;padding:30px">Aucune</td></tr>'}).catch(function(e){toast(e.message,'error')})}
 function openLivraisonModal(){document.getElementById('ml-date').value=today();document.getElementById('ml-produit').value='';document.getElementById('ml-qte').value='';document.getElementById('ml-prix').value='';openModal('modal-livraison')}
 function saveLivraison(){callServer('apiAddLivraison',{token:S.token,obj:{station:S.currentStation,date:document.getElementById('ml-date').value,produit:document.getElementById('ml-produit').value,quantite_litres:document.getElementById('ml-qte').value,prix_unitaire:document.getElementById('ml-prix').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-livraison');loadLivraisons();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
-function deleteLivraison(id){if(!confirm('Supprimer livraison #'+id+'?'))return;callServer('apiDeleteLivraison',{token:S.token,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){loadLivraisons();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
+function deleteLivraison(id){if(!confirm('Supprimer #'+id+'?'))return;callServer('apiDeleteLivraison',{token:S.token,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){loadLivraisons();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
 
 /* Versements */
-function loadVersements(){if(!S.currentStation)return;callServer('apiListVersements',{token:S.token,stationName:S.currentStation}).then(function(r){if(!r.ok)return;var cd=S.user.role==='admin'||S.user.role==='gerant',h='',tot=0;r.items.forEach(function(o){tot+=o.montant_verse;h+='<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td class="text-right fw-600 text-success">'+fmtF(o.montant_verse)+'</td><td><span class="badge badge-green">'+(o.mode_versement||'—')+'</span></td><td>'+(o.reference||'—')+'</td><td>'+o.saisi_par+'</td><td class="actions-cell">'+(cd?'<button class="btn-icon" onclick="deleteVersement('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>'});if(r.items.length)h+='<tr style="font-weight:700;background:var(--success-bg)"><td colspan="2">TOTAL</td><td class="text-right text-success">'+fmtF(tot)+'</td><td colspan="4"></td></tr>';document.getElementById('versements-table').innerHTML=h||'<tr><td colspan="7" style="text-align:center;padding:30px">Aucun versement</td></tr>'}).catch(function(e){toast(e.message,'error')})}
+function loadVersements(){if(!S.currentStation)return;callServer('apiListVersements',{token:S.token,stationName:S.currentStation}).then(function(r){if(!r.ok)return;var cd=S.user.role==='admin'||S.user.role==='gerant',h='',tot=0;r.items.forEach(function(o){tot+=o.montant_verse;h+='<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td class="text-right fw-600 text-success">'+fmtF(o.montant_verse)+'</td><td><span class="badge badge-green">'+(o.mode_versement||'—')+'</span></td><td>'+(o.reference||'—')+'</td><td>'+o.saisi_par+'</td><td class="actions-cell">'+(cd?'<button class="btn-icon" onclick="deleteVersement('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>'});if(r.items.length)h+='<tr style="font-weight:700;background:var(--success-bg)"><td colspan="2">TOTAL</td><td class="text-right text-success">'+fmtF(tot)+'</td><td colspan="4"></td></tr>';document.getElementById('versements-table').innerHTML=h||'<tr><td colspan="7" style="text-align:center;padding:30px">Aucun</td></tr>'}).catch(function(e){toast(e.message,'error')})}
 function openVersementModal(){document.getElementById('mv-date').value=today();document.getElementById('mv-montant').value='';document.getElementById('mv-mode').value='';document.getElementById('mv-ref').value='';openModal('modal-versement')}
 function saveVersement(){callServer('apiAddVersement',{token:S.token,obj:{station:S.currentStation,date:document.getElementById('mv-date').value,montant_verse:document.getElementById('mv-montant').value,mode_versement:document.getElementById('mv-mode').value,reference:document.getElementById('mv-ref').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-versement');loadVersements();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
-function deleteVersement(id){if(!confirm('Supprimer versement #'+id+'?'))return;callServer('apiDeleteVersement',{token:S.token,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){loadVersements();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
+function deleteVersement(id){if(!confirm('Supprimer #'+id+'?'))return;callServer('apiDeleteVersement',{token:S.token,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){loadVersements();loadStationResume()}}).catch(function(e){toast(e.message,'error')})}
 
 document.addEventListener('DOMContentLoaded',checkSession);
 </script>
