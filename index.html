@@ -168,7 +168,23 @@ function executePwdAction(type,data,pwd){if(type==='edit'){S._lastSalesPwd=pwd;o
 
 function callServer(action,params){
   if(IS_GAS){var args=[];switch(action){case 'apiLogin':args=[params.username,params.password];break;case 'apiLogout':args=[params.token];break;case 'apiGetMe':args=[params.token];break;case 'apiListUsers':args=[params.token];break;case 'apiUpsertUser':args=[params.token,params.userObj];break;case 'apiDeleteUser':args=[params.token,params.username];break;case 'apiListConfigStations':args=[params.token];break;case 'apiAddStation':args=[params.token,params.nomStation];break;case 'apiDeleteStation':args=[params.token,params.nomStation];break;case 'apiEditStation':args=[params.token,params.oldName,params.newName];break;case 'apiListProduits':args=[params.token];break;case 'apiUpsertProduit':args=[params.token,params.obj];break;case 'apiDeleteProduit':args=[params.token,params.produit];break;case 'apiListGestion':args=[params.token];break;case 'apiAddGestion':args=[params.token,params.obj];break;case 'apiListConso':args=[params.token];break;case 'apiAddConso':args=[params.token,params.obj];break;case 'apiListStationSales':args=[params.token,params.stationName,params.fromDate,params.toDate];break;case 'apiUpsertStationSale':args=[params.token,params.stationName,params.obj,params.salesPassword];break;case 'apiDeleteStationSale':args=[params.token,params.stationName,params.id,params.salesPassword];break;case 'apiListLivraisons':args=[params.token,params.stationName];break;case 'apiAddLivraison':args=[params.token,params.obj];break;case 'apiUpdateLivraison':args=[params.token,params.obj,params.livraisonPassword];break;case 'apiDeleteLivraison':args=[params.token,params.id,params.livraisonPassword];break;case 'apiListVersements':args=[params.token,params.stationName];break;case 'apiAddVersement':args=[params.token,params.obj];break;case 'apiDeleteVersement':args=[params.token,params.id];break;case 'apiListDepenses':args=[params.token,params.stationName];break;case 'apiAddDepense':args=[params.token,params.obj];break;case 'apiDeleteDepense':args=[params.token,params.id];break;case 'apiGetStationResume':args=[params.token,params.stationName];break;case 'apiGetStationFull':args=[params.token,params.stationName,params.fromDate,params.toDate];break;case 'apiGetDashboard':args=[params.token,params.fromDate,params.toDate];break;case 'apiGetSalesPassword':args=[params.token];break;case 'apiSetSalesPassword':args=[params.token,params.newPassword];break;case 'apiGetPrixStation':args=[params.token,params.stationName];break;case 'apiSetPrixStation':args=[params.token,params.stationName,params.produit,params.prix_unitaire];break;case 'apiGetAllPrixStations':args=[params.token];break;case 'apiListCategories':args=[params.token];break;case 'apiAddCategory':args=[params.token,params.categorie];break;case 'apiDeleteCategory':args=[params.token,params.categorie];break}return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(res).withFailureHandler(rej);r[action].apply(r,args)})}
-  else{var body=Object.assign({action:action},params);return fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json()}).then(function(r){if(r.ok===false&&r.message)throw new Error(r.message);return r})}
+  else{
+    var body=Object.assign({action:action},params);
+    var jsonStr=JSON.stringify(body);
+    return fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:jsonStr,redirect:'follow',cache:'no-store'}).then(function(r){
+      return r.text();
+    }).then(function(txt){
+      try{var r=JSON.parse(txt);if(r.ok===false&&r.message)throw new Error(r.message);return r}
+      catch(e){
+        if(e.message&&(e.message.indexOf('Action inconnue')>-1||e.message.indexOf('Accès')>-1||e.message.indexOf('Session')>-1))throw e;
+        /* Fallback GET pour mobile si le POST a été converti */
+        var getUrl=GAS_URL+'?data='+encodeURIComponent(jsonStr)+'&_cb='+Date.now();
+        return fetch(getUrl,{method:'GET',redirect:'follow',cache:'no-store'}).then(function(r2){return r2.text()}).then(function(txt2){
+          var r2=JSON.parse(txt2);if(r2.ok===false&&r2.message)throw new Error(r2.message);return r2;
+        });
+      }
+    });
+  }
 }
 
 /* AUTH */
@@ -230,7 +246,7 @@ function openConsoModal(){document.getElementById('mc-date').value=today();['mc-
 function saveConso(){callServer('apiAddConso',{token:S.token,obj:{date:document.getElementById('mc-date').value,livraison:document.getElementById('mc-livraison').value,jauge_depart:document.getElementById('mc-jdepart').value,jauge_arrivee:document.getElementById('mc-jarrivee').value,sortie:document.getElementById('mc-sortie').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-conso');loadStationFull()}}).catch(function(e){toast(e.message,'error')})}
 
 /* STATION */
-function initStationPage(){var ia=S.user.role==='admin',sl=ia?S.stations:[S.user.station],tb='';sl.forEach(function(st){var sh=st.replace('Station Marjan ',''),ac=st===S.currentStation?' active':'';tb+='<div class="station-tab'+ac+'" onclick="switchStation(\''+st+'\')">'+sh+'</div>'});document.getElementById('station-tabs').innerHTML=tb;if(!S.currentStation)S.currentStation=sl[0]||'';updateSH();loadStationFull()}
+function initStationPage(){var ia=S.user.role==='admin',sl=ia?S.stations:[S.user.station],tb='';sl.forEach(function(st){var sh=st.replace('Station Marjan ',''),ac=st===S.currentStation?' active':'';tb+='<div class="station-tab'+ac+'" onclick="switchStation(\''+st+'\')">'+sh+'</div>'});document.getElementById('station-tabs').innerHTML=tb;if(!S.currentStation)S.currentStation=sl[0]||'';updateSH();if(!S.categories||!S.categories.length){callServer('apiListCategories',{token:S.token}).then(function(r){if(r.ok&&r.categories){S.categories=r.categories;populateCategorySelect()}}).catch(function(){})}loadStationFull()}
 function switchStation(n){S.currentStation=n;document.querySelectorAll('.station-tab').forEach(function(e){e.classList.toggle('active',e.textContent===n.replace('Station Marjan ',''))});updateSH();loadStationFull()}
 function updateSH(){document.getElementById('station-page-title').textContent=S.currentStation||'Station';document.getElementById('station-page-subtitle').textContent=(S.currentStation||'').replace('Station Marjan ','')}
 
@@ -340,7 +356,7 @@ function saveVersement(){callServer('apiAddVersement',{token:S.token,obj:{statio
 function deleteVersement(id){if(!confirm('Supprimer?'))return;callServer('apiDeleteVersement',{token:S.token,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadStationFull()}).catch(function(e){toast(e.message,'error')})}
 
 /* Dépenses */
-function openDepenseModal(){document.getElementById('md-date').value=today();document.getElementById('md-desc').value='';document.getElementById('md-cat').value='';document.getElementById('md-montant').value='';openModal('modal-depense')}
+function openDepenseModal(){document.getElementById('md-date').value=today();document.getElementById('md-desc').value='';document.getElementById('md-cat').value='';document.getElementById('md-montant').value='';populateCategorySelect();if(!S.categories||!S.categories.length){callServer('apiListCategories',{token:S.token}).then(function(r){if(r.ok&&r.categories){S.categories=r.categories;populateCategorySelect()}}).catch(function(){})}openModal('modal-depense')}
 function saveDepense(){callServer('apiAddDepense',{token:S.token,obj:{station:S.currentStation,date:document.getElementById('md-date').value,description:document.getElementById('md-desc').value,categorie:document.getElementById('md-cat').value,montant:document.getElementById('md-montant').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-depense');loadStationFull()}}).catch(function(e){toast(e.message,'error')})}
 function deleteDepense(id){if(!confirm('Supprimer?'))return;callServer('apiDeleteDepense',{token:S.token,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadStationFull()}).catch(function(e){toast(e.message,'error')})}
 
