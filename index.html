@@ -138,7 +138,7 @@
 <div class="modal-overlay" id="modal-sales-pwd"><div class="modal" style="max-width:400px"><div class="modal-header"><h3><i class="fas fa-shield-alt"></i>&nbsp;Vérification</h3><button class="modal-close" onclick="cancelPwdAction()">&times;</button></div><div class="modal-body" style="text-align:center"><div class="lock-icon"><i class="fas fa-lock"></i></div><div class="lock-msg" id="pwd-modal-msg">Entrez le mot de passe pour continuer.</div><div class="form-group" style="text-align:left"><label>Mot de passe</label><div class="input-wrapper"><i class="fas fa-key"></i><input type="password" id="spwd-input" class="form-control" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')confirmPwdAction()"/></div></div><div class="pwd-error" id="spwd-error">Incorrect</div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="cancelPwdAction()">Annuler</button><button class="btn btn-sm btn-primary" onclick="confirmPwdAction()" style="width:auto"><i class="fas fa-unlock"></i> Confirmer</button></div></div></div>
 
 <script>
-var GAS_URL="https://script.google.com/macros/s/AKfycbyk1krnbMitQqYOvWjClkHluLdcsMJiSGqwegU23xYL9u56ZwC9L7xDSBXCSzPPRPX3/exec";
+var GAS_URL="https://script.google.com/macros/s/AKfycbyHeed-4pan4Rwu0q7b4ZM0A92maSYYtfs8Rd8AMoAr34jS-Ho1X5doRl5P8ccXwEWd/exec";
 var IS_GAS=(typeof google!=="undefined"&&google.script&&google.script.run);
 var S={token:null,user:null,stations:[],produits:[],stationPrix:[],categories:[],currentStation:null,currentPage:null,salesCache:[],livraisonsCache:[],charts:{},fullData:null};
 var PAL=['#F59E0B','#3B82F6','#10B981','#8B5CF6','#EF4444','#06B6D4','#EC4899','#14B8A6'];
