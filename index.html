@@ -34,6 +34,7 @@
 .lock-icon{font-size:48px;color:var(--accent);text-align:center;margin-bottom:16px}.lock-msg{text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:20px}.pwd-error{color:var(--danger);font-size:12px;font-weight:600;text-align:center;margin-top:8px;display:none}
 .security-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:24px;max-width:480px}.security-card h4{font-size:16px;font-weight:700;margin-bottom:4px}.security-card p{font-size:13px;color:var(--text-muted);margin-bottom:20px}
 .prix-station-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:16px}.prix-item{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius)}.prix-item .prix-label{flex:1;font-weight:600;font-size:14px}.prix-item input{width:110px;padding:8px 10px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:14px;font-weight:700;text-align:right;outline:none}.prix-item input:focus{border-color:var(--accent)}.prix-item .prix-unit{font-size:12px;color:var(--text-muted);font-weight:600}
+.cat-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--purple-bg);color:var(--purple);border:1px solid rgba(139,92,246,0.2);margin:4px}.cat-tag .cat-del{cursor:pointer;opacity:.7;font-size:11px}.cat-tag .cat-del:hover{opacity:1;color:var(--danger)}
 @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.mobile-toggle{display:flex}.mobile-overlay.show{display:block}.main-content{margin-left:0;padding:16px;padding-top:60px}.stats-grid{grid-template-columns:repeat(2,1fr)}.charts-grid{grid-template-columns:1fr}.page-title{font-size:20px}.stat-card .stat-value{font-size:16px}.theme-toggle{top:12px;right:12px;width:38px;height:38px;font-size:16px}.sub-tabs{overflow-x:auto}.prix-station-grid{grid-template-columns:1fr}}@media(max-width:480px){.stats-grid{grid-template-columns:1fr}.stock-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -41,7 +42,7 @@
 <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Thème"><i class="fas fa-sun" id="theme-icon"></i></button>
 <div id="loading-overlay"><div class="loader-spinner"></div><div class="loader-text">Chargement…</div></div>
 <div id="toast-container"></div>
-<div id="page-login" style="display:none"><div class="login-container"><div class="login-card"><div class="login-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHEAAACgCAYAAAA7HINaAABbNElEQVR42u29d7heV3Xn/1l7n3PecqvKVS+WLLlINjbYYEMgMkloCQQISJCEgRDSC0kmmcykISltUiZ9IL+0SQhpWKTTAgRb9OKCbSw3SVavt9+3nXP23uv3xz7v1RW4yMYmZEb7eV5dlav7vuess/p3fRdcPBfPxXPxXDwXz8Vz8Vw8F8/Fc/FcPBfPxXPxXDwXz8Vz8Vw8F8/Fc/FcPBfP03Lk/+prU4VdCPv2CFvGvvxa992kbEFhF+zepSB6UYj/kWfnTsO+XcIWhK0orzMefYIyURV2YeFW4KbAblFALwrx6fzs2282bBkTfvEbHRrOlymY33r+zUvyRbVldtXYaAi1FSpaswmC9+A1mNFlE0yXZ9KzJ6av/Od3nP4ce7rnSU2At2nCvj3Knu3ha1VT5T+lxt16k+Fj3+D6miZAdvXOjbr5umf6Zauv07R5NUMDl+rA4uVidTGNOlpLICG++seDFiUURZdeOU7ujoDeU2u3P9s8PnPbW//q2n27IZwnUAjslnBRiE/4qLB9j+Hm7QGZ14Za/YW/c4NffsUrwtLV23Rg6dU6vKKudYlX1X9ZwKAkBJui9QyadRiuwUgNaaaY1CJthfESJjsw1wY/k3uT+/uTdu+j6cnJf2z/wc9+EvYUANyslnvRrxVhyte88Lbtsuzd7fp/k6z+yRvkOTd+e1h9xTfr0OrNmi6KCul9/EVMwGCoGaFuIAlCBrYBQw3DysHA6kFYPQjL6rC8CWNNtCmKR/RMD/3ilOH2cZKDHZgqQNogM937kvHOu7nv+N8Wd+/81/nq0a5d8kSbuf+XCvF8XwmwHAYm17z6VX5w3RtoLtum2XBDQ4i7FQcXe4aWKfVRMJmJ+6eCEHx/KEUr4Z1LVeaBxFWbij5oyiomVZIsYFKwicWkQghI6ywyd/Sw7Z7+h/SBD/xl5/DffGHeFL/2776qpvM/ixC/pNLzi65vnWrDN24qlz/rpXZw5OWB9DlqmouwNUhqaH0ArQ1CfTSQNRWbndspcV6KYjhv+0vkUjPVYsKY4OdtaJ/BdM7upz11CzPH/2nxfb/2sbPQmq8I7dsj/9HC+88gxAWfcbth581a+UyiuWVZ75Jvf6Y0lz+HpHZ9INuqtrYSkzSpDUM2iKYDceFXkp3zbdWOZNEqh3Q9tGghvpwjbx2hnLtHepOfNbNHP3PJ4b++c39/968IvDbYSMX1H2M2/zML8fwAaBuGm3aFhQKtTq2+cvtyNyCrRAYv0bSxRM3gOtQPB5PWjGAw1oB4fC/HJuNJmR8PZXtCO6cPpd3Wse7ER06xEEODwPbQb3991QOW/0uF+Agaum2LsGyrRpZEfQp+5LstZ+6VCE3c8zUruP9bhPgI17JTYJ/MM/p+6Vm2VefJeBeevfs0ct7s1v8MQrt4Lp6L5+K5eC6ei+fiuXgunovn4rl4Lp6L5+K5eC6ei+fiuXgunovn4vnPcf5/fudLpVOUtOoAAAAASUVORK5CYII=" alt="Logo"/><h1>Marjan Oil Stations</h1><p>Connectez-vous à votre espace</p></div><form id="login-form" onsubmit="return handleLogin(event)"><div class="form-group"><label>Nom d'utilisateur</label><div class="input-wrapper"><i class="fas fa-user"></i><input type="text" id="login-user" class="form-control" placeholder="Identifiant" required/></div></div><div class="form-group"><label>Mot de passe</label><div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" id="login-pass" class="form-control" placeholder="Mot de passe" required/></div></div><button type="submit" class="btn btn-primary" id="login-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button></form><div class="login-footer">&copy; <span>JolofLab EPR</span> v 1.0.7</div></div></div></div>
+<div id="page-login" style="display:none"><div class="login-container"><div class="login-card"><div class="login-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHEAAACgCAYAAAA7HINaAABbNElEQVR42u29d7heV3Xn/1l7n3PecqvKVS+WLLlINjbYYEMgMkloCQQISJCEgRDSC0kmmcykISltUiZ9IL+0SQhpWKTTAgRb9OKCbSw3SVavt9+3nXP23uv3xz7v1RW4yMYmZEb7eV5dlav7vuecs/p3fRdcPBfPxXPxXDwXz8Vz8Vw8F8/Fc/FcPBfPxXPxXDwXz8Vz8Vw8F8/Fc/FcPE8LUf+r742VdiFsG+PsGXse6+93E1KFhR2we5dCvIXhfgfefbuNOzbJWxB2IryOuPRJ6gTVWEnFm4FbgrsVgX0ohCfzs++/WbDljHhF7/RoeF8mYL5reffvCRfVFtmV42NhlBbIaI1m6B4D16DH102wXR5Jj17YvraT0zP/I97nuD5nic1Ad6mCfv2KHu2h69VTZXuU429eZPho9/g+pYmQHb0zo26+bpn+mWrr9O0eTVDA5fqwOLlYnUxjTpaSwBRiv8xaEVCUXrlleNk7xjodfu9WLo9k549Mf3P7+5/+HPs6Z4nNQHepgn79ih7toevVU2V/5Qa9+tNho99g+trmmABZFfv3Kibr3umX7b6Ok2bVzM0cKkOLF4uVhfTqKO1BBLi648abCqKokuvHCd7x0Cvm+/FUu2Z7OyJ6X9+d//Dj/OkJsB/pxQXjuc7YPgOu+6wMNfy8Zei3Lt7xKdh3y7h2xDehPK6TpQfVv1/5NKWBJV/9pQCDaBbBvC5vMM/p+6Vm2VefJeBedvfco558tu/c8gxPuei+fiuXgunovn4rl4Lp6L5+K5eC6ei+fiuXgunovn4rl4Lp6L5+K5eC6e/xzn/+d3vlQ6RUmrHgAAAABJRU5ErkJggg==" alt="Logo"/><h1>Marjan Oil Stations</h1><p>Connectez-vous à votre espace</p></div><form id="login-form" onsubmit="return handleLogin(event)"><div class="form-group"><label>Nom d'utilisateur</label><div class="input-wrapper"><i class="fas fa-user"></i><input type="text" id="login-user" class="form-control" placeholder="Identifiant" required/></div></div><div class="form-group"><label>Mot de passe</label><div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" id="login-pass" class="form-control" placeholder="Mot de passe" required/></div></div><button type="submit" class="btn btn-primary" id="login-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button></form><div class="login-footer">&copy; <span>JolofLab EPR</span> v 1.0.7</div></div></div></div>
 
 <div id="app-container">
 <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
@@ -55,11 +56,11 @@
 
 <div class="page-section" id="section-config-produits"><div class="page-header"><div class="page-title">Produits & Prix</div><div class="page-subtitle">Prix par défaut et prix par station</div></div><div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openProduitModal()"><i class="fas fa-plus"></i> Nouveau produit</button><div class="spacer"></div><button class="btn btn-sm btn-secondary" onclick="loadConfigProduits()"><i class="fas fa-sync-alt"></i></button></div><div class="card" style="margin-bottom:20px"><div class="card-title"><i class="fas fa-tag"></i> Prix par défaut</div><div class="table-wrapper"><table><thead><tr><th>Produit</th><th class="text-right">Prix défaut (F/L)</th><th>Modifié</th><th>Actions</th></tr></thead><tbody id="config-produits-table"></tbody></table></div></div><div class="card"><div class="card-title"><i class="fas fa-map-marker-alt"></i> Prix par station</div><div class="filter-bar" style="margin-bottom:12px;padding:10px 14px"><label>Station :</label><select id="prix-station-select" class="form-control-plain" onchange="loadPrixStation()" style="min-width:220px"><option value="">-- Sélectionner --</option></select></div><div class="prix-station-grid" id="prix-station-grid"></div><div style="margin-top:12px;display:none" id="prix-station-save-bar"><button class="btn btn-sm btn-primary" onclick="savePrixStation()" style="width:auto"><i class="fas fa-save"></i> Enregistrer les prix</button></div></div></div>
 
+<div class="page-section" id="section-config-categories"><div class="page-header"><div class="page-title"><i class="fas fa-folder-open"></i> Catégories de dépenses</div><div class="page-subtitle">Ajoutez ou supprimez les catégories utilisées dans les dépenses</div></div><div class="toolbar"><div class="form-group" style="margin-bottom:0;display:flex;gap:10px;align-items:flex-end"><input type="text" id="new-cat-input" class="form-control-plain" placeholder="Nouvelle catégorie…" style="width:260px"/><button class="btn btn-sm btn-primary" onclick="addCategory()" style="width:auto"><i class="fas fa-plus"></i> Ajouter</button></div></div><div class="card"><div class="card-title"><i class="fas fa-tags"></i> Catégories actuelles</div><div id="categories-list" style="display:flex;flex-wrap:wrap;gap:4px"></div></div></div>
+
 <div class="page-section" id="section-security"><div class="page-header"><div class="page-title"><i class="fas fa-shield-alt"></i> Sécurité</div></div><div class="security-card"><h4>Mot de passe de protection des ventes</h4><p>Requis pour modifier/supprimer les ventes. Seul l'admin peut le changer.</p><div class="form-group"><label>Actuel</label><div style="display:flex;gap:10px"><input type="text" id="sec-current-pwd" class="form-control-plain" readonly style="flex:1"/><button class="btn btn-sm btn-secondary" onclick="loadSecurityPassword()"><i class="fas fa-eye"></i></button></div></div><div class="form-group"><label>Nouveau</label><input type="text" id="sec-new-pwd" class="form-control-plain" placeholder="Min 3 car."/></div><button class="btn btn-sm btn-primary" onclick="saveSecurityPassword()" style="width:auto"><i class="fas fa-save"></i> Enregistrer</button></div></div>
 
 <div class="page-section" id="section-users"><div class="page-header"><div class="page-title">Utilisateurs</div></div><div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openUserModal()"><i class="fas fa-plus"></i> Nouveau</button><div class="spacer"></div><button class="btn btn-sm btn-secondary" onclick="loadUsers()"><i class="fas fa-sync-alt"></i></button></div><div class="card"><div class="table-wrapper"><table><thead><tr><th>User</th><th>Nom</th><th>Rôle</th><th>Station</th><th>Tél</th><th>Actions</th></tr></thead><tbody id="users-table"></tbody></table></div></div></div>
-
-<div class="page-section" id="section-gestion"><div class="page-header"><div class="page-title">Gestion stations</div></div><div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openGestionModal()"><i class="fas fa-plus"></i> Ajouter</button><div class="spacer"></div><button class="btn btn-sm btn-secondary" onclick="loadGestion()"><i class="fas fa-sync-alt"></i></button></div><div class="card"><div class="table-wrapper"><table><thead><tr><th>Date</th><th>Produit</th><th class="text-right">Réception</th><th class="text-right">Montant</th><th>Versement</th><th>Banque</th></tr></thead><tbody id="gestion-table"></tbody></table></div></div></div>
 
 <div class="page-section" id="section-station">
 <div class="page-header">
@@ -68,8 +69,8 @@
 </div>
 <div class="station-tabs" id="station-tabs"></div>
 
-<div style="margin-bottom:20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg)">
-<button class="btn btn-success" onclick="openSaleModal()" style="width:auto;font-size:15px;padding:12px 24px"><i class="fas fa-plus-circle"></i> Nouvelle vente</button>
+<div id="station-sale-bar" style="margin-bottom:20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg)">
+<div id="sale-btn-wrap"></div>
 <div style="flex:1;min-width:20px"></div>
 <label style="font-size:13px;font-weight:600;color:var(--text-secondary)">Du</label>
 <input type="date" id="st-from" style="padding:8px 12px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:13px;outline:none"/>
@@ -82,18 +83,8 @@
 <div class="card-title"><i class="fas fa-cubes"></i> Stock actuel par produit</div>
 <div class="table-wrapper">
 <table>
-<thead>
-<tr>
-<th>Produit</th>
-<th class="text-right">Livraisons (L)</th>
-<th class="text-right">Ventes (L)</th>
-<th class="text-right">Stock (L)</th>
-<th class="text-right">Montant Stock</th>
-</tr>
-</thead>
-<tbody id="station-stock-table">
-<tr><td colspan="5" style="text-align:center;padding:30px">Chargement...</td></tr>
-</tbody>
+<thead><tr><th>Produit</th><th class="text-right">Livraisons (L)</th><th class="text-right">Ventes (L)</th><th class="text-right">Stock (L)</th><th class="text-right">Montant Stock</th></tr></thead>
+<tbody id="station-stock-table"><tr><td colspan="5" style="text-align:center;padding:30px">Chargement...</td></tr></tbody>
 </table>
 </div>
 </div>
@@ -107,97 +98,28 @@
 <div class="sub-tab" data-panel="panel-conso" onclick="switchSubTab(this)"><i class="fas fa-tachometer-alt"></i>&nbsp;Consommation</div>
 </div>
 
-<div class="sub-panel active" id="panel-resume">
-<div class="stats-grid" id="station-resume-stats"></div>
-</div>
+<div class="sub-panel active" id="panel-resume"><div class="stats-grid" id="station-resume-stats"></div></div>
 
-<div class="sub-panel" id="panel-ventes">
-<div class="card">
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>ID</th><th>Date</th><th>Produit</th><th class="text-right">P.U.</th><th class="text-right">Qté</th><th class="text-right">Montant</th><th>Obs.</th><th>Actions</th></tr>
-</thead>
-<tbody id="station-table">
-<tr><td colspan="8" style="text-align:center;padding:30px">Aucune vente</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
+<div class="sub-panel" id="panel-ventes"><div class="card"><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Date</th><th>Produit</th><th class="text-right">P.U.</th><th class="text-right">Qté</th><th class="text-right">Montant</th><th>Obs.</th><th>Actions</th></tr></thead><tbody id="station-table"><tr><td colspan="8" style="text-align:center;padding:30px">Aucune vente</td></tr></tbody></table></div></div></div>
 
 <div class="sub-panel" id="panel-livraisons">
-<div class="toolbar">
-<button class="btn btn-sm btn-primary" onclick="openLivraisonModal()"><i class="fas fa-plus"></i> Nouvelle livraison</button>
-</div>
-<div class="card">
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>ID</th><th>Date</th><th>Produit</th><th class="text-right">Qté (L)</th><th class="text-right">P.U.</th><th class="text-right">Montant</th><th>Par</th><th>Actions</th></tr>
-</thead>
-<tbody id="livraisons-table">
-<tr><td colspan="8" style="text-align:center;padding:30px">—</td></tr>
-</tbody>
-</table>
-</div>
-</div>
+<div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openLivraisonModal()"><i class="fas fa-plus"></i> Nouvelle livraison</button></div>
+<div class="card"><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Date</th><th>Produit</th><th class="text-right">Qté (L)</th><th class="text-right">P.U.</th><th class="text-right">Montant</th><th>Obs.</th><th>Par</th><th>Actions</th></tr></thead><tbody id="livraisons-table"><tr><td colspan="9" style="text-align:center;padding:30px">—</td></tr></tbody></table></div></div>
 </div>
 
 <div class="sub-panel" id="panel-versements">
-<div class="toolbar">
-<button class="btn btn-sm btn-primary" onclick="openVersementModal()"><i class="fas fa-plus"></i> Nouveau versement</button>
-</div>
-<div class="card">
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>ID</th><th>Date</th><th class="text-right">Montant</th><th>Mode</th><th>Réf.</th><th>Par</th><th>Actions</th></tr>
-</thead>
-<tbody id="versements-table">
-<tr><td colspan="7" style="text-align:center;padding:30px">—</td></tr>
-</tbody>
-</table>
-</div>
-</div>
+<div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openVersementModal()"><i class="fas fa-plus"></i> Nouveau versement</button></div>
+<div class="card"><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Date</th><th class="text-right">Montant</th><th>Mode</th><th>Réf.</th><th>Par</th><th>Actions</th></tr></thead><tbody id="versements-table"><tr><td colspan="7" style="text-align:center;padding:30px">—</td></tr></tbody></table></div></div>
 </div>
 
 <div class="sub-panel" id="panel-depenses">
-<div class="toolbar">
-<button class="btn btn-sm btn-primary" onclick="openDepenseModal()"><i class="fas fa-plus"></i> Nouvelle dépense</button>
-</div>
-<div class="card">
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>ID</th><th>Date</th><th>Description</th><th>Catégorie</th><th class="text-right">Montant</th><th>Par</th><th>Actions</th></tr>
-</thead>
-<tbody id="depenses-table">
-<tr><td colspan="7" style="text-align:center;padding:30px">—</td></tr>
-</tbody>
-</table>
-</div>
-</div>
+<div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openDepenseModal()"><i class="fas fa-plus"></i> Nouvelle dépense</button></div>
+<div class="card"><div class="table-wrapper"><table><thead><tr><th>ID</th><th>Date</th><th>Description</th><th>Catégorie</th><th class="text-right">Montant</th><th>Par</th><th>Actions</th></tr></thead><tbody id="depenses-table"><tr><td colspan="7" style="text-align:center;padding:30px">—</td></tr></tbody></table></div></div>
 </div>
 
 <div class="sub-panel" id="panel-conso">
-<div class="toolbar">
-<button class="btn btn-sm btn-primary" onclick="openConsoModal()"><i class="fas fa-plus"></i> Ajouter consommation</button>
-<div class="spacer"></div>
-<button class="btn btn-sm btn-secondary" onclick="loadConso()"><i class="fas fa-sync-alt"></i></button>
-</div>
-<div class="card">
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Date</th><th class="text-right">Livraison</th><th class="text-right">J. départ</th><th class="text-right">J. arrivée</th><th class="text-right">Sortie</th></tr>
-</thead>
-<tbody id="conso-table">
-<tr><td colspan="5" style="text-align:center;padding:30px">—</td></tr>
-</tbody>
-</table>
-</div>
-</div>
+<div class="toolbar"><button class="btn btn-sm btn-primary" onclick="openConsoModal()"><i class="fas fa-plus"></i> Ajouter consommation</button><div class="spacer"></div><button class="btn btn-sm btn-secondary" onclick="loadConso()"><i class="fas fa-sync-alt"></i></button></div>
+<div class="card"><div class="table-wrapper"><table><thead><tr><th>Date</th><th class="text-right">Livraison</th><th class="text-right">J. départ</th><th class="text-right">J. arrivée</th><th class="text-right">Sortie</th></tr></thead><tbody id="conso-table"><tr><td colspan="5" style="text-align:center;padding:30px">—</td></tr></tbody></table></div></div>
 </div>
 
 </div>
@@ -205,21 +127,20 @@
 </main></div>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="modal-add-station"><div class="modal"><div class="modal-header"><h3>Nouvelle station</h3><button class="modal-close" onclick="closeModal('modal-add-station')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Nom</label><input type="text" id="mas-nom" class="form-control-plain" placeholder="Station Marjan…"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-add-station')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveStation()">Ajouter</button></div></div></div>
+<div class="modal-overlay" id="modal-add-station"><div class="modal"><div class="modal-header"><h3 id="modal-station-title">Nouvelle station</h3><button class="modal-close" onclick="closeModal('modal-add-station')">&times;</button></div><div class="modal-body"><input type="hidden" id="mas-old-name"/><div class="form-group"><label>Nom</label><input type="text" id="mas-nom" class="form-control-plain" placeholder="Station Marjan…"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-add-station')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveStation()">Enregistrer</button></div></div></div>
 <div class="modal-overlay" id="modal-produit"><div class="modal"><div class="modal-header"><h3 id="modal-produit-title">Produit</h3><button class="modal-close" onclick="closeModal('modal-produit')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Produit</label><input type="text" id="mp-nom" class="form-control-plain"/></div><div class="form-group"><label>Prix défaut (FCFA/L)</label><input type="number" id="mp-prix" class="form-control-plain" step="1"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-produit')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveProduit()">Enregistrer</button></div></div></div>
 <div class="modal-overlay" id="modal-user"><div class="modal"><div class="modal-header"><h3 id="modal-user-title">Utilisateur</h3><button class="modal-close" onclick="closeModal('modal-user')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Username</label><input type="text" id="mu-username" class="form-control-plain"/></div><div class="form-group"><label>Mot de passe</label><input type="password" id="mu-password" class="form-control-plain" placeholder="Vide=conserver"/></div><div class="form-group"><label>Nom complet</label><input type="text" id="mu-nom" class="form-control-plain"/></div><div class="form-group"><label>Rôle</label><select id="mu-role" class="form-control-plain"><option value="">--</option><option value="admin">Admin</option><option value="gerant">Gérant</option><option value="pompiste">Pompiste</option></select></div><div class="form-group"><label>Station</label><select id="mu-station" class="form-control-plain"><option value="">--</option></select></div><div class="form-group"><label>Téléphone</label><input type="text" id="mu-tel" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-user')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveUser()">Enregistrer</button></div></div></div>
-<div class="modal-overlay" id="modal-gestion"><div class="modal"><div class="modal-header"><h3>Gestion</h3><button class="modal-close" onclick="closeModal('modal-gestion')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mg-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><input type="text" id="mg-produit" class="form-control-plain"/></div><div class="form-group"><label>Réception (L)</label><input type="number" id="mg-reception" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Montant</label><input type="number" id="mg-montant" class="form-control-plain"/></div><div class="form-group"><label>Date versement</label><input type="date" id="mg-versement" class="form-control-plain"/></div><div class="form-group"><label>Banque</label><input type="text" id="mg-banque" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-gestion')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveGestion()">Enregistrer</button></div></div></div>
-<div class="modal-overlay" id="modal-conso"><div class="modal"><div class="modal-header"><h3>Consommation</h3><button class="modal-close" onclick="closeModal('modal-conso')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mc-date" class="form-control-plain"/></div><div class="form-group"><label>Livraison</label><input type="number" id="mc-livraison" class="form-control-plain"/></div><div class="form-group"><label>Jauge départ</label><input type="number" id="mc-jdepart" class="form-control-plain"/></div><div class="form-group"><label>Jauge arrivée</label><input type="number" id="mc-jarrivee" class="form-control-plain"/></div><div class="form-group"><label>Sortie</label><input type="number" id="mc-sortie" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-conso')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveConso()">Enregistrer</button></div></div></div>
+<div class="modal-overlay" id="modal-conso"><div class="modal"><div class="modal-header"><h3>Consommation</h3><button class="modal-close" onclick="closeModal('modal-conso')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mc-date" class="form-control-plain"/></div><div class="form-group"><label>Livraison</label><input type="number" id="mc-livraison" class="form-control-plain" oninput="calcSortie()"/></div><div class="form-group"><label>Jauge départ</label><input type="number" id="mc-jdepart" class="form-control-plain" oninput="calcSortie()"/></div><div class="form-group"><label>Jauge arrivée</label><input type="number" id="mc-jarrivee" class="form-control-plain" oninput="calcSortie()"/></div><div class="form-group"><label>Sortie (auto-calculé)</label><input type="number" id="mc-sortie" class="form-control-plain" readonly style="background:var(--bg-card);font-weight:700;color:var(--accent)"/></div><div style="font-size:12px;color:var(--text-muted);margin-top:-10px">Formule : (Jauge départ − Jauge arrivée) + Livraison</div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-conso')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveConso()">Enregistrer</button></div></div></div>
 <div class="modal-overlay" id="modal-sale"><div class="modal"><div class="modal-header"><h3 id="modal-sale-title">Vente</h3><button class="modal-close" onclick="closeModal('modal-sale')">&times;</button></div><div class="modal-body"><input type="hidden" id="ms-id"/><div class="form-group"><label>Date</label><input type="date" id="ms-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><select id="ms-produit" class="form-control-plain" onchange="onProductChange()"><option value="">--</option></select></div><div class="form-group"><label>Prix unitaire</label><input type="number" id="ms-prix" class="form-control-plain" step="1"/></div><div class="form-group"><label>Quantité (L)</label><input type="number" id="ms-qte" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Mode de paiement</label><input type="text" id="ms-paiement" class="form-control-plain" value="Espèce" readonly style="background:var(--bg-card);cursor:not-allowed"/></div><div class="form-group"><label>Observations</label><input type="text" id="ms-obs" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-sale')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveSale()">Enregistrer</button></div></div></div>
-<div class="modal-overlay" id="modal-livraison"><div class="modal"><div class="modal-header"><h3>Nouvelle livraison</h3><button class="modal-close" onclick="closeModal('modal-livraison')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="ml-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><select id="ml-produit" class="form-control-plain" onchange="onLivProdChange()"><option value="">--</option></select></div><div class="form-group"><label>Quantité (L)</label><input type="number" id="ml-qte" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Prix unitaire</label><input type="number" id="ml-prix" class="form-control-plain" step="1"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-livraison')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveLivraison()">Enregistrer</button></div></div></div>
+<div class="modal-overlay" id="modal-livraison"><div class="modal"><div class="modal-header"><h3 id="modal-livraison-title">Nouvelle livraison</h3><button class="modal-close" onclick="closeModal('modal-livraison')">&times;</button></div><div class="modal-body"><input type="hidden" id="ml-id"/><div class="form-group"><label>Date</label><input type="date" id="ml-date" class="form-control-plain"/></div><div class="form-group"><label>Produit</label><select id="ml-produit" class="form-control-plain" onchange="onLivProdChange()"><option value="">--</option></select></div><div class="form-group"><label>Quantité (L)</label><input type="number" id="ml-qte" class="form-control-plain" step="0.01"/></div><div class="form-group"><label>Prix unitaire</label><input type="number" id="ml-prix" class="form-control-plain" step="1"/></div><div class="form-group"><label>Observations</label><input type="text" id="ml-obs" class="form-control-plain" placeholder="Observations…"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-livraison')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveLivraison()">Enregistrer</button></div></div></div>
 <div class="modal-overlay" id="modal-versement"><div class="modal"><div class="modal-header"><h3>Nouveau versement</h3><button class="modal-close" onclick="closeModal('modal-versement')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="mv-date" class="form-control-plain"/></div><div class="form-group"><label>Montant (FCFA)</label><input type="number" id="mv-montant" class="form-control-plain"/></div><div class="form-group"><label>Mode</label><select id="mv-mode" class="form-control-plain"><option value="">--</option><option>Espèce</option><option>Banque</option><option>Wave</option><option value="OM">Orange Money</option><option>Chèque</option></select></div><div class="form-group"><label>Référence</label><input type="text" id="mv-ref" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-versement')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveVersement()">Enregistrer</button></div></div></div>
-<div class="modal-overlay" id="modal-depense"><div class="modal"><div class="modal-header"><h3>Nouvelle dépense</h3><button class="modal-close" onclick="closeModal('modal-depense')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="md-date" class="form-control-plain"/></div><div class="form-group"><label>Description</label><input type="text" id="md-desc" class="form-control-plain" placeholder="Ex: Entretien, Frais divers…"/></div><div class="form-group"><label>Catégorie</label><select id="md-cat" class="form-control-plain"><option value="">--</option><option>Entretien</option><option>Carburant véhicule</option><option>Salaires</option><option>Fournitures</option><option>Transport</option><option>Frais divers</option></select></div><div class="form-group"><label>Montant (FCFA)</label><input type="number" id="md-montant" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-depense')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveDepense()">Enregistrer</button></div></div></div>
-<div class="modal-overlay" id="modal-sales-pwd"><div class="modal" style="max-width:400px"><div class="modal-header"><h3><i class="fas fa-shield-alt"></i>&nbsp;Vérification</h3><button class="modal-close" onclick="cancelPwdAction()">&times;</button></div><div class="modal-body" style="text-align:center"><div class="lock-icon"><i class="fas fa-lock"></i></div><div class="lock-msg">Entrez le mot de passe pour modifier les ventes.</div><div class="form-group" style="text-align:left"><label>Mot de passe</label><div class="input-wrapper"><i class="fas fa-key"></i><input type="password" id="spwd-input" class="form-control" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')confirmPwdAction()"/></div></div><div class="pwd-error" id="spwd-error">Incorrect</div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="cancelPwdAction()">Annuler</button><button class="btn btn-sm btn-primary" onclick="confirmPwdAction()" style="width:auto"><i class="fas fa-unlock"></i> Confirmer</button></div></div></div>
+<div class="modal-overlay" id="modal-depense"><div class="modal"><div class="modal-header"><h3>Nouvelle dépense</h3><button class="modal-close" onclick="closeModal('modal-depense')">&times;</button></div><div class="modal-body"><div class="form-group"><label>Date</label><input type="date" id="md-date" class="form-control-plain"/></div><div class="form-group"><label>Description</label><input type="text" id="md-desc" class="form-control-plain" placeholder="Ex: Entretien, Frais divers…"/></div><div class="form-group"><label>Catégorie</label><select id="md-cat" class="form-control-plain"><option value="">--</option></select></div><div class="form-group"><label>Montant (FCFA)</label><input type="number" id="md-montant" class="form-control-plain"/></div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="closeModal('modal-depense')">Annuler</button><button class="btn btn-sm btn-primary" onclick="saveDepense()">Enregistrer</button></div></div></div>
+<div class="modal-overlay" id="modal-sales-pwd"><div class="modal" style="max-width:400px"><div class="modal-header"><h3><i class="fas fa-shield-alt"></i>&nbsp;Vérification</h3><button class="modal-close" onclick="cancelPwdAction()">&times;</button></div><div class="modal-body" style="text-align:center"><div class="lock-icon"><i class="fas fa-lock"></i></div><div class="lock-msg" id="pwd-modal-msg">Entrez le mot de passe pour continuer.</div><div class="form-group" style="text-align:left"><label>Mot de passe</label><div class="input-wrapper"><i class="fas fa-key"></i><input type="password" id="spwd-input" class="form-control" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')confirmPwdAction()"/></div></div><div class="pwd-error" id="spwd-error">Incorrect</div></div><div class="modal-footer"><button class="btn btn-sm btn-secondary" onclick="cancelPwdAction()">Annuler</button><button class="btn btn-sm btn-primary" onclick="confirmPwdAction()" style="width:auto"><i class="fas fa-unlock"></i> Confirmer</button></div></div></div>
 
 <script>
 var GAS_URL="https://script.google.com/macros/s/AKfycbyk1krnbMitQqYOvWjClkHluLdcsMJiSGqwegU23xYL9u56ZwC9L7xDSBXCSzPPRPX3/exec";
 var IS_GAS=(typeof google!=="undefined"&&google.script&&google.script.run);
-var S={token:null,user:null,stations:[],produits:[],stationPrix:[],currentStation:null,currentPage:null,salesCache:[],charts:{},fullData:null,_cache:{},_lastLoad:{}};
+var S={token:null,user:null,stations:[],produits:[],stationPrix:[],categories:[],currentStation:null,currentPage:null,salesCache:[],livraisonsCache:[],charts:{},fullData:null};
 var PAL=['#F59E0B','#3B82F6','#10B981','#8B5CF6','#EF4444','#06B6D4','#EC4899','#14B8A6'];
 var _pwdAction=null;
 function fmt(n){return Number(n||0).toLocaleString('fr-FR')}
@@ -236,38 +157,50 @@ function applyTheme(t){document.documentElement.setAttribute('data-theme',t);doc
 function toggleTheme(){var n=getTheme()==='dark'?'light':'dark';localStorage.setItem('marjan_theme',n);applyTheme(n)}
 function switchSubTab(el){el.parentNode.querySelectorAll('.sub-tab').forEach(function(e){e.classList.remove('active')});el.classList.add('active');el.parentNode.parentNode.querySelectorAll('.sub-panel').forEach(function(p){p.classList.remove('active')});document.getElementById(el.dataset.panel).classList.add('active')}
 
-function requireSalesPassword(type,data){if(S.user.role==='admin'){executePwdAction(type,data,null);return}_pwdAction={type:type,data:data};document.getElementById('spwd-input').value='';document.getElementById('spwd-error').style.display='none';openModal('modal-sales-pwd');setTimeout(function(){document.getElementById('spwd-input').focus()},200)}
+/* === Consommation auto-calc === */
+function calcSortie(){var jd=Number(document.getElementById('mc-jdepart').value)||0,ja=Number(document.getElementById('mc-jarrivee').value)||0,liv=Number(document.getElementById('mc-livraison').value)||0;document.getElementById('mc-sortie').value=(jd-ja)+liv}
+
+/* === Password modal (generic) === */
+function requireSalesPassword(type,data){if(S.user.role==='admin'){executePwdAction(type,data,null);return}_pwdAction={type:type,data:data};document.getElementById('spwd-input').value='';document.getElementById('spwd-error').style.display='none';document.getElementById('pwd-modal-msg').textContent=type==='edit-liv'||type==='delete-liv'?'Entrez le mot de passe pour modifier les livraisons.':'Entrez le mot de passe pour modifier les ventes.';openModal('modal-sales-pwd');setTimeout(function(){document.getElementById('spwd-input').focus()},200)}
 function cancelPwdAction(){_pwdAction=null;closeModal('modal-sales-pwd')}
 function confirmPwdAction(){if(!_pwdAction)return;var pwd=document.getElementById('spwd-input').value;if(!pwd){document.getElementById('spwd-error').style.display='block';return}executePwdAction(_pwdAction.type,_pwdAction.data,pwd);_pwdAction=null;closeModal('modal-sales-pwd')}
-function executePwdAction(type,data,pwd){if(type==='edit'){S._lastSalesPwd=pwd;openSaleModal(data)}else if(type==='delete'){doDeleteSale(data.id,pwd)}}
+function executePwdAction(type,data,pwd){if(type==='edit'){S._lastSalesPwd=pwd;openSaleModal(data)}else if(type==='delete'){doDeleteSale(data.id,pwd)}else if(type==='edit-liv'){S._lastLivPwd=pwd;openLivraisonModal(data)}else if(type==='delete-liv'){doDeleteLivraison(data.id,pwd)}}
 
 function callServer(action,params){
-  if(IS_GAS){var args=[];switch(action){case 'apiLogin':args=[params.username,params.password];break;case 'apiLogout':args=[params.token];break;case 'apiGetMe':args=[params.token];break;case 'apiListUsers':args=[params.token];break;case 'apiUpsertUser':args=[params.token,params.userObj];break;case 'apiDeleteUser':args=[params.token,params.username];break;case 'apiListConfigStations':args=[params.token];break;case 'apiAddStation':args=[params.token,params.nomStation];break;case 'apiDeleteStation':args=[params.token,params.nomStation];break;case 'apiListProduits':args=[params.token];break;case 'apiUpsertProduit':args=[params.token,params.obj];break;case 'apiDeleteProduit':args=[params.token,params.produit];break;case 'apiListGestion':args=[params.token];break;case 'apiAddGestion':args=[params.token,params.obj];break;case 'apiListConso':args=[params.token];break;case 'apiAddConso':args=[params.token,params.obj];break;case 'apiListStationSales':args=[params.token,params.stationName,params.fromDate,params.toDate];break;case 'apiUpsertStationSale':args=[params.token,params.stationName,params.obj,params.salesPassword];break;case 'apiDeleteStationSale':args=[params.token,params.stationName,params.id,params.salesPassword];break;case 'apiListLivraisons':args=[params.token,params.stationName];break;case 'apiAddLivraison':args=[params.token,params.obj];break;case 'apiDeleteLivraison':args=[params.token,params.id];break;case 'apiListVersements':args=[params.token,params.stationName];break;case 'apiAddVersement':args=[params.token,params.obj];break;case 'apiDeleteVersement':args=[params.token,params.id];break;case 'apiListDepenses':args=[params.token,params.stationName];break;case 'apiAddDepense':args=[params.token,params.obj];break;case 'apiDeleteDepense':args=[params.token,params.id];break;case 'apiGetStationResume':args=[params.token,params.stationName];break;case 'apiGetStationFull':args=[params.token,params.stationName,params.fromDate,params.toDate];break;case 'apiGetDashboard':args=[params.token,params.fromDate,params.toDate];break;case 'apiGetSalesPassword':args=[params.token];break;case 'apiSetSalesPassword':args=[params.token,params.newPassword];break;case 'apiGetPrixStation':args=[params.token,params.stationName];break;case 'apiSetPrixStation':args=[params.token,params.stationName,params.produit,params.prix_unitaire];break;case 'apiGetAllPrixStations':args=[params.token];break}return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(res).withFailureHandler(rej);r[action].apply(r,args)})}
+  if(IS_GAS){var args=[];switch(action){case 'apiLogin':args=[params.username,params.password];break;case 'apiLogout':args=[params.token];break;case 'apiGetMe':args=[params.token];break;case 'apiListUsers':args=[params.token];break;case 'apiUpsertUser':args=[params.token,params.userObj];break;case 'apiDeleteUser':args=[params.token,params.username];break;case 'apiListConfigStations':args=[params.token];break;case 'apiAddStation':args=[params.token,params.nomStation];break;case 'apiDeleteStation':args=[params.token,params.nomStation];break;case 'apiEditStation':args=[params.token,params.oldName,params.newName];break;case 'apiListProduits':args=[params.token];break;case 'apiUpsertProduit':args=[params.token,params.obj];break;case 'apiDeleteProduit':args=[params.token,params.produit];break;case 'apiListGestion':args=[params.token];break;case 'apiAddGestion':args=[params.token,params.obj];break;case 'apiListConso':args=[params.token];break;case 'apiAddConso':args=[params.token,params.obj];break;case 'apiListStationSales':args=[params.token,params.stationName,params.fromDate,params.toDate];break;case 'apiUpsertStationSale':args=[params.token,params.stationName,params.obj,params.salesPassword];break;case 'apiDeleteStationSale':args=[params.token,params.stationName,params.id,params.salesPassword];break;case 'apiListLivraisons':args=[params.token,params.stationName];break;case 'apiAddLivraison':args=[params.token,params.obj];break;case 'apiUpdateLivraison':args=[params.token,params.obj,params.livraisonPassword];break;case 'apiDeleteLivraison':args=[params.token,params.id,params.livraisonPassword];break;case 'apiListVersements':args=[params.token,params.stationName];break;case 'apiAddVersement':args=[params.token,params.obj];break;case 'apiDeleteVersement':args=[params.token,params.id];break;case 'apiListDepenses':args=[params.token,params.stationName];break;case 'apiAddDepense':args=[params.token,params.obj];break;case 'apiDeleteDepense':args=[params.token,params.id];break;case 'apiGetStationResume':args=[params.token,params.stationName];break;case 'apiGetStationFull':args=[params.token,params.stationName,params.fromDate,params.toDate];break;case 'apiGetDashboard':args=[params.token,params.fromDate,params.toDate];break;case 'apiGetSalesPassword':args=[params.token];break;case 'apiSetSalesPassword':args=[params.token,params.newPassword];break;case 'apiGetPrixStation':args=[params.token,params.stationName];break;case 'apiSetPrixStation':args=[params.token,params.stationName,params.produit,params.prix_unitaire];break;case 'apiGetAllPrixStations':args=[params.token];break;case 'apiListCategories':args=[params.token];break;case 'apiAddCategory':args=[params.token,params.categorie];break;case 'apiDeleteCategory':args=[params.token,params.categorie];break}return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(res).withFailureHandler(rej);r[action].apply(r,args)})}
   else{var body=Object.assign({action:action},params);return fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body),redirect:'follow'}).then(function(r){return r.json()}).then(function(r){if(r.ok===false&&r.message)throw new Error(r.message);return r})}
 }
 
 /* AUTH */
-function handleLogin(e){e.preventDefault();var u=document.getElementById('login-user').value.trim(),p=document.getElementById('login-pass').value;if(!u||!p)return toast('Remplissez tous les champs','error');var b=document.getElementById('login-btn');b.disabled=true;b.innerHTML='<span class="inline-loader"></span>';callServer('apiLogin',{username:u,password:p}).then(function(r){if(!r.ok)return toast(r.message,'error');S.token=r.token;S.user=r.user;S.stations=r.stations||[];S.produits=r.produits||[];S.stationPrix=r.stationPrix||[];sessionStorage.setItem('mt',r.token);initApp()}).catch(function(e){toast(e.message||'Erreur','error')}).finally(function(){b.disabled=false;b.innerHTML='<i class="fas fa-sign-in-alt"></i> Se connecter'});return false}
+function handleLogin(e){e.preventDefault();var u=document.getElementById('login-user').value.trim(),p=document.getElementById('login-pass').value;if(!u||!p)return toast('Remplissez tous les champs','error');var b=document.getElementById('login-btn');b.disabled=true;b.innerHTML='<span class="inline-loader"></span>';callServer('apiLogin',{username:u,password:p}).then(function(r){if(!r.ok)return toast(r.message,'error');S.token=r.token;S.user=r.user;S.stations=r.stations||[];S.produits=r.produits||[];S.stationPrix=r.stationPrix||[];S.categories=r.categories||[];sessionStorage.setItem('mt',r.token);initApp()}).catch(function(e){toast(e.message||'Erreur','error')}).finally(function(){b.disabled=false;b.innerHTML='<i class="fas fa-sign-in-alt"></i> Se connecter'});return false}
 function handleLogout(){callServer('apiLogout',{token:S.token}).catch(function(){});sessionStorage.removeItem('mt');S.token=null;S.user=null;document.getElementById('app-container').style.display='none';document.getElementById('page-login').style.display='flex'}
-function checkSession(){applyTheme(getTheme());var t=sessionStorage.getItem('mt');if(!t){showLogin();return}callServer('apiGetMe',{token:t}).then(function(r){if(!r.ok){showLogin();return}S.token=t;S.user=r.user;S.stations=r.stations||[];S.produits=r.produits||[];S.stationPrix=r.stationPrix||[];initApp()}).catch(function(){showLogin()})}
+function checkSession(){applyTheme(getTheme());var t=sessionStorage.getItem('mt');if(!t){showLogin();return}callServer('apiGetMe',{token:t}).then(function(r){if(!r.ok){showLogin();return}S.token=t;S.user=r.user;S.stations=r.stations||[];S.produits=r.produits||[];S.stationPrix=r.stationPrix||[];S.categories=r.categories||[];initApp()}).catch(function(){showLogin()})}
 function showLogin(){hideLoading();document.getElementById('page-login').style.display='flex'}
-function initApp(){hideLoading();document.getElementById('page-login').style.display='none';document.getElementById('app-container').style.display='block';var n=S.user.nom_complet||S.user.username;document.getElementById('user-display-name').textContent=n;document.getElementById('user-display-role').textContent=S.user.role;document.getElementById('user-avatar').textContent=(n[0]||'M').toUpperCase();var ia=S.user.role==='admin';document.getElementById('sidebar-role-label').textContent=ia?'Administration':(S.user.station||'');buildSidebar();populateSelects();if(ia)navigateTo('dashboard');else{S.currentStation=S.user.station||S.stations[0]||'';navigateTo('station')}}
-function buildSidebar(){var nav=document.getElementById('sidebar-nav'),ia=S.user.role==='admin',h='';if(ia){h+='<div class="sidebar-section">Administration</div>';h+=NI('dashboard','fa-chart-pie','Tableau de bord');h+=NI('config-stations','fa-map-marker-alt','Stations');h+=NI('config-produits','fa-tags','Produits & Prix');h+=NI('security','fa-shield-alt','Sécurité');h+=NI('users','fa-users-cog','Utilisateurs');h+=NI('gestion','fa-warehouse','Gestion');h+='<div class="sidebar-section">Ventes</div>';h+=NI('station','fa-gas-pump','Ventes stations')}else{h+='<div class="sidebar-section">Ma station</div>';h+=NI('station','fa-gas-pump','Ma station')}nav.innerHTML=h}
+function initApp(){hideLoading();document.getElementById('page-login').style.display='none';document.getElementById('app-container').style.display='block';var n=S.user.nom_complet||S.user.username;document.getElementById('user-display-name').textContent=n;document.getElementById('user-display-role').textContent=S.user.role;document.getElementById('user-avatar').textContent=(n[0]||'M').toUpperCase();var ia=S.user.role==='admin';document.getElementById('sidebar-role-label').textContent=ia?'Administration':(S.user.station||'');buildSidebar();populateSelects();populateCategorySelect();if(ia){document.getElementById('sale-btn-wrap').innerHTML='';navigateTo('dashboard')}else{document.getElementById('sale-btn-wrap').innerHTML='<button class="btn btn-success" onclick="openSaleModal()" style="width:auto;font-size:15px;padding:12px 24px"><i class="fas fa-plus-circle"></i> Nouvelle vente</button>';S.currentStation=S.user.station||S.stations[0]||'';navigateTo('station')}}
+function buildSidebar(){var nav=document.getElementById('sidebar-nav'),ia=S.user.role==='admin',h='';if(ia){h+='<div class="sidebar-section">Administration</div>';h+=NI('dashboard','fa-chart-pie','Tableau de bord');h+=NI('config-stations','fa-map-marker-alt','Stations');h+=NI('config-produits','fa-tags','Produits & Prix');h+=NI('config-categories','fa-folder-open','Catégories');h+=NI('security','fa-shield-alt','Sécurité');h+=NI('users','fa-users-cog','Utilisateurs');h+='<div class="sidebar-section">Ventes</div>';h+=NI('station','fa-gas-pump','Ventes stations')}else{h+='<div class="sidebar-section">Ma station</div>';h+=NI('station','fa-gas-pump','Ma station')}nav.innerHTML=h}
 function NI(p,i,l){return'<div class="nav-item" data-page="'+p+'" onclick="navigateTo(\''+p+'\')"><i class="fas '+i+'"></i><span>'+l+'</span></div>'}
 function populateSelects(){var sl=S.stations||[];document.getElementById('mu-station').innerHTML='<option value="">--</option>'+sl.map(function(s){return'<option value="'+s+'">'+s+'</option>'}).join('');document.getElementById('prix-station-select').innerHTML='<option value="">-- Sélectionner --</option>'+sl.map(function(s){return'<option value="'+s+'">'+s+'</option>'}).join('');refreshProductSelects()}
 function refreshProductSelects(){var prix=S.stationPrix&&S.stationPrix.length?S.stationPrix:S.produits;var opts='<option value="">--</option>'+prix.map(function(p){return'<option value="'+p.produit+'" data-prix="'+p.prix_unitaire+'">'+p.produit+' ('+fmt(p.prix_unitaire)+' F/L)</option>'}).join('');document.getElementById('ms-produit').innerHTML=opts;document.getElementById('ml-produit').innerHTML=opts}
+function populateCategorySelect(){var cats=S.categories||[];document.getElementById('md-cat').innerHTML='<option value="">--</option>'+cats.map(function(c){return'<option value="'+c+'">'+c+'</option>'}).join('')}
 function onProductChange(){var s=document.getElementById('ms-produit'),o=s.options[s.selectedIndex];if(o&&o.dataset.prix)document.getElementById('ms-prix').value=o.dataset.prix}
 function onLivProdChange(){var s=document.getElementById('ml-produit'),o=s.options[s.selectedIndex];if(o&&o.dataset.prix)document.getElementById('ml-prix').value=o.dataset.prix}
-function navigateTo(p){S.currentPage=p;document.querySelectorAll('.nav-item').forEach(function(e){e.classList.toggle('active',e.dataset.page===p)});document.querySelectorAll('.page-section').forEach(function(e){e.classList.remove('active')});var s=document.getElementById('section-'+p);if(s)s.classList.add('active');document.getElementById('sidebar').classList.remove('open');document.getElementById('mobile-overlay').classList.remove('show');switch(p){case'dashboard':loadDashboard();break;case'config-stations':loadConfigStations();break;case'config-produits':loadConfigProduits();break;case'security':loadSecurityPassword();break;case'users':loadUsers();break;case'gestion':loadGestion();break;case'station':initStationPage();break}}
+function navigateTo(p){S.currentPage=p;document.querySelectorAll('.nav-item').forEach(function(e){e.classList.toggle('active',e.dataset.page===p)});document.querySelectorAll('.page-section').forEach(function(e){e.classList.remove('active')});var s=document.getElementById('section-'+p);if(s)s.classList.add('active');document.getElementById('sidebar').classList.remove('open');document.getElementById('mobile-overlay').classList.remove('show');switch(p){case'dashboard':loadDashboard();break;case'config-stations':loadConfigStations();break;case'config-produits':loadConfigProduits();break;case'config-categories':loadCategories();break;case'security':loadSecurityPassword();break;case'users':loadUsers();break;case'station':initStationPage();break}}
 
 /* SECURITY */
 function loadSecurityPassword(){callServer('apiGetSalesPassword',{token:S.token}).then(function(r){if(r.ok)document.getElementById('sec-current-pwd').value=r.password}).catch(function(e){toast(e.message,'error')})}
 function saveSecurityPassword(){var np=document.getElementById('sec-new-pwd').value.trim();if(np.length<3)return toast('Min 3 caractères','error');callServer('apiSetSalesPassword',{token:S.token,newPassword:np}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){document.getElementById('sec-current-pwd').value=np;document.getElementById('sec-new-pwd').value=''}}).catch(function(e){toast(e.message,'error')})}
 
+/* CATEGORIES */
+function loadCategories(){callServer('apiListCategories',{token:S.token}).then(function(r){if(!r.ok)return;S.categories=r.categories;renderCategoriesList();populateCategorySelect()}).catch(function(e){toast(e.message,'error')})}
+function renderCategoriesList(){var h='';(S.categories||[]).forEach(function(c){h+='<span class="cat-tag">'+c+' <span class="cat-del" onclick="deleteCategory(\''+c.replace(/'/g,"\\'")+'\')">&times;</span></span>'});document.getElementById('categories-list').innerHTML=h||'<span style="color:var(--text-muted)">Aucune catégorie</span>'}
+function addCategory(){var v=document.getElementById('new-cat-input').value.trim();if(!v)return toast('Nom requis','error');callServer('apiAddCategory',{token:S.token,categorie:v}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){S.categories=r.categories;document.getElementById('new-cat-input').value='';renderCategoriesList();populateCategorySelect()}}).catch(function(e){toast(e.message,'error')})}
+function deleteCategory(c){if(!confirm('Supprimer "'+c+'"?'))return;callServer('apiDeleteCategory',{token:S.token,categorie:c}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){S.categories=r.categories;renderCategoriesList();populateCategorySelect()}}).catch(function(e){toast(e.message,'error')})}
+
 /* CONFIG STATIONS */
-function loadConfigStations(){callServer('apiListConfigStations',{token:S.token}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(s,i){h+='<tr><td>'+(i+1)+'</td><td class="fw-600">'+s.nom_station+'</td><td>'+s.date_ajout+'</td><td><button class="btn-icon" onclick="deleteStation(\''+s.nom_station.replace(/'/g,"\\'")+'\')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button></td></tr>'});document.getElementById('config-stations-table').innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:30px">—</td></tr>'}).catch(function(e){toast(e.message,'error')})}
-function openAddStationModal(){document.getElementById('mas-nom').value='';openModal('modal-add-station')}
-function saveStation(){var n=document.getElementById('mas-nom').value.trim();if(!n)return toast('Nom requis','error');callServer('apiAddStation',{token:S.token,nomStation:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-add-station');S.stations=r.stations;populateSelects();loadConfigStations()}}).catch(function(e){toast(e.message,'error')})}
+function loadConfigStations(){callServer('apiListConfigStations',{token:S.token}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(s,i){h+='<tr><td>'+(i+1)+'</td><td class="fw-600">'+s.nom_station+'</td><td>'+s.date_ajout+'</td><td class="actions-cell"><button class="btn-icon" onclick="openEditStationModal(\''+s.nom_station.replace(/'/g,"\\'")+'\')" title="Modifier"><i class="fas fa-pen"></i></button><button class="btn-icon" onclick="deleteStation(\''+s.nom_station.replace(/'/g,"\\'")+'\')" style="color:var(--danger)" title="Supprimer"><i class="fas fa-trash-alt"></i></button></td></tr>'});document.getElementById('config-stations-table').innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:30px">—</td></tr>'}).catch(function(e){toast(e.message,'error')})}
+function openAddStationModal(){document.getElementById('modal-station-title').textContent='Nouvelle station';document.getElementById('mas-old-name').value='';document.getElementById('mas-nom').value='';openModal('modal-add-station')}
+function openEditStationModal(name){document.getElementById('modal-station-title').textContent='Modifier station';document.getElementById('mas-old-name').value=name;document.getElementById('mas-nom').value=name;openModal('modal-add-station')}
+function saveStation(){var n=document.getElementById('mas-nom').value.trim(),old=document.getElementById('mas-old-name').value.trim();if(!n)return toast('Nom requis','error');if(old){callServer('apiEditStation',{token:S.token,oldName:old,newName:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-add-station');S.stations=r.stations;populateSelects();loadConfigStations()}}).catch(function(e){toast(e.message,'error')})}else{callServer('apiAddStation',{token:S.token,nomStation:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-add-station');S.stations=r.stations;populateSelects();loadConfigStations()}}).catch(function(e){toast(e.message,'error')})}}
 function deleteStation(n){if(!confirm('Retirer "'+n+'"?'))return;callServer('apiDeleteStation',{token:S.token,nomStation:n}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){S.stations=r.stations;populateSelects();loadConfigStations()}}).catch(function(e){toast(e.message,'error')})}
 
 /* CONFIG PRODUITS + PRIX STATION */
@@ -291,15 +224,10 @@ function editUser(u){callServer('apiListUsers',{token:S.token}).then(function(r)
 function saveUser(){var o={username:document.getElementById('mu-username').value.trim(),password:document.getElementById('mu-password').value,nom_complet:document.getElementById('mu-nom').value.trim(),role:document.getElementById('mu-role').value,station:document.getElementById('mu-station').value,telephone:document.getElementById('mu-tel').value.trim()};if(!o.username)return toast('Username requis','error');callServer('apiUpsertUser',{token:S.token,userObj:o}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-user');loadUsers()}}).catch(function(e){toast(e.message,'error')})}
 function deleteUser(u){if(!confirm('Supprimer?'))return;callServer('apiDeleteUser',{token:S.token,username:u}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadUsers()}).catch(function(e){toast(e.message,'error')})}
 
-/* GESTION */
-function loadGestion(){callServer('apiListGestion',{token:S.token}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(o){h+='<tr><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.reception)+'</td><td class="text-right fw-600 text-accent">'+fmtF(o.montant_reception)+'</td><td>'+o.date_versement+'</td><td>'+o.banque+'</td></tr>'});document.getElementById('gestion-table').innerHTML=h||'<tr><td colspan="6" style="text-align:center;padding:30px">—</td></tr>'}).catch(function(e){toast(e.message,'error')})}
-function openGestionModal(){document.getElementById('mg-date').value=today();['mg-produit','mg-reception','mg-montant','mg-versement','mg-banque'].forEach(function(id){document.getElementById(id).value=''});openModal('modal-gestion')}
-function saveGestion(){callServer('apiAddGestion',{token:S.token,obj:{date:document.getElementById('mg-date').value,produit:document.getElementById('mg-produit').value,reception:document.getElementById('mg-reception').value,montant_reception:document.getElementById('mg-montant').value,date_versement:document.getElementById('mg-versement').value,banque:document.getElementById('mg-banque').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-gestion');loadGestion()}}).catch(function(e){toast(e.message,'error')})}
-
 /* CONSO */
 function loadConso(){callServer('apiListConso',{token:S.token}).then(function(r){if(!r.ok)return;renderConsoTable(r.items||[])}).catch(function(e){toast(e.message,'error')})}
 function openConsoModal(){document.getElementById('mc-date').value=today();['mc-livraison','mc-jdepart','mc-jarrivee','mc-sortie'].forEach(function(id){document.getElementById(id).value=''});openModal('modal-conso')}
-function saveConso(){callServer('apiAddConso',{token:S.token,obj:{date:document.getElementById('mc-date').value,livraison:document.getElementById('mc-livraison').value,jauge_depart:document.getElementById('mc-jdepart').value,jauge_arrivee:document.getElementById('mc-jarrivee').value,sortie:document.getElementById('mc-sortie').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-conso');loadConso()}}).catch(function(e){toast(e.message,'error')})}
+function saveConso(){callServer('apiAddConso',{token:S.token,obj:{date:document.getElementById('mc-date').value,livraison:document.getElementById('mc-livraison').value,jauge_depart:document.getElementById('mc-jdepart').value,jauge_arrivee:document.getElementById('mc-jarrivee').value,sortie:document.getElementById('mc-sortie').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-conso');loadStationFull()}}).catch(function(e){toast(e.message,'error')})}
 
 /* STATION */
 function initStationPage(){var ia=S.user.role==='admin',sl=ia?S.stations:[S.user.station],tb='';sl.forEach(function(st){var sh=st.replace('Station Marjan ',''),ac=st===S.currentStation?' active':'';tb+='<div class="station-tab'+ac+'" onclick="switchStation(\''+st+'\')">'+sh+'</div>'});document.getElementById('station-tabs').innerHTML=tb;if(!S.currentStation)S.currentStation=sl[0]||'';updateSH();loadStationFull()}
@@ -314,8 +242,9 @@ function loadStationFull(){
   if(btn){btn.disabled=true;btn.innerHTML='<span class="inline-loader"></span> Chargement...';}
   callServer('apiGetStationFull',{token:S.token,stationName:S.currentStation,fromDate:document.getElementById('st-from').value,toDate:document.getElementById('st-to').value}).then(function(r){
     if(!r.ok)return;
-    S.fullData=r;S.salesCache=r.sales||[];
+    S.fullData=r;S.salesCache=r.sales||[];S.livraisonsCache=r.livraisons||[];
     if(r.stationPrix){S.stationPrix=r.stationPrix;refreshProductSelects()}
+    if(r.categories){S.categories=r.categories;populateCategorySelect()}
     renderResume(r.resume);renderStockTable(r.stock);renderSalesTable(r.sales);renderLivraisonsTable(r.livraisons);renderVersementsTable(r.versements);renderDepensesTable(r.depenses);renderConsoTable(r.conso||[]);
   }).catch(function(e){toast(e.message,'error')}).finally(function(){_isLoadingStation=false;if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-sync-alt"></i> Actualiser';}});
 }
@@ -331,51 +260,38 @@ function renderResume(res){
 }
 
 function renderStockTable(stock){
-  var rows=[];
-  var totalLiv=0,totalVentes=0,totalStock=0,totalMontant=0;
-  
+  var rows=[],totalLiv=0,totalVentes=0,totalStock=0,totalMontant=0;
   stock.forEach(function(p){
-    var stockL=p.stock_litres;
-    var cls=stockL>0?'stock-positive':stockL<0?'stock-negative':'stock-zero';
+    var stockL=p.stock_litres,cls=stockL>0?'stock-positive':stockL<0?'stock-negative':'stock-zero';
     var prix=(S.stationPrix&&S.stationPrix.length?S.stationPrix.find(function(x){return x.produit===p.produit}):null)||(S.produits.find(function(x){return x.produit===p.produit})||{prix_unitaire:0});
     var montantStock=stockL*(prix.prix_unitaire||0);
-    
-    totalLiv+=p.livraisons_litres||0;
-    totalVentes+=p.ventes_litres||0;
-    totalStock+=stockL;
-    totalMontant+=montantStock;
-    
+    totalLiv+=p.livraisons_litres||0;totalVentes+=p.ventes_litres||0;totalStock+=stockL;totalMontant+=montantStock;
     rows.push('<tr><td class="fw-600">'+p.produit+'</td><td class="text-right">'+fmt(p.livraisons_litres||0)+'</td><td class="text-right">'+fmt(p.ventes_litres||0)+'</td><td class="text-right '+cls+'">'+fmt(stockL)+'</td><td class="text-right fw-700 text-accent">'+fmtF(montantStock)+'</td></tr>');
   });
-  
-  if(rows.length){
-    rows.push('<tr style="font-weight:700;background:var(--accent-glow);border-top:2px solid var(--accent)"><td class="text-right">TOTAL</td><td class="text-right">'+fmt(totalLiv)+'</td><td class="text-right">'+fmt(totalVentes)+'</td><td class="text-right">'+fmt(totalStock)+'</td><td class="text-right text-accent">'+fmtF(totalMontant)+'</td></tr>');
-  }
-  
+  if(rows.length)rows.push('<tr style="font-weight:700;background:var(--accent-glow);border-top:2px solid var(--accent)"><td class="text-right">TOTAL</td><td class="text-right">'+fmt(totalLiv)+'</td><td class="text-right">'+fmt(totalVentes)+'</td><td class="text-right">'+fmt(totalStock)+'</td><td class="text-right text-accent">'+fmtF(totalMontant)+'</td></tr>');
   document.getElementById('station-stock-table').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:30px">Aucun stock</td></tr>';
 }
 
 function renderSalesTable(items){
-  var isGerant=S.user.role!=='admin',cd=S.user.role==='admin'||S.user.role==='gerant',rows=[];
+  var cd=S.user.role==='admin'||S.user.role==='gerant',rows=[];
   items.forEach(function(o){rows.push('<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.prix_unitaire)+'</td><td class="text-right">'+fmt(o.quantite_litres)+'</td><td class="text-right fw-700 text-accent">'+fmtF(o.montant_total)+'</td><td>'+(o.observations||'—')+'</td><td class="actions-cell"><button class="btn-icon" onclick="editSale('+o.id+')"><i class="fas fa-pen"></i></button>'+(cd?'<button class="btn-icon" onclick="deleteSale('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>')});
   document.getElementById('station-table').innerHTML=rows.length?rows.join(''):'<tr><td colspan="8" style="text-align:center;padding:30px">Aucune vente</td></tr>';
 }
 
-function renderLivraisonsTable(items){var cd=S.user.role==='admin'||S.user.role==='gerant',rows=[],tQ=0,tM=0;items.forEach(function(o){tQ+=o.quantite_litres;tM+=o.montant_total;rows.push('<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.quantite_litres)+'</td><td class="text-right">'+fmt(o.prix_unitaire)+'</td><td class="text-right fw-600 text-accent">'+fmtF(o.montant_total)+'</td><td>'+o.saisi_par+'</td><td>'+(cd?'<button class="btn-icon" onclick="deleteLivraison('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>')});if(items.length)rows.push('<tr style="font-weight:700;background:var(--accent-glow)"><td colspan="3">TOTAL</td><td class="text-right">'+fmt(tQ)+' L</td><td></td><td class="text-right text-accent">'+fmtF(tM)+'</td><td colspan="2"></td></tr>');document.getElementById('livraisons-table').innerHTML=rows.length?rows.join(''):'<tr><td colspan="8" style="text-align:center;padding:30px">—</td></tr>'}
+function renderLivraisonsTable(items){
+  var cd=S.user.role==='admin'||S.user.role==='gerant',rows=[],tQ=0,tM=0;
+  items.forEach(function(o){tQ+=o.quantite_litres;tM+=o.montant_total;rows.push('<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.produit+'</td><td class="text-right">'+fmt(o.quantite_litres)+'</td><td class="text-right">'+fmt(o.prix_unitaire)+'</td><td class="text-right fw-600 text-accent">'+fmtF(o.montant_total)+'</td><td>'+(o.observations||'—')+'</td><td>'+o.saisi_par+'</td><td class="actions-cell">'+(cd?'<button class="btn-icon" onclick="editLivraison('+o.id+')" title="Modifier"><i class="fas fa-pen"></i></button><button class="btn-icon" onclick="deleteLivraisonAction('+o.id+')" style="color:var(--danger)" title="Supprimer"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>')});
+  if(items.length)rows.push('<tr style="font-weight:700;background:var(--accent-glow)"><td colspan="3">TOTAL</td><td class="text-right">'+fmt(tQ)+' L</td><td></td><td class="text-right text-accent">'+fmtF(tM)+'</td><td colspan="3"></td></tr>');
+  document.getElementById('livraisons-table').innerHTML=rows.length?rows.join(''):'<tr><td colspan="9" style="text-align:center;padding:30px">—</td></tr>';
+}
 
 function renderVersementsTable(items){var cd=S.user.role==='admin'||S.user.role==='gerant',rows=[],tot=0;items.forEach(function(o){tot+=o.montant_verse;rows.push('<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td class="text-right fw-600 text-success">'+fmtF(o.montant_verse)+'</td><td><span class="badge badge-green">'+(o.mode_versement||'—')+'</span></td><td>'+(o.reference||'—')+'</td><td>'+o.saisi_par+'</td><td>'+(cd?'<button class="btn-icon" onclick="deleteVersement('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>')});if(items.length)rows.push('<tr style="font-weight:700;background:var(--success-bg)"><td colspan="2">TOTAL</td><td class="text-right text-success">'+fmtF(tot)+'</td><td colspan="4"></td></tr>');document.getElementById('versements-table').innerHTML=rows.length?rows.join(''):'<tr><td colspan="7" style="text-align:center;padding:30px">—</td></tr>'}
 
 function renderDepensesTable(items){var cd=S.user.role==='admin'||S.user.role==='gerant',rows=[],tot=0;items.forEach(function(o){tot+=o.montant;rows.push('<tr><td class="fw-600">'+o.id+'</td><td>'+o.date+'</td><td>'+o.description+'</td><td><span class="badge badge-purple">'+(o.categorie||'—')+'</span></td><td class="text-right fw-600 text-danger">'+fmtF(o.montant)+'</td><td>'+o.saisi_par+'</td><td>'+(cd?'<button class="btn-icon" onclick="deleteDepense('+o.id+')" style="color:var(--danger)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>')});if(items.length)rows.push('<tr style="font-weight:700;background:var(--danger-bg)"><td colspan="4">TOTAL DÉPENSES</td><td class="text-right text-danger">'+fmtF(tot)+'</td><td colspan="2"></td></tr>');document.getElementById('depenses-table').innerHTML=rows.length?rows.join(''):'<tr><td colspan="7" style="text-align:center;padding:30px">—</td></tr>'}
 
 function renderConsoTable(items){
-  if(!items||!items.length){
-    document.getElementById('conso-table').innerHTML='<tr><td colspan="5" style="text-align:center;padding:30px">Aucune donnée de consommation</td></tr>';
-    return;
-  }
-  var rows=[];
-  items.forEach(function(o){
-    rows.push('<tr><td>'+o.date+'</td><td class="text-right">'+fmt(o.livraison||0)+'</td><td class="text-right">'+fmt(o.jauge_depart||0)+'</td><td class="text-right">'+fmt(o.jauge_arrivee||0)+'</td><td class="text-right fw-600">'+fmt(o.sortie||0)+'</td></tr>');
-  });
+  if(!items||!items.length){document.getElementById('conso-table').innerHTML='<tr><td colspan="5" style="text-align:center;padding:30px">Aucune donnée</td></tr>';return}
+  var rows=[];items.forEach(function(o){rows.push('<tr><td>'+o.date+'</td><td class="text-right">'+fmt(o.livraison||0)+'</td><td class="text-right">'+fmt(o.jauge_depart||0)+'</td><td class="text-right">'+fmt(o.jauge_arrivee||0)+'</td><td class="text-right fw-600">'+fmt(o.sortie||0)+'</td></tr>')});
   document.getElementById('conso-table').innerHTML=rows.join('');
 }
 
@@ -393,9 +309,30 @@ function deleteSale(id){if(!confirm('Supprimer #'+id+'?'))return;requireSalesPas
 function doDeleteSale(id,pwd){callServer('apiDeleteStationSale',{token:S.token,stationName:S.currentStation,id:id,salesPassword:pwd}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadStationFull()}).catch(function(e){toast(e.message,'error')})}
 
 /* Livraisons */
-function openLivraisonModal(){document.getElementById('ml-date').value=today();document.getElementById('ml-produit').value='';document.getElementById('ml-qte').value='';document.getElementById('ml-prix').value='';openModal('modal-livraison')}
-function saveLivraison(){callServer('apiAddLivraison',{token:S.token,obj:{station:S.currentStation,date:document.getElementById('ml-date').value,produit:document.getElementById('ml-produit').value,quantite_litres:document.getElementById('ml-qte').value,prix_unitaire:document.getElementById('ml-prix').value}}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){closeModal('modal-livraison');loadStationFull()}}).catch(function(e){toast(e.message,'error')})}
-function deleteLivraison(id){if(!confirm('Supprimer?'))return;callServer('apiDeleteLivraison',{token:S.token,id:id}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadStationFull()}).catch(function(e){toast(e.message,'error')})}
+function openLivraisonModal(d){
+  document.getElementById('modal-livraison-title').textContent=d?'Modifier livraison #'+d.id:'Nouvelle livraison';
+  document.getElementById('ml-id').value=d?d.id:'';
+  document.getElementById('ml-date').value=d?d.date:today();
+  refreshProductSelects();
+  document.getElementById('ml-produit').value=d?d.produit:'';
+  document.getElementById('ml-qte').value=d?d.quantite_litres:'';
+  document.getElementById('ml-prix').value=d?d.prix_unitaire:'';
+  document.getElementById('ml-obs').value=d?d.observations||'':'';
+  openModal('modal-livraison');
+}
+function editLivraison(id){var i=S.livraisonsCache.find(function(x){return x.id===id});if(!i)return;requireSalesPassword('edit-liv',i)}
+function deleteLivraisonAction(id){if(!confirm('Supprimer livraison #'+id+'?'))return;requireSalesPassword('delete-liv',{id:id})}
+function saveLivraison(){
+  var id=document.getElementById('ml-id').value;
+  var obj={id:id||0,station:S.currentStation,date:document.getElementById('ml-date').value,produit:document.getElementById('ml-produit').value,quantite_litres:document.getElementById('ml-qte').value,prix_unitaire:document.getElementById('ml-prix').value,observations:document.getElementById('ml-obs').value};
+  closeModal('modal-livraison');
+  if(id){
+    callServer('apiUpdateLivraison',{token:S.token,obj:obj,livraisonPassword:S._lastLivPwd||null}).then(function(r){S._lastLivPwd=null;toast(r.message,r.ok?'success':'error');if(r.ok)loadStationFull()}).catch(function(e){S._lastLivPwd=null;toast(e.message,'error')});
+  }else{
+    callServer('apiAddLivraison',{token:S.token,obj:obj}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadStationFull()}).catch(function(e){toast(e.message,'error')});
+  }
+}
+function doDeleteLivraison(id,pwd){callServer('apiDeleteLivraison',{token:S.token,id:id,livraisonPassword:pwd}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok)loadStationFull()}).catch(function(e){toast(e.message,'error')})}
 
 /* Versements */
 function openVersementModal(){document.getElementById('mv-date').value=today();document.getElementById('mv-montant').value='';document.getElementById('mv-mode').value='';document.getElementById('mv-ref').value='';openModal('modal-versement')}
