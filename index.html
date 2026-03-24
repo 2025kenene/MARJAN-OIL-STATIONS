@@ -341,7 +341,7 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
         <h1><i class="fas fa-gas-pump"></i> Marjan Oil</h1>
         <p>Système de gestion des stations</p>
       </div>
-      <form onsubmit="return doLogin(event)">
+      <form id="login-form">
         <div class="fg"><label>Identifiant</label><div class="iw"><i class="fas fa-user"></i><input type="text" id="l-u" class="fc" placeholder="Username" required autocomplete="username"/></div></div>
         <div class="fg"><label>Mot de passe</label><div class="iw"><i class="fas fa-lock"></i><input type="password" id="l-p" class="fc" placeholder="••••••••" required autocomplete="current-password"/></div></div>
         <button type="submit" class="btn btn1 btnw" id="l-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
@@ -755,8 +755,6 @@ function initApp(){
 }
 
 /* ===== BIND ALL STATIC EVENTS (no inline onclick) ===== */
-/* This is the KEY FIX: use addEventListener on real button elements
-   instead of onclick attributes on divs — works perfectly on mobile/tablet */
 function bindStaticEvents(){
   /* Sidebar / nav */
   var mobTog=$('mob-tog-btn');
@@ -911,7 +909,6 @@ function buildNav(){
   }
   var nav=$('s-nav');
   nav.innerHTML=h;
-  /* Bind nav item clicks using addEventListener — works on all devices */
   nav.querySelectorAll('.ni').forEach(function(ni){
     ni.addEventListener('click',function(){navTo(ni.dataset.p);});
   });
@@ -949,7 +946,6 @@ function navTo(p){
     case'station':          initSt();break;
   }
 }
-/* Keep nav() as alias for compatibility */
 function nav(p){ navTo(p); }
 window.nav=nav;
 
@@ -1057,7 +1053,6 @@ function renderDash(prevMap){
     tb+='</tr>';
   }
   tbl.innerHTML=tb||'<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)">Aucune station trouvée</td></tr>';
-  /* Bind clicks on dashboard rows using addEventListener */
   tbl.querySelectorAll('.dash-row').forEach(function(row){
     row.addEventListener('click',function(){goStation(row.dataset.st);});
   });
@@ -1441,12 +1436,17 @@ function saveCon(){
   api('apiAddConso',{token:S.tk,obj:{date:$('mc-dt').value,jauge_ouverture:$('mc-jo').value,jauge_fermeture:$('mc-jf').value}}).then(function(r){if(r.ok){clM('m-con');loadSF();toast('Relevé enregistré','success');}}).catch(function(e){toast(e.message,'error');});
 }
 
-/* ===== GLOBALS (keep for any inline references in toasts/confirm etc.) ===== */
+/* ===== GLOBALS ===== */
 window.toggleTheme=toggleTheme;
 window.togSide=togSide;
 
 /* ===== BOOT ===== */
-document.addEventListener('DOMContentLoaded',function(){checkSess();});
+document.addEventListener('DOMContentLoaded',function(){
+  /* FIX: Bind login form submit via addEventListener (doLogin is inside IIFE, not global) */
+  var lf=document.getElementById('login-form');
+  if(lf) lf.addEventListener('submit',function(e){doLogin(e);});
+  checkSess();
+});
 })();
 </script>
 </body>
