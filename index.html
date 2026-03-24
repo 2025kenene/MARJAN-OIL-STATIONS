@@ -143,7 +143,7 @@ select.fp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xm
 .sv{font-size:20px;font-weight:800;letter-spacing:-.5px}
 
 /* ===================== TABLE ===================== */
-.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--brd)}
+.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--brd);position:relative}
 table{width:100%;border-collapse:collapse;font-size:12px}
 thead th{background:var(--bg2);padding:10px 14px;text-align:left;font-weight:700;color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--brd);white-space:nowrap;position:sticky;top:0}
 thead th.sortable{cursor:pointer;user-select:none;transition:color .15s}
@@ -243,19 +243,155 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 .tb2{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 
 /* ===================== RESPONSIVE ===================== */
+/* ===================== RESPONSIVE — TABLETTE (≤900px) ===================== */
+@media(max-width:900px){
+  :root{--sidebar:220px}
+  .mc{padding:18px 18px}
+  .cg{grid-template-columns:1fr}
+  .psg{grid-template-columns:1fr}
+  .md{max-width:96vw}
+}
+
+/* ===================== RESPONSIVE — MOBILE/TABLETTE (≤768px) ===================== */
 @media(max-width:768px){
-  .side{transform:translateX(-100%);width:240px;z-index:300}
+  /* Sidebar: tiroir coulissant */
+  .side{transform:translateX(-100%);width:260px;z-index:400}
   .side.open{transform:translateX(0)}
   .mob-tog,.mob-ov{display:flex}
-  .mc{margin-left:0;padding:14px;padding-top:58px}
-  .sg{grid-template-columns:repeat(2,1fr)}
-  .cg{grid-template-columns:1fr}
-  .pt{font-size:18px}
-  .sv{font-size:17px}
-  .th-btn{top:11px;right:11px}
-  .dash-bar{gap:6px}
+
+  /* Contenu principal */
+  .mc{margin-left:0!important;padding:12px 12px;padding-top:56px}
+
+  /* Bouton thème */
+  .th-btn{top:10px;right:10px}
+
+  /* Titres de section */
+  .pt{font-size:16px;gap:7px}
+  .pt2{font-size:11px;padding:2px 8px}
+
+  /* Stats cards: 2 colonnes */
+  .sg{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+  .sc{padding:14px 12px}
+  .sv{font-size:15px}
+  .sl{font-size:10px}
+  .si{width:34px;height:34px;font-size:14px;border-radius:9px}
+
+  /* Grille charts: 1 colonne */
+  .cg{grid-template-columns:1fr;gap:12px;margin-bottom:14px}
+  .psg{grid-template-columns:1fr}
+
+  /* Dashboard bar: empilé */
+  .dash-bar{flex-direction:column;align-items:stretch;gap:8px;padding:10px 12px}
+  .dash-bar>*{width:100%}
+  .dash-bar label{display:block;margin-bottom:2px}
+  .dash-bar input[type=date]{width:100%;padding:9px 10px;font-size:13px}
+  .dash-bar .btn{width:100%;justify-content:center;padding:10px}
+
+  /* Tables: scroll horizontal avec colonnes prioritaires */
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
+  table{font-size:11px;min-width:500px}
+  thead th,tbody td{padding:8px 10px;white-space:nowrap}
+
+  /* Modals: plein écran sur mobile */
+  .mo{align-items:flex-end;padding:0}
+  .md{max-width:100vw;width:100%;border-radius:20px 20px 0 0;max-height:93vh;border-left:none;border-right:none;border-bottom:none}
+
+  /* Station tabs: scroll horizontal */
+  .stb{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .stb::-webkit-scrollbar{height:2px}
+  .stb button{flex-shrink:0;font-size:11px;padding:7px 12px}
+
+  /* Header des pages station */
+  .page-hd{flex-wrap:wrap;gap:8px}
+  .page-hd .btn{font-size:11px;padding:8px 12px}
+
+  /* Barre de recherche + filtres */
+  .sf-bar{flex-wrap:wrap;gap:6px}
+  .sf-bar>*{min-width:0;flex:1 1 auto}
+
+  /* Résumé caisse */
+  .res-grid{grid-template-columns:1fr}
+
+  /* Grille prix station */
+  .px-grid{grid-template-columns:1fr}
+
+  /* Progression bar auto-refresh */
+  .prog{margin-bottom:12px}
+
+  /* Livesync indicator */
+  .live-d{font-size:10px;padding:3px 8px}
+
+  /* Items liste (users, produits) */
+  .list-item{flex-wrap:wrap;gap:6px;padding:10px 12px}
+  .list-item .li-act{margin-left:0}
+
+  /* Ver bar */
+  .ver-bar{font-size:10px;padding:4px 10px}
+
+  /* Charts canvas */
+  canvas{max-height:220px!important}
 }
-@media(max-width:480px){.sg{grid-template-columns:1fr}}
+
+/* ===================== RESPONSIVE — PETIT MOBILE (≤480px) ===================== */
+@media(max-width:480px){
+  /* Stats: 1 colonne */
+  .sg{grid-template-columns:1fr;gap:8px}
+
+  /* Padding encore réduit */
+  .mc{padding:10px 10px;padding-top:54px}
+
+  /* Titre encore plus petit */
+  .pt{font-size:14px}
+
+  /* Modal: toujours plein écran */
+  .md{max-height:97vh;border-radius:16px 16px 0 0}
+
+  /* Boutons taille tactile minimale (44px) */
+  .btn{min-height:40px;padding:10px 14px;font-size:12px}
+  .btni{width:36px;height:36px}
+
+  /* Form labels et inputs plus grands pour mobile */
+  .fg label{font-size:11px}
+  .fc,.fp{padding:12px 12px 12px 38px;font-size:14px}
+  select.fp{padding:12px 12px;font-size:14px}
+
+  /* Login card */
+  .lcard{padding:28px 18px 22px}
+  .l-logo h1{font-size:18px}
+
+  /* Navigation sidebar: items plus grands (touch-friendly) */
+  .s-ni{padding:10px 14px;font-size:12px}
+  .s-ni i{font-size:14px}
+
+  /* Stats cards */
+  .sc{padding:12px 10px;border-radius:10px}
+  .sv{font-size:14px;font-weight:700}
+  .sl{font-size:10px}
+  .si{width:30px;height:30px;font-size:12px}
+
+  /* Tables: encore plus compact */
+  table{font-size:10px}
+  thead th,tbody td{padding:6px 8px}
+
+  /* Dash bar date inputs */
+  .dash-bar input[type=date]{font-size:14px;padding:10px}
+
+  /* Charts */
+  canvas{max-height:180px!important}
+
+  /* Résumé station */
+  .rs-box{padding:12px}
+  .rs-v{font-size:20px}
+}
+
+/* ===================== RESPONSIVE — TRÈS PETIT (≤360px) ===================== */
+@media(max-width:360px){
+  .mc{padding:8px 8px;padding-top:52px}
+  .pt{font-size:13px}
+  .sg{gap:6px}
+  .sc{padding:10px 8px}
+  .md{border-radius:12px 12px 0 0}
+}
 </style>
 </head>
 <body>
@@ -534,6 +670,7 @@ function opM(id){
 }
 function clM(id){ var e=$(id);e.classList.remove('sh');e.style.display='none';document.body.style.overflow=''; }
 function togSide(){ $('side').classList.toggle('open');$('mob-ov').classList.toggle('sh'); }
+function closeSide(){ $('side').classList.remove('open');$('mob-ov').classList.remove('sh'); }
 
 function toggleTheme(){
   var n=(localStorage.getItem('mj_th')||'dark')==='dark'?'light':'dark';
@@ -673,6 +810,16 @@ function checkSess(){
   .catch(function(){hide('lo');show('pl','flex');});
 }
 
+/* Redimensionner les graphiques lors d'un changement d'orientation */
+window.addEventListener('orientationchange',function(){
+  setTimeout(function(){
+    if(S._lastDash)(function(rd){rCharts(rd);})(S._lastDash);
+  },300);
+});
+window.addEventListener('resize',function(){
+  if(window.innerWidth>768){var s=$('side'),o=$('mob-ov');if(o)o.classList.remove('show');}
+});
+
 function initApp(){
   hide('lo');hide('pl');show('app','block');
   var n=S.u.nom_complet||S.u.username;
@@ -732,6 +879,7 @@ function popCatSel(){
 }
 
 function nav(p){
+  if(window.innerWidth<=768)closeSide();
   S.cp=p;
   document.querySelectorAll('.ni').forEach(function(n){n.classList.toggle('on',n.dataset.p===p);});
   document.querySelectorAll('.ps2').forEach(function(s){s.classList.remove('on');});
