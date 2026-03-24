@@ -1080,10 +1080,11 @@ function sortDash(col){
 window.sortDash=sortDash;
 
 function goStation(stName){
-  if(!gv())return;
-  S.cs=stName;
-  navTo('station');
-}
+    if(!gv())return;
+    S.cs = stName;    /* FIX: S.cs défini AVANT navTo */
+    _sfBusy = false;  /* FIX: débloquer si chargement précédent bloqué */
+    navTo('station');
+  }
 window.goStation=goStation;
 
 /* ===================== CHARTS ===================== */
@@ -1246,34 +1247,45 @@ function delUsr(u){ if(!confirm('Supprimer '+u+'?'))return;api('apiDeleteUser',{
 
 /* ===================== STATION ===================== */
 function initSt(){
-  var sl=gv()?S.st:[S.u.station];
-  var tabs=$('st-tabs');
-  tabs.innerHTML='';
-  sl.forEach(function(st){
-    var sh=st.replace(/Station Marjan /gi,'').replace(/Station /gi,'');
-    var tab=document.createElement('button');
-    tab.className='st-tab'+(st===S.cs?' on':'');
-    tab.textContent=sh;
-    tab.addEventListener('click',function(){swSt(st);});
-    tabs.appendChild(tab);
-  });
-  if(!S.cs||sl.indexOf(S.cs)===-1)S.cs=sl[0]||'';
-  $('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+(S.cs||'Station');
-  var ab=$('add-sale-btn');if(ab)ab.style.display=(ce())?'inline-flex':'none';
-  loadSF();
-}
-function swSt(n){
-  S.cs=n;
-  var sh=n.replace(/Station Marjan /gi,'').replace(/Station /gi,'');
-  $('st-tabs').querySelectorAll('.st-tab').forEach(function(t){t.classList.toggle('on',t.textContent.trim()===sh);});
-  $('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+n;
-  loadSF();
-}
+    var sl=gv()?S.st:[S.u.station];
+    /* FIX: ne réinitialiser S.cs que si nécessaire */
+    if(!S.cs||sl.indexOf(S.cs)===-1){ S.cs=sl[0]||''; }
+    var tabs=$('st-tabs');
+    tabs.innerHTML='';
+    sl.forEach(function(st){
+      var sh=st.replace(/Station Marjan /gi,'').replace(/Station /gi,'');
+      var tab=document.createElement('button');
+      tab.className='st-tab'+(st===S.cs?' on':'');
+      tab.textContent=sh;
+      tab.dataset.station=st; /* FIX: stocker nom complet en data-attribute */
+      tab.addEventListener('click',function(){swSt(st);});
+      tabs.appendChild(tab);
+    });
+    $('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+(S.cs||'Station');
+    var ab=$('add-sale-btn');if(ab)ab.style.display=(ce())?'inline-flex':'none';
+    loadSF();
+  }
+  function swSt(n){
+    S.cs=n;
+    _sfBusy=false; /* FIX: débloquer au cas où */
+    var sh=n.replace(/Station Marjan /gi,'').replace(/Station /gi,'');
+    $('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+n;
+    /* FIX: comparaison robuste via dataset.station */
+    $('st-tabs').querySelectorAll('.st-tab').forEach(function(t){
+      t.classList.toggle('on',(t.dataset.station||t.textContent.trim())===n);
+    });
+    loadSF();
+  }
 window.swSt=swSt;
 
 function loadSF(){
-  if(!S.cs||_sfBusy)return;
-  _sfBusy=true;
+    function loadSF(){
+    if(!S.cs){
+      console.warn('[loadSF] S.cs vide — station non définie');
+      return;
+    }
+    if(_sfBusy)return;
+    _sfBusy=true;
   $('ven-tbl').innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t3)"><i class="fas fa-circle-notch fa-spin"></i> Chargement…</td></tr>';
   api('apiGetStationFull',{token:S.tk,stationName:S.cs,fromDate:$('sf-from').value,toDate:$('sf-to').value})
   .then(function(r){
