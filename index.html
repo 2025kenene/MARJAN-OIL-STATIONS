@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>Marjan Oil Stations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,8 +29,8 @@
   --sh:0 4px 24px rgba(0,0,0,.08);--cg:#d8e4f0;--ct:#8ba8c8;--cl:#4a6585;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--f);background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;transition:background .25s,color .25s}
 input,select,button{font-family:var(--f)}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:3px}
 
@@ -51,10 +51,10 @@ input,select,button{font-family:var(--f)}
 
 /* ===================== TOAST ===================== */
 #tb{position:fixed;top:16px;right:16px;z-index:10001;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{pointer-events:auto;padding:11px 16px;border-radius:var(--r);color:#fff;font-size:12px;font-weight:500;box-shadow:var(--sh);animation:fadeUp .25s ease both;display:flex;align-items:center;gap:8px;max-width:320px;backdrop-filter:blur(8px)}
-.toast.success{background:rgba(16,185,129,.95)}
-.toast.error{background:rgba(239,68,68,.95)}
-.toast.info{background:rgba(59,130,246,.95)}
+.toast{pointer-events:auto;padding:11px 16px;border-radius:var(--r);color:#fff;font-size:12px;font-weight:500;box-shadow:var(--sh);animation:fadeUp .25s ease both;display:flex;align-items:center;gap:8px;max-width:320px}
+.toast.success{background:#0ea872}
+.toast.error{background:#e53e3e}
+.toast.info{background:#2563eb}
 
 /* ===================== LOGIN ===================== */
 #pl{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 50%,rgba(245,158,11,.06) 0%,transparent 60%),var(--bg)}
@@ -93,7 +93,7 @@ select.fp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xm
 
 /* ===================== SIDEBAR ===================== */
 #app{display:none;min-height:100vh}
-.side{position:fixed;left:0;top:0;width:var(--sidebar);height:100vh;background:var(--bg2);border-right:1px solid var(--brd);display:flex;flex-direction:column;z-index:200;transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.side{position:fixed;left:0;top:0;width:var(--sidebar);height:100vh;background:var(--bg2);border-right:1px solid var(--brd);display:flex;flex-direction:column;z-index:200;transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform;transform:translateZ(0)}
 .s-hd{padding:18px 16px;border-bottom:1px solid var(--brd)}
 .s-brand{font-size:15px;font-weight:800;background:linear-gradient(135deg,var(--acc2),var(--acc3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.3px}
 .s-sub{font-size:10px;color:var(--t3);margin-top:2px;font-weight:500}
@@ -114,7 +114,7 @@ select.fp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xm
 /* ===================== MAIN ===================== */
 .mc{margin-left:var(--sidebar);padding:24px 28px;min-height:100vh}
 .mob-tog{display:none;position:fixed;top:11px;left:11px;z-index:300;width:38px;height:38px;background:var(--card);border:1px solid var(--brd);border-radius:9px;color:var(--t1);font-size:15px;cursor:pointer;align-items:center;justify-content:center;transition:all .2s}
-.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);z-index:199}
+.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:199}
 .mob-ov.sh{display:block}
 
 /* ===================== PAGES ===================== */
@@ -196,7 +196,7 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 .row-cnt{font-size:10px;color:var(--t3);font-weight:600;margin-left:auto;flex-shrink:0}
 
 /* ===================== MODALS ===================== */
-.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:9000;align-items:center;justify-content:center;padding:16px}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9000;align-items:center;justify-content:center;padding:16px}
 .mo.sh{display:flex}
 .md{background:var(--card);border:1px solid var(--brd);border-radius:20px;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh);animation:scaleIn .28s ease}
 .mh{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--brd)}
@@ -391,6 +391,14 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
   .sg{gap:6px}
   .sc{padding:10px 8px}
   .md{border-radius:12px 12px 0 0}
+}
+
+/* ===================== RETINA / HIGH-DPI ===================== */
+/* Empêche le flou sur écrans haute densité (mobile/tablette) */
+@media(-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi){
+  body{-webkit-font-smoothing:antialiased}
+  .sc,.cd,.md,.side,.lcard{image-rendering:-webkit-optimize-contrast}
+  canvas{image-rendering:auto}
 }
 </style>
 </head>
