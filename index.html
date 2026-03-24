@@ -622,6 +622,46 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 <div class="mo" id="m-pwd"><div class="md" style="max-width:360px"><div class="mh"><h3><i class="fas fa-shield-alt ta"></i>&nbsp;Vérification requise</h3><button class="mx" onclick="_pa=null;clM('m-pwd')">&times;</button></div><div class="mb" style="text-align:center;padding:28px 22px"><div style="font-size:48px;color:var(--acc);margin-bottom:14px"><i class="fas fa-lock"></i></div><p style="color:var(--t2);font-size:13px;margin-bottom:18px">Entrez le mot de passe de ventes pour continuer</p><div class="fg" style="text-align:left"><div class="iw"><i class="fas fa-key"></i><input type="password" id="pw-in" class="fc" placeholder="Mot de passe…" onkeydown="if(event.key==='Enter')doPwdOk()"/></div></div><div id="pw-err" style="color:var(--err);font-size:11px;font-weight:600;display:none;margin-top:6px"><i class="fas fa-times-circle"></i> Mot de passe incorrect</div></div><div class="mf"><button class="btn btn2" onclick="_pa=null;clM('m-pwd')">Annuler</button><button class="btn btn1" onclick="doPwdOk()" style="width:auto"><i class="fas fa-unlock"></i> Confirmer</button></div></div></div>
 
 <script>
+/* ===== MOBILE/TABLET TOUCH FIX ===================================
+   iOS Safari ne déclenche pas les événements click sur les éléments
+   non-interactifs (div, span) SAUF si un listener touchstart existe.
+   Ce listener vide suffit à activer les clicks sur TOUS les éléments.
+   =================================================================== */
+document.addEventListener('touchstart', function(){}, {passive: true});
+
+/* Fonction utilitaire : active les clics tactiles sur les éléments
+   générés dynamiquement (nav items, table rows, tabs…) */
+function enableTouchClicks(root) {
+  root = root || document;
+  var els = root.querySelectorAll('[onclick]:not(button):not(a):not(input):not(select)');
+  for (var i = 0; i < els.length; i++) {
+    els[i].style.cursor = 'pointer';
+    /* Convertit le onclick en touchend pour réactivité immédiate */
+    (function(el) {
+      if (el._touchFixed) return;
+      el._touchFixed = true;
+      el.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        el.click();
+      }, {passive: false});
+    })(els[i]);
+  }
+}
+
+/* Observer: applique le fix sur tout nouvel élément injecté dans le DOM */
+(function() {
+  if (typeof MutationObserver === 'undefined') return;
+  var obs = new MutationObserver(function(mutations) {
+    for (var i = 0; i < mutations.length; i++) {
+      var added = mutations[i].addedNodes;
+      for (var j = 0; j < added.length; j++) {
+        if (added[j].nodeType === 1) enableTouchClicks(added[j]);
+      }
+    }
+  });
+  obs.observe(document.body, {childList: true, subtree: true});
+})();
+
 /* ===================================================================
    MARJAN OIL STATIONS — Client v1.3.2
    FIXES:
@@ -841,6 +881,7 @@ function initApp(){
   $('s-av').textContent=(n[0]||'M').toUpperCase();
   $('s-role').textContent=gv()?rl(S.u.role):(S.u.station||'');
   buildNav();popSel();popCatSel();
+  enableTouchClicks(document);
   if(gv()){
     $('sale-wrap').innerHTML='';
     nav('dashboard');
@@ -1454,7 +1495,10 @@ window.saveCon=saveCon;
 window.toggleTheme=toggleTheme;window.togSide=togSide;window.swSub=swSub;window.clM=clM;window._pa=null;window.doPwdOk=doPwdOk;
 
 /* ===== BOOT ===== */
-document.addEventListener('DOMContentLoaded', checkSess);
+document.addEventListener('DOMContentLoaded', function() {
+  enableTouchClicks(document);
+  checkSess();
+});
 })();
 </script>
 </body>
