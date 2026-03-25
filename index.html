@@ -349,7 +349,7 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 (function(){
 'use strict';
 
-var GAS_URL = 'https://script.google.com/macros/s/AKfycbze6xVTQSZmHO-JT2fCgvYcwXHs1l3mDWq-CbuJgA-yqMTYDPoZ3knCuX1Enk_M8JfXow/exec';
+var GAS_URL = 'https://script.google.com/macros/s/AKfycbxYv5qgvaXJh-aSPJvUp4CLjsyXwlJd5FxdO7YBsjorLQogQLGxkvYhmfNVuXClOkP_Qw/exec';
 var IS_GAS  = (typeof google !== 'undefined' && google.script && google.script.run);
 var CACHE_KEY = 'mj_dash_v4';
 
@@ -546,7 +546,7 @@ function openUserM(d){$('m-usr-t').textContent=d?'Modifier':'Nouvel utilisateur'
 function editUsr(u){api('apiListUsers',{token:S.tk}).then(function(r){var x=(r.users||[]).filter(function(v){return v.username===u;})[0];if(x)openUserM(x);});}
 function saveUsr(){var role=$('m-usr-r').value,station;if(role==='super_gerant'){var cbs=$('m-usr-sm').querySelectorAll('input:checked'),sel=[];cbs.forEach(function(cb){sel.push(cb.value);});station=sel.join(',');}else{station=$('m-usr-s').value;}var o={username:$('m-usr-u').value.trim(),password:$('m-usr-pw').value,nom_complet:$('m-usr-n').value.trim(),role:role,station:station,telephone:$('m-usr-t2').value.trim()};if(!o.username)return toast('Username requis','error');if(role==='super_gerant'&&!station)return toast('Sélectionnez au moins 1 station','error');api('apiUpsertUser',{token:S.tk,userObj:o}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){clM('m-usr');loadUsers();}}).catch(function(e){toast(e.message,'error');});}
 
-/* ====== STATION — FIX #1: chargement données ====== */
+/* STATION */
 function initSt(){
   var sl=userStationList();
   if(!S.cs||sl.indexOf(S.cs)===-1)S.cs=sl[0]||'';
@@ -582,7 +582,6 @@ function loadSF(){
   .finally(function(){_sfBusy=false;});
 }
 
-/* FIX #4: Résumé chart — formule: Versements + Dépenses - Livraisons */
 function rResChart(res){
   if(S.ch.res){try{S.ch.res.destroy();}catch(e){}S.ch.res=null;}
   var cv=$('ch-res');if(!cv)return;var c=gCC();
@@ -597,7 +596,6 @@ function rResChart(res){
     scales:{x:{ticks:{color:c.t,font:{size:11}},grid:{display:false}},y:{ticks:{color:c.t,callback:function(v){return fm(v);}},grid:{color:c.g}}}}});
 }
 
-/* FIX #4: Résumé financier — formule: Restant = Versements + Dépenses - Livraisons */
 function rRes(res){
   if(!res)return;
   var mr=res.montant_restant||0;
@@ -611,46 +609,35 @@ function rRes(res){
     '<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Ventes</div><div class="sv ta">'+fmF(res.total_ventes||0)+'</div></div>';
 }
 
-/* STOCK */
 function rStk(stock){var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});(stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+p.produit+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');$('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';}
 
-/* VENTES */
 function rVen(items){var rows=[],canE=ce(),canD=cd();(items||[]).forEach(function(o){rows.push('<tr><td class="fw7" style="color:var(--acc)">'+o.id+'</td><td>'+o.date+'</td><td class="fw6">'+o.produit+'</td><td class="tr">'+fm(o.prix_unitaire)+'</td><td class="tr">'+fm(o.quantite_litres)+'</td><td class="tr fw7 ta">'+fmF(o.montant_total)+'</td><td style="color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis">'+(o.observations||'—')+'</td><td class="ac">'+(canE?'<button class="btni btn-edit-sale" data-id="'+o.id+'"><i class="fas fa-pen"></i></button>':'')+(canD?'<button class="btni btn-del-sale" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>');});var tb=$('ven-tbl');if(!rows.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-receipt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune vente</td></tr>';return;}tb.innerHTML=rows.join('');tb.querySelectorAll('.btn-edit-sale').forEach(function(b){b.addEventListener('click',function(){editSale(+b.dataset.id);});});tb.querySelectorAll('.btn-del-sale').forEach(function(b){b.addEventListener('click',function(){delSale(+b.dataset.id);});});}
 
-/* LIVRAISONS */
 function rLiv(items){var rows=[],tQ=0,tM=0,canE=ce(),canD=cd();(items||[]).forEach(function(o){tQ+=o.quantite_litres||0;tM+=o.montant_total||0;rows.push('<tr><td class="fw7" style="color:var(--inf)">'+o.id+'</td><td>'+o.date+'</td><td class="fw6">'+o.produit+'</td><td class="tr">'+fm(o.quantite_litres||0)+'</td><td class="tr">'+fm(o.prix_unitaire||0)+'</td><td class="tr fw6 ta">'+fmF(o.montant_total||0)+'</td><td style="color:var(--t3)">'+(o.observations||'—')+'</td><td>'+o.saisi_par+'</td><td class="ac">'+(canE?'<button class="btni btn-edit-liv" data-id="'+o.id+'"><i class="fas fa-pen"></i></button>':'')+(canD?'<button class="btni btn-del-liv" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg)"><td colspan="3">TOTAL</td><td class="tr">'+fm(tQ)+' L</td><td></td><td class="tr ta">'+fmF(tM)+'</td><td colspan="3"></td></tr>');var tb=$('liv-tbl');if(!rows.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-truck" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune livraison</td></tr>';return;}tb.innerHTML=rows.join('');tb.querySelectorAll('.btn-edit-liv').forEach(function(b){b.addEventListener('click',function(){editLiv(+b.dataset.id);});});tb.querySelectorAll('.btn-del-liv').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer cette livraison?'))return;reqPwd('dliv',{id:+b.dataset.id});});});}
 
-/* VERSEMENTS */
 function rVer(items){var rows=[],tot=0;(items||[]).forEach(function(o){tot+=o.montant_verse||0;rows.push('<tr><td class="fw7" style="color:var(--ok)">'+o.id+'</td><td>'+o.date+'</td><td class="tr fw7 ts">'+fmF(o.montant_verse||0)+'</td><td><span class="bg bg-g">'+(o.mode_versement||'—')+'</span></td><td style="color:var(--t3)">'+(o.reference||'—')+'</td><td>'+o.saisi_par+'</td><td>'+(cd()?'<button class="btni btn-del-ver" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--okg)"><td colspan="2">TOTAL</td><td class="tr ts">'+fmF(tot)+'</td><td colspan="4"></td></tr>');var tb=$('ver-tbl');if(!rows.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-hand-holding-usd" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun versement</td></tr>';return;}tb.innerHTML=rows.join('');tb.querySelectorAll('.btn-del-ver').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer?'))return;api('apiDeleteVersement',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
 
-/* DEPENSES */
 function rDep(items){var rows=[],tot=0;(items||[]).forEach(function(o){tot+=o.montant||0;rows.push('<tr><td class="fw7" style="color:var(--err)">'+o.id+'</td><td>'+o.date+'</td><td>'+o.description+'</td><td><span class="bg bg-p">'+(o.categorie||'—')+'</span></td><td class="tr fw7 td">'+fmF(o.montant||0)+'</td><td>'+o.saisi_par+'</td><td>'+(cd()?'<button class="btni btn-del-dep" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td colspan="2"></td></tr>');var tb=$('dep-tbl');if(!rows.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}tb.innerHTML=rows.join('');tb.querySelectorAll('.btn-del-dep').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer?'))return;api('apiDeleteDepense',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
 
-/* FIX #3: CONSO — affichage corrigé */
 function rCon(items){var h='';(items||[]).forEach(function(o){h+='<tr><td>'+o.date+'</td><td class="fw6">'+(o.produit||'—')+'</td><td class="tr">'+fm(o.jauge_ouverture||0)+'</td><td class="tr">'+fm(o.jauge_fermeture||0)+'</td><td class="tr fw7 ta">'+fm(o.sortie||0)+'</td><td style="color:var(--t3)">'+(o.observations||'—')+'</td></tr>';});$('con-tbl').innerHTML=h||'<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-tachometer-alt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun relevé</td></tr>';}
 
-/* CRUD VENTES */
 function openSaleM(d){d=d||null;$('m-sale-t').textContent=d?'Modifier vente #'+d.id:'Nouvelle vente';$('ms-id').value=d?d.id:'';$('ms-dt').value=d?d.date:td();rPS();$('ms-pr').value=d?d.produit:'';$('ms-px').value=d?d.prix_unitaire:'';$('ms-qt').value=d?d.quantite_litres:'';$('ms-ob').value=d?(d.observations||''):'';opM('m-sale');}
 function editSale(id){var x=(S.sc||[]).filter(function(s){return s.id===id;})[0];if(x)reqPwd('edit',x);else toast('Vente introuvable','error');}
 function saveSale(){var obj={id:$('ms-id').value||0,date:$('ms-dt').value,produit:$('ms-pr').value,prix_unitaire:$('ms-px').value,quantite_litres:$('ms-qt').value,observations:$('ms-ob').value};if(!obj.produit)return toast('Produit requis','error');if(!obj.quantite_litres||+obj.quantite_litres<=0)return toast('Quantité invalide','error');clM('m-sale');api('apiUpsertStationSale',{token:S.tk,stationName:S.cs,obj:obj,salesPassword:S._lsp||null}).then(function(r){S._lsp=null;toast(r.message,r.ok?'success':'error');if(r.ok){_sfBusy=false;loadSF();}}).catch(function(e){S._lsp=null;toast(e.message,'error');});}
 function delSale(id){if(!confirm('Supprimer vente #'+id+' ?'))return;if(!cd())return toast('Réservé admin','error');reqPwd('del',{id:id});}
 function doDelSale(id,pw){api('apiDeleteStationSale',{token:S.tk,stationName:S.cs,id:id,salesPassword:pw}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});}
 
-/* CRUD LIVRAISONS */
 function openLivM(d){d=d||null;$('m-liv-t').textContent=d?'Modifier livraison #'+d.id:'Nouvelle livraison';$('ml-id').value=d?d.id:'';$('ml-dt').value=d?d.date:td();rPS();$('ml-pr').value=d?d.produit:'';$('ml-qt').value=d?d.quantite_litres:'';$('ml-px').value=d?d.prix_unitaire:'';$('ml-ob').value=d?(d.observations||''):'';opM('m-liv');}
 function editLiv(id){var x=(S.lc||[]).filter(function(l){return l.id===id;})[0];if(x)reqPwd('eliv',x);else toast('Livraison introuvable','error');}
 function saveLiv(){var id=$('ml-id').value;var obj={id:id||0,station:S.cs,date:$('ml-dt').value,produit:$('ml-pr').value,quantite_litres:$('ml-qt').value,prix_unitaire:$('ml-px').value,observations:$('ml-ob').value};if(!obj.produit)return toast('Produit requis','error');clM('m-liv');if(id){api('apiUpdateLivraison',{token:S.tk,obj:obj,livraisonPassword:S._llp||null}).then(function(r){S._llp=null;toast(r.message,r.ok?'success':'error');if(r.ok){_sfBusy=false;loadSF();}}).catch(function(e){S._llp=null;toast(e.message,'error');});}else{api('apiAddLivraison',{token:S.tk,obj:obj}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});}}
 function doDelLiv(id,pw){api('apiDeleteLivraison',{token:S.tk,id:id,livraisonPassword:pw}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});}
 
-/* CRUD VERSEMENTS */
 function openVerM(){$('mv-dt').value=td();$('mv-mt').value='';$('mv-md').value='';$('mv-rf').value='';opM('m-ver');}
 function saveVer(){var obj={station:S.cs,date:$('mv-dt').value,montant_verse:$('mv-mt').value,mode_versement:$('mv-md').value,reference:$('mv-rf').value};if(!obj.montant_verse||+obj.montant_verse<=0)return toast('Montant requis','error');api('apiAddVersement',{token:S.tk,obj:obj}).then(function(r){if(r.ok){clM('m-ver');_sfBusy=false;loadSF();toast('Versement enregistré','success');}}).catch(function(e){toast(e.message,'error');});}
 
-/* CRUD DEPENSES */
 function openDepM(){$('md-dt').value=td();$('md-ds').value='';$('md-ct').value='';$('md-mt').value='';popCatSel();opM('m-dep');}
 function saveDep(){var obj={station:S.cs,date:$('md-dt').value,description:$('md-ds').value,categorie:$('md-ct').value,montant:$('md-mt').value};if(!obj.montant||+obj.montant<=0)return toast('Montant requis','error');api('apiAddDepense',{token:S.tk,obj:obj}).then(function(r){if(r.ok){clM('m-dep');_sfBusy=false;loadSF();toast('Dépense enregistrée','success');}}).catch(function(e){toast(e.message,'error');});}
 
-/* FIX #3: CRUD CONSO — ajout station */
 function openConM(){$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';rPS();opM('m-con');}
 function saveCon(){
   api('apiAddConso',{token:S.tk,obj:{
