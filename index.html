@@ -976,7 +976,7 @@ function rRes(res,stockVal){
   if(!res)return;
   stockVal=stockVal||0;
   var mr=res.montant_restant||0,rcClass=mr>0?'positive':mr===0?'zero':'',mc=mr<0?'td':'ts';
-  var ac=mr-stockVal;
+  var ac=(-mr)-stockVal;
   var acBg=ac>0?'positive':ac===0?'zero':'',acTxt=ac<0?'td':'ts';
   $('st-res').innerHTML=
     '<div class="sc"><div class="si bl"><i class="fas fa-truck"></i></div><div class="sl">Livraisons</div><div class="sv">'+fmF(res.total_livraisons||0)+'</div></div>'
