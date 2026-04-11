@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=1,user-scalable=no"/>
 <title>Marjan Oil Stations</title>
+<link rel="dns-prefetch" href="https://script.google.com">
+<link rel="preconnect" href="https://script.google.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -384,11 +386,11 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
       </div>
       <div class="sp2" id="sp-dep">
         <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-dep" style="width:auto"><i class="fas fa-plus"></i> Dépense</button></div>
-        <div class="cd"><div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Description</th><th>Catégorie</th><th class="tr">Montant</th><th>Saisi par</th><th>Actions</th></tr></thead><tbody id="dep-tbl"></tbody></table></div></div>
+        <div class="cd"><div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Catégorie</th><th>Description</th><th class="tr">Montant</th><th>Actions</th></tr></thead><tbody id="dep-tbl"></tbody></table></div></div>
       </div>
       <div class="sp2" id="sp-con">
         <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-con" style="width:auto"><i class="fas fa-plus"></i> Relevé</button></div>
-        <div class="cd"><div class="tw"><table><thead><tr><th>Date</th><th>Produit</th><th class="tr">J. ouverture</th><th class="tr">J. fermeture</th><th class="tr">Sortie</th><th>Obs.</th></tr></thead><tbody id="con-tbl"></tbody></table></div></div>
+        <div class="cd"><div class="tw"><table><thead><tr><th>Date</th><th>Produit</th><th class="tr">J. ouverture</th><th class="tr">J. fermeture</th><th class="tr">Sortie</th><th>Obs.</th><th>Actions</th></tr></thead><tbody id="con-tbl"></tbody></table></div></div>
       </div>
     </div>
   </main>
@@ -414,6 +416,8 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 <div class="mo" id="m-dep"><div class="md"><div class="mh"><h3 id="m-dep-title">Dépense</h3><button class="mx" data-close="m-dep">&times;</button></div><div class="mb"><input type="hidden" id="md-id"/><div class="fg"><label>Date</label><input type="date" id="md-dt" class="fp"/></div><div class="fg"><label>Description</label><input type="text" id="md-ds" class="fp" placeholder="Nature de la dépense…"/></div><div class="fg"><label>Catégorie</label><select id="md-ct" class="fp"><option value="">-- Choisir --</option></select></div><div class="fg"><label>Montant (FCFA)</label><input type="number" id="md-mt" class="fp" min="1"/></div></div><div class="mf"><button class="btn btn2" data-close="m-dep">Annuler</button><button class="btn btn1" id="btn-save-dep"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
 
 <div class="mo" id="m-con"><div class="md"><div class="mh"><h3>Relevé consommation</h3><button class="mx" data-close="m-con">&times;</button></div><div class="mb">
+  <input type="hidden" id="mc-con-orig-date"/>
+  <input type="hidden" id="mc-con-orig-pr"/>
   <div class="fg"><label>Date</label><input type="date" id="mc-dt" class="fp"/></div>
   <div class="fg"><label>Produit</label><select id="mc-pr" class="fp"><option value="">-- Choisir --</option></select></div>
   <div class="fg"><label>Jauge ouverture (L)</label><input type="number" id="mc-jo" class="fp"/></div>
@@ -658,10 +662,10 @@ function api(action,params){
 
 function checkVer(){api('apiPing',{}).then(function(r){var vc=$('ver-check');vc.textContent='Serveur v'+(r.version||'?');vc.style.color=r.version?'#10b981':'#ef4444';}).catch(function(){var vc=$('ver-check');vc.textContent='Serveur ✓';vc.style.color='#f59e0b';});}
 
-function doLogin(e){e.preventDefault();var u=$('l-u').value.trim(),p=$('l-p').value;if(!u||!p)return toast('Champs requis','error');var b=$('l-btn');b.disabled=true;b.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Connexion…';api('apiLogin',{username:u,password:p}).then(function(r){if(!r.ok){toast(r.message,'error');return;}S.tk=r.token;S.u=r.user;S.pm=r.user.permissions;S.st=r.stations||[];S.pr=r.produits||[];S.sp=r.stationPrix||[];S.cat=r.categories||[];sessionStorage.setItem('mt',r.token);initApp();}).catch(function(er){toast(er.message||'Erreur réseau','error');}).finally(function(){b.disabled=false;b.innerHTML='<i class="fas fa-sign-in-alt"></i> Se connecter';});return false;}
+function doLogin(e){e.preventDefault();var u=$('l-u').value.trim(),p=$('l-p').value;if(!u||!p)return toast('Champs requis','error');var b=$('l-btn');b.disabled=true;b.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Connexion…';api('apiLogin',{username:u,password:p}).then(function(r){if(!r.ok){toast(r.message,'error');return;}S.tk=r.token;S.u=r.user;S.pm=r.user.permissions;S.st=r.stations||[];S.pr=r.produits||[];S.sp=r.stationPrix||[];S.cat=r.categories||[];sessionStorage.setItem('mt',r.token);initApp();setTimeout(checkVer,3000);}).catch(function(er){toast(er.message||'Erreur réseau','error');}).finally(function(){b.disabled=false;b.innerHTML='<i class="fas fa-sign-in-alt"></i> Se connecter';});return false;}
 function doLogout(){stopAR();api('apiLogout',{token:S.tk}).catch(function(){});sessionStorage.removeItem('mt');S.tk=null;S.u=null;S.pm=null;_clearDomCache();_notifs=[];_notifOpen=false;_hideNotifBtn();hide('app');show('pl','flex');}
 
-function checkSess(){var th=localStorage.getItem('mj_th')||'dark';document.documentElement.setAttribute('data-theme',th);$('thI').className=th==='light'?'fas fa-moon':'fas fa-sun';checkVer();var t=sessionStorage.getItem('mt');if(!t){hide('lo');show('pl','flex');return;}api('apiGetMe',{token:t}).then(function(r){if(!r.ok){hide('lo');show('pl','flex');return;}S.tk=t;S.u=r.user;S.pm=r.user.permissions;S.st=r.stations||[];S.pr=r.produits||[];S.sp=r.stationPrix||[];S.cat=r.categories||[];initApp();}).catch(function(){hide('lo');show('pl','flex');});}
+function checkSess(){var th=localStorage.getItem('mj_th')||'dark';document.documentElement.setAttribute('data-theme',th);$('thI').className=th==='light'?'fas fa-moon':'fas fa-sun';var t=sessionStorage.getItem('mt');if(!t){hide('lo');show('pl','flex');setTimeout(checkVer,500);return;}api('apiGetMe',{token:t}).then(function(r){if(!r.ok){hide('lo');show('pl','flex');setTimeout(checkVer,500);return;}S.tk=t;S.u=r.user;S.pm=r.user.permissions;S.st=r.stations||[];S.pr=r.produits||[];S.sp=r.stationPrix||[];S.cat=r.categories||[];initApp();setTimeout(checkVer,3000);}).catch(function(){hide('lo');show('pl','flex');setTimeout(checkVer,500);});}
 
 function initApp(){
   hide('lo');hide('pl');show('app','block');
@@ -805,7 +809,11 @@ function loadDash(force){
 function _applyDashData(r,fromCache,prevDash){
   var sm=r.summary||{},sts=r.stations||[],actif=0;
   for(var i=0;i<sts.length;i++)if((sts[i].ventes||0)>0)actif++;
-  $('d-stats').innerHTML='<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Total</div><div class="sv ta">'+fmF(sm.total_montant||0)+'</div></div><div class="sc"><div class="si bl"><i class="fas fa-gas-pump"></i></div><div class="sl">Volume total</div><div class="sv">'+fm(sm.total_litres||0)+' L</div></div><div class="sc"><div class="si gr"><i class="fas fa-receipt"></i></div><div class="sl">Ventes</div><div class="sv">'+fm(sm.total_ventes||0)+'</div></div><div class="sc"><div class="si pu"><i class="fas fa-building"></i></div><div class="sl">Stations actives</div><div class="sv">'+actif+' / '+sts.length+'</div></div>';
+  var totalRestantGlobal=0;for(var ri=0;ri<sts.length;ri++)totalRestantGlobal+=(sts[ri].restant!=null?sts[ri].restant:0);
+  var argentCaisse=(sm.total_montant||0)-totalRestantGlobal;
+  var acBgClass=argentCaisse<0?'':argentCaisse===0?'zero':'positive';
+  var acTxtClass=argentCaisse<0?'td':argentCaisse===0?'ts':'ts';
+  $('d-stats').innerHTML='<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Total</div><div class="sv ta">'+fmF(sm.total_montant||0)+'</div></div><div class="sc"><div class="si bl"><i class="fas fa-gas-pump"></i></div><div class="sl">Volume total</div><div class="sv">'+fm(sm.total_litres||0)+' L</div></div><div class="sc"><div class="si gr"><i class="fas fa-receipt"></i></div><div class="sl">Ventes</div><div class="sv">'+fm(sm.total_ventes||0)+'</div></div><div class="sc"><div class="si pu"><i class="fas fa-building"></i></div><div class="sl">Stations actives</div><div class="sv">'+actif+' / '+sts.length+'</div></div><div class="sc sc-restant '+acBgClass+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxtClass+'" style="font-size:22px">'+fmF(argentCaisse)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">CA Total - Restant dû (Stock)</div></div>';
   var prevMap={};if(prevDash&&!fromCache){var prev=prevDash.stations||[];for(var i2=0;i2<prev.length;i2++)prevMap[prev[i2].station]=prev[i2].montant;}
   _dashRows=[];
   for(var j=0;j<sts.length;j++){var s=sts[j];_dashRows.push({rank:j+1,station:s.station,short:s.station.replace(/Station Marjan /gi,'').replace(/Station /gi,''),livraisons:s.livraisons||0,ventes:s.ventes||0,litres:s.litres||0,montant:s.montant||0,versements:s.versements||0,restant:s.restant!=null?s.restant:0,_changed:prevMap[s.station]!=null&&prevMap[s.station]!==s.montant});}
@@ -942,7 +950,12 @@ function loadSF(){
     if(r.permissions)S.pm=r.permissions;
     if(r.stationPrix&&r.stationPrix.length){S.sp=r.stationPrix;rPS();}
     if(r.categories&&r.categories.length){S.cat=r.categories;popCatSel();}
-    requestAnimationFrame(function(){rRes(r.resume);rStk(r.stock||[]);rVen(r.sales||[]);rLiv(r.livraisons||[]);rVer(r.versements||[]);rDep(r.depenses||[]);rCon(r.conso||[]);rResChart(r.resume||{});});
+    requestAnimationFrame(function(){
+      var pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;
+      px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});
+      var stockVal=0;(r.stock||[]).forEach(function(p){stockVal+=(p.stock_litres||0)*(pxMap[p.produit]||0);});
+      rRes(r.resume,stockVal);rStk(r.stock||[]);rVen(r.sales||[]);rLiv(r.livraisons||[]);rVer(r.versements||[]);rDep(r.depenses||[]);rCon(r.conso||[]);rResChart(r.resume||{});
+    });
   })
   .catch(function(e){
     toast(e.message||'Erreur réseau','error');
@@ -959,10 +972,19 @@ function rResChart(res){
   S.ch.res=new Chart(cv,{type:'bar',data:{labels:['Livraisons','Versements','Dépenses','Restant dû'],datasets:[{data:[res.total_livraisons||0,res.total_versements||0,res.total_depenses||0,mr],backgroundColor:['rgba(59,130,246,.25)','rgba(16,185,129,.25)','rgba(239,68,68,.25)',mr>=0?'rgba(245,158,11,.25)':'rgba(239,68,68,.25)'],borderColor:['#3b82f6','#10b981','#ef4444',mr>=0?'#f59e0b':'#ef4444'],borderWidth:2,borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:250},plugins:{legend:{display:false}},scales:{x:{ticks:{color:c.t,font:{size:11}},grid:{display:false}},y:{ticks:{color:c.t,callback:function(v){return fm(v);}},grid:{color:c.g}}}}});
 }
 
-function rRes(res){
+function rRes(res,stockVal){
   if(!res)return;
+  stockVal=stockVal||0;
   var mr=res.montant_restant||0,rcClass=mr>0?'positive':mr===0?'zero':'',mc=mr<0?'td':'ts';
-  $('st-res').innerHTML='<div class="sc"><div class="si bl"><i class="fas fa-truck"></i></div><div class="sl">Livraisons</div><div class="sv">'+fmF(res.total_livraisons||0)+'</div></div><div class="sc"><div class="si gr"><i class="fas fa-hand-holding-usd"></i></div><div class="sl">Versements</div><div class="sv ts">'+fmF(res.total_versements||0)+'</div></div><div class="sc"><div class="si pu"><i class="fas fa-file-invoice-dollar"></i></div><div class="sl">Dépenses</div><div class="sv td">'+fmF(res.total_depenses||0)+'</div></div><div class="sc sc-restant '+rcClass+'"><div class="si re"><i class="fas fa-exclamation-triangle"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.8px">RESTANT DÛ</div><div class="sv '+mc+'" style="font-size:24px">'+fmF(mr)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">Versements + Dépenses - Livraisons</div></div><div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Ventes</div><div class="sv ta">'+fmF(res.total_ventes||0)+'</div></div>';
+  var ac=mr-stockVal;
+  var acBg=ac>0?'positive':ac===0?'zero':'',acTxt=ac<0?'td':'ts';
+  $('st-res').innerHTML=
+    '<div class="sc"><div class="si bl"><i class="fas fa-truck"></i></div><div class="sl">Livraisons</div><div class="sv">'+fmF(res.total_livraisons||0)+'</div></div>'
+   +'<div class="sc"><div class="si gr"><i class="fas fa-hand-holding-usd"></i></div><div class="sl">Versements</div><div class="sv ts">'+fmF(res.total_versements||0)+'</div></div>'
+   +'<div class="sc"><div class="si pu"><i class="fas fa-file-invoice-dollar"></i></div><div class="sl">Dépenses</div><div class="sv td">'+fmF(res.total_depenses||0)+'</div></div>'
+   +'<div class="sc sc-restant '+rcClass+'"><div class="si re"><i class="fas fa-exclamation-triangle"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.8px">RESTANT DÛ</div><div class="sv '+mc+'" style="font-size:24px">'+fmF(mr)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">Versements + Dépenses - Livraisons</div></div>'
+   +'<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Ventes</div><div class="sv ta">'+fmF(res.total_ventes||0)+'</div></div>'
+   +'<div class="sc sc-restant '+acBg+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxt+'" style="font-size:22px">'+fmF(ac)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">Restant dû − Stock</div></div>';
 }
 
 function rStk(stock){var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});(stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');$('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';}
@@ -973,9 +995,36 @@ function rLiv(items){var h=[],tQ=0,tM=0,canE=ce(),canD=cd();if(!items||!items.le
 
 function rVer(items){var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();if(!items||!items.length){$('ver-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-hand-holding-usd" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun versement</td></tr>';return;}items.forEach(function(o){tot+=o.montant_verse||0;var acts='';if(canE)acts+='<button class="btni btn-edit-ver" data-id="'+o.id+'" data-dt="'+o.date+'" data-mt="'+(o.montant_verse||0)+'" data-md="'+escH(o.mode_versement||'')+'" data-rf="'+escH(o.reference||'')+'"><i class="fas fa-pen"></i></button>';if(canD)acts+='<button class="btni btn-del-ver" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h.push('<tr><td class="fw7" style="color:var(--ok)">'+o.id+'</td><td>'+o.date+'</td><td class="tr fw7 ts">'+fmF(o.montant_verse||0)+'</td><td><span class="bg bg-g">'+(o.mode_versement||'—')+'</span></td><td style="color:var(--t3)">'+(o.reference||'—')+'</td><td>'+escH(o.saisi_par)+'</td><td class="ac">'+acts+'</td></tr>');});h.push('<tr style="font-weight:800;background:var(--okg)"><td colspan="2">TOTAL</td><td class="tr ts">'+fmF(tot)+'</td><td colspan="4"></td></tr>');$('ver-tbl').innerHTML=h.join('');$('ver-tbl').querySelectorAll('.btn-edit-ver').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut modifier','error');return;}$('m-ver-title').textContent='Modifier versement #'+b.dataset.id;$('mv-id').value=b.dataset.id;$('mv-dt').value=b.dataset.dt;$('mv-mt').value=b.dataset.mt;$('mv-md').value=b.dataset.md;$('mv-rf').value=b.dataset.rf;opM('m-ver');});});$('ver-tbl').querySelectorAll('.btn-del-ver').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut supprimer','error');return;}if(!confirm('Supprimer ce versement?'))return;api('apiDeleteVersement',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
 
-function rDep(items){var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();if(!items||!items.length){$('dep-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}items.forEach(function(o){tot+=o.montant||0;var acts='';if(canE)acts+='<button class="btni btn-edit-dep" data-id="'+o.id+'" data-dt="'+o.date+'" data-ds="'+escH(o.description||'')+'" data-ct="'+escH(o.categorie||'')+'" data-mt="'+(o.montant||0)+'"><i class="fas fa-pen"></i></button>';if(canD)acts+='<button class="btni btn-del-dep" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h.push('<tr><td class="fw7" style="color:var(--err)">'+o.id+'</td><td>'+o.date+'</td><td>'+escH(o.description)+'</td><td><span class="bg bg-p">'+(o.categorie||'—')+'</span></td><td class="tr fw7 td">'+fmF(o.montant||0)+'</td><td>'+escH(o.saisi_par)+'</td><td class="ac">'+acts+'</td></tr>');});h.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td colspan="2"></td></tr>');$('dep-tbl').innerHTML=h.join('');$('dep-tbl').querySelectorAll('.btn-edit-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut modifier','error');return;}$('m-dep-title').textContent='Modifier dépense #'+b.dataset.id;$('md-id').value=b.dataset.id;$('md-dt').value=b.dataset.dt;$('md-ds').value=b.dataset.ds;$('md-ct').value=b.dataset.ct;$('md-mt').value=b.dataset.mt;popCatSel();setTimeout(function(){$('md-ct').value=b.dataset.ct;},50);opM('m-dep');});});$('dep-tbl').querySelectorAll('.btn-del-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut supprimer','error');return;}if(!confirm('Supprimer cette dépense?'))return;api('apiDeleteDepense',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
+function rDep(items){var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();if(!items||!items.length){$('dep-tbl').innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}items.forEach(function(o){tot+=o.montant||0;var acts='';if(canE)acts+='<button class="btni btn-edit-dep" data-id="'+o.id+'" data-dt="'+o.date+'" data-ds="'+escH(o.description||'')+'" data-ct="'+escH(o.categorie||'')+'" data-mt="'+(o.montant||0)+'"><i class="fas fa-pen"></i></button>';if(canD)acts+='<button class="btni btn-del-dep" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h.push('<tr><td class="fw7" style="color:var(--err)">'+o.id+'</td><td>'+o.date+'</td><td><span class="bg bg-p">'+(o.categorie||'—')+'</span></td><td>'+escH(o.description)+'</td><td class="tr fw7 td">'+fmF(o.montant||0)+'</td><td class="ac">'+acts+'</td></tr>');});h.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td></td></tr>');$('dep-tbl').innerHTML=h.join('');$('dep-tbl').querySelectorAll('.btn-edit-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut modifier','error');return;}$('m-dep-title').textContent='Modifier dépense #'+b.dataset.id;$('md-id').value=b.dataset.id;$('md-dt').value=b.dataset.dt;$('md-ds').value=b.dataset.ds;$('md-ct').value=b.dataset.ct;$('md-mt').value=b.dataset.mt;popCatSel();setTimeout(function(){$('md-ct').value=b.dataset.ct;},50);opM('m-dep');});});$('dep-tbl').querySelectorAll('.btn-del-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut supprimer','error');return;}if(!confirm('Supprimer cette dépense?'))return;api('apiDeleteDepense',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
 
-function rCon(items){var h=[];if(!items||!items.length){$('con-tbl').innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-tachometer-alt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun relevé</td></tr>';return;}items.forEach(function(o){h.push('<tr><td>'+o.date+'</td><td class="fw6">'+(o.produit||'—')+'</td><td class="tr">'+fm(o.jauge_ouverture||0)+'</td><td class="tr">'+fm(o.jauge_fermeture||0)+'</td><td class="tr fw7 ta">'+fm(o.sortie||0)+'</td><td style="color:var(--t3)">'+(o.observations||'—')+'</td></tr>');});$('con-tbl').innerHTML=h.join('');}
+var _CON_PWD='kakafony123';
+function _checkConPwd(pw){return String(pw||'')===_CON_PWD;}
+function rCon(items){
+  var h=[];
+  if(!items||!items.length){$('con-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-tachometer-alt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun relevé</td></tr>';return;}
+  items.forEach(function(o,idx){
+    var acts='<button class="btni btn-edit-con" data-idx="'+idx+'" title="Modifier"><i class="fas fa-pen"></i></button>'
+            +'<button class="btni btn-del-con" data-idx="'+idx+'" style="color:var(--err)" title="Supprimer"><i class="fas fa-trash-alt"></i></button>';
+    h.push('<tr><td>'+o.date+'</td><td class="fw6">'+(o.produit||'—')+'</td><td class="tr">'+fm(o.jauge_ouverture||0)+'</td><td class="tr">'+fm(o.jauge_fermeture||0)+'</td><td class="tr fw7 ta">'+fm(o.sortie||0)+'</td><td style="color:var(--t3)">'+(o.observations||'—')+'</td><td class="ac">'+acts+'</td></tr>');
+  });
+  $('con-tbl').innerHTML=h.join('');
+  var conItems=items;
+  $('con-tbl').querySelectorAll('.btn-edit-con').forEach(function(b){b.addEventListener('click',function(){
+    var pw=prompt('Mot de passe pour modifier :');if(!_checkConPwd(pw)){toast('Mot de passe incorrect','error');return;}
+    var o=conItems[+b.dataset.idx];if(!o)return;
+    $('mc-dt').value=o.date||'';
+    var sel=$('mc-pr');for(var i=0;i<sel.options.length;i++){if(sel.options[i].value===o.produit){sel.selectedIndex=i;break;}}
+    $('mc-jo').value=o.jauge_ouverture||0;$('mc-jf').value=o.jauge_fermeture||0;$('mc-so').value=o.sortie||0;$('mc-ob').value=o.observations||'';
+    $('mc-con-orig-date').value=o.date||'';$('mc-con-orig-pr').value=o.produit||'';
+    opM('m-con');
+  });});
+  $('con-tbl').querySelectorAll('.btn-del-con').forEach(function(b){b.addEventListener('click',function(){
+    var pw=prompt('Mot de passe pour supprimer :');if(!_checkConPwd(pw)){toast('Mot de passe incorrect','error');return;}
+    var o=conItems[+b.dataset.idx];if(!o)return;
+    if(!confirm('Supprimer ce relevé ?'))return;
+    api('apiDeleteConso',{token:S.tk,obj:{date:o.date,produit:o.produit,station:S.cs}}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else{toast(r.message||'Erreur','error');}}).catch(function(e){toast(e.message,'error');});
+  });});
+}
 
 /* ===== VENTES — FIX 3 anti-doublons ===== */
 function openSaleM(d){d=d||null;$('m-sale-t').textContent=d?'Modifier vente #'+d.id:'Nouvelle vente';$('ms-id').value=d?d.id:'';$('ms-dt').value=d?d.date:td();rPS();setTimeout(function(){$('ms-pr').value=d?d.produit:'';$('ms-px').value=d?d.prix_unitaire:'';},30);$('ms-qt').value=d?d.quantite_litres:'';$('ms-ob').value=d?(d.observations||''):'';opM('m-sale');}
@@ -1051,7 +1100,7 @@ function saveDep(){
 }
 
 /* ===== CONSO — FIX 3 anti-doublons ===== */
-function openConM(){$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';rPS();opM('m-con');}
+function openConM(){$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';$('mc-con-orig-date').value='';$('mc-con-orig-pr').value='';rPS();opM('m-con');}
 
 function saveCon(){
   var btn=$('btn-save-con');
@@ -1060,8 +1109,20 @@ function saveCon(){
   if(!prod){_unlockSave(btn);return toast('Produit requis','error');}
   var jo=$('mc-jo').value,jf=$('mc-jf').value;
   if(!jo&&jo!==0){_unlockSave(btn);return toast('Jauge ouverture requise','error');}
-  api('apiAddConso',{token:S.tk,obj:{station:S.cs,date:$('mc-dt').value,produit:prod,jauge_ouverture:jo,jauge_fermeture:jf,observations:$('mc-ob').value}})
-  .then(function(r){if(r.ok){clM('m-con');toast('Relevé enregistré','success');handleNotify(r);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');})
+  var origDate=$('mc-con-orig-date').value,origPr=$('mc-con-orig-pr').value;
+  var isEdit=origDate&&origPr;
+  var action=isEdit?'apiUpdateConso':'apiAddConso';
+  var obj={station:S.cs,date:$('mc-dt').value,produit:prod,jauge_ouverture:+jo,jauge_fermeture:+jf,observations:$('mc-ob').value};
+  if(isEdit){obj.orig_date=origDate;obj.orig_produit=origPr;}
+  api(action,{token:S.tk,obj:obj})
+  .then(function(r){
+    if(r.ok){
+      clM('m-con');
+      $('mc-con-orig-date').value='';$('mc-con-orig-pr').value='';
+      toast(isEdit?'Relevé modifié':'Relevé enregistré','success');
+      handleNotify(r);_sfBusy=false;loadSF();
+    }else toast(r.message||'Erreur','error');
+  })
   .catch(function(e){toast(e.message,'error');})
   .finally(function(){_unlockSave(btn);});
 }
