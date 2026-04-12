@@ -997,20 +997,19 @@ function rVer(items){var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();if(!i
 
 function rDep(items){var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();if(!items||!items.length){$('dep-tbl').innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}items.forEach(function(o){tot+=o.montant||0;var acts='';if(canE)acts+='<button class="btni btn-edit-dep" data-id="'+o.id+'" data-dt="'+o.date+'" data-ds="'+escH(o.description||'')+'" data-ct="'+escH(o.categorie||'')+'" data-mt="'+(o.montant||0)+'"><i class="fas fa-pen"></i></button>';if(canD)acts+='<button class="btni btn-del-dep" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h.push('<tr><td class="fw7" style="color:var(--err)">'+o.id+'</td><td>'+o.date+'</td><td><span class="bg bg-p">'+(o.categorie||'—')+'</span></td><td>'+escH(o.description)+'</td><td class="tr fw7 td">'+fmF(o.montant||0)+'</td><td class="ac">'+acts+'</td></tr>');});h.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td></td></tr>');$('dep-tbl').innerHTML=h.join('');$('dep-tbl').querySelectorAll('.btn-edit-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut modifier','error');return;}$('m-dep-title').textContent='Modifier dépense #'+b.dataset.id;$('md-id').value=b.dataset.id;$('md-dt').value=b.dataset.dt;$('md-ds').value=b.dataset.ds;$('md-ct').value=b.dataset.ct;$('md-mt').value=b.dataset.mt;popCatSel();setTimeout(function(){$('md-ct').value=b.dataset.ct;},50);opM('m-dep');});});$('dep-tbl').querySelectorAll('.btn-del-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut supprimer','error');return;}if(!confirm('Supprimer cette dépense?'))return;api('apiDeleteDepense',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
 
-var _CON_PWD='kakafony123';
-function _checkConPwd(pw){return String(pw||'')===_CON_PWD;}
 function rCon(items){
-  var h=[];
+  var h=[],admin=isAd();
   if(!items||!items.length){$('con-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-tachometer-alt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun relevé</td></tr>';return;}
   items.forEach(function(o,idx){
-    var acts='<button class="btni btn-edit-con" data-idx="'+idx+'" title="Modifier"><i class="fas fa-pen"></i></button>'
-            +'<button class="btni btn-del-con" data-idx="'+idx+'" style="color:var(--err)" title="Supprimer"><i class="fas fa-trash-alt"></i></button>';
+    var acts='';
+    if(admin)acts='<button class="btni btn-edit-con" data-idx="'+idx+'" title="Modifier"><i class="fas fa-pen"></i></button>'
+                  +'<button class="btni btn-del-con" data-idx="'+idx+'" style="color:var(--err)" title="Supprimer"><i class="fas fa-trash-alt"></i></button>';
     h.push('<tr><td>'+o.date+'</td><td class="fw6">'+(o.produit||'—')+'</td><td class="tr">'+fm(o.jauge_ouverture||0)+'</td><td class="tr">'+fm(o.jauge_fermeture||0)+'</td><td class="tr fw7 ta">'+fm(o.sortie||0)+'</td><td style="color:var(--t3)">'+(o.observations||'—')+'</td><td class="ac">'+acts+'</td></tr>');
   });
   $('con-tbl').innerHTML=h.join('');
   var conItems=items;
   $('con-tbl').querySelectorAll('.btn-edit-con').forEach(function(b){b.addEventListener('click',function(){
-    var pw=prompt('Mot de passe pour modifier :');if(!_checkConPwd(pw)){toast('Mot de passe incorrect','error');return;}
+    if(!isAd()){toast('Seul l\'admin peut modifier','error');return;}
     var o=conItems[+b.dataset.idx];if(!o)return;
     $('mc-dt').value=o.date||'';
     var sel=$('mc-pr');for(var i=0;i<sel.options.length;i++){if(sel.options[i].value===o.produit){sel.selectedIndex=i;break;}}
@@ -1019,7 +1018,7 @@ function rCon(items){
     opM('m-con');
   });});
   $('con-tbl').querySelectorAll('.btn-del-con').forEach(function(b){b.addEventListener('click',function(){
-    var pw=prompt('Mot de passe pour supprimer :');if(!_checkConPwd(pw)){toast('Mot de passe incorrect','error');return;}
+    if(!isAd()){toast('Seul l\'admin peut supprimer','error');return;}
     var o=conItems[+b.dataset.idx];if(!o)return;
     if(!confirm('Supprimer ce relevé ?'))return;
     api('apiDeleteConso',{token:S.tk,obj:{date:o.date,produit:o.produit,station:S.cs}}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else{toast(r.message||'Erreur','error');}}).catch(function(e){toast(e.message,'error');});
