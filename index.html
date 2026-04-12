@@ -62,16 +62,12 @@ button{cursor:pointer;-webkit-appearance:none;appearance:none}
 .l-foot{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--brd);font-size:11px;color:var(--t3)}.l-foot b{color:var(--acc)}
 .th-btn{position:fixed;top:9px;right:64px;z-index:500;width:48px;height:48px;background:var(--card);border:1px solid var(--brd);border-radius:10px;color:var(--t2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;touch-action:manipulation}
 .th-btn:hover{color:var(--acc);border-color:var(--accb)}
-
-/* ===== NOTIFICATION BELL ===== */
 .notif-btn{position:fixed;top:9px;right:9px;z-index:501;width:48px;height:48px;background:var(--card);border:1px solid var(--brd);border-radius:10px;color:var(--t2);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;touch-action:manipulation}
 .notif-btn:hover{color:var(--acc);border-color:var(--accb)}
 .notif-btn.active{display:flex}
 .notif-badge{position:absolute;top:7px;right:7px;width:16px;height:16px;background:var(--err);border-radius:50%;font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--card);pointer-events:none;animation:scaleIn .2s ease}
 .notif-badge.hidden{display:none}
 .notif-btn.ringing .fa-bell{animation:bellRing .6s ease}
-
-/* Panneau notifications */
 .notif-panel{position:fixed;top:65px;right:9px;width:340px;max-width:calc(100vw - 18px);background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);box-shadow:var(--sh);z-index:10000;display:none;flex-direction:column;max-height:70vh;overflow:hidden;animation:scaleIn .2s ease}
 .notif-panel.sh{display:flex}
 .notif-ph{padding:14px 16px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -101,7 +97,6 @@ button{cursor:pointer;-webkit-appearance:none;appearance:none}
 .notif-empty{text-align:center;padding:32px 16px;color:var(--t3)}
 .notif-empty i{font-size:28px;display:block;margin-bottom:10px;opacity:.3}
 .notif-empty p{font-size:12px}
-
 .fg{margin-bottom:15px}
 .fg label{display:block;font-size:11px;font-weight:600;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
 .iw{position:relative}.iw i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:13px;pointer-events:none}
@@ -251,356 +246,565 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 .empty-state p{font-size:13px;font-weight:500}
 .notif-bar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:10002;background:linear-gradient(135deg,var(--acc),var(--acc3));color:#000;padding:12px 20px;border-radius:12px;font-size:12px;font-weight:700;box-shadow:0 8px 32px rgba(245,158,11,.4);display:flex;align-items:center;gap:10px;animation:fadeUp .3s ease;max-width:90vw}
 .notif-bar i{font-size:16px}
-
-/* Saving overlay - FIX DOUBLONS */
 .saving-overlay{position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.0);pointer-events:all;cursor:wait}
-
+/* Champs index style */
+.idx-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;padding:12px;background:var(--accg);border:1px solid var(--accb);border-radius:var(--r)}
+.idx-row .idx-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.idx-row .idx-val{font-size:16px;font-weight:800;color:var(--acc)}
 @media(max-width:900px){:root{--sidebar:220px}.mc{padding:18px}.cg{grid-template-columns:1fr}.psg{grid-template-columns:1fr}.md{max-width:96vw}}
-@media(max-width:768px){.side{transform:translateX(-100%);width:260px;z-index:400}.side.open{transform:translateX(0)}.mob-tog{display:flex}.mc{margin-left:0!important;padding:12px;padding-top:56px}.th-btn{top:10px;right:66px}.notif-btn{top:10px;right:10px}.pt{font-size:16px;gap:7px}.sg{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}.sc{padding:14px 12px}.sv{font-size:15px}.si{width:34px;height:34px;font-size:14px}.cg{grid-template-columns:1fr;gap:12px;margin-bottom:14px}.dash-bar{flex-direction:column;align-items:stretch;gap:8px;padding:10px 12px}.tw{overflow-x:auto;border-radius:8px}table{font-size:11px;min-width:500px}thead th,tbody td{padding:8px 10px}.mo{align-items:flex-end;padding:0}.md{max-width:100vw;width:100%;border-radius:20px 20px 0 0;max-height:93vh;max-height:93dvh}.stb{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}canvas{max-height:220px!important}.notif-panel{top:66px;right:6px;width:calc(100vw - 12px)}}
-@media(max-width:480px){.sg{grid-template-columns:1fr;gap:8px}.mc{padding:10px;padding-top:54px}.pt{font-size:14px}.btn{min-height:48px;padding:12px 14px;font-size:13px}.fc,.fp{padding:14px 12px 14px 38px;font-size:15px;min-height:50px}select.fp{padding:14px;font-size:15px;min-height:50px}.sc{padding:12px 10px}.sv{font-size:14px;font-weight:700}.si{width:30px;height:30px;font-size:12px}table{font-size:10px}thead th,tbody td{padding:6px 8px}canvas{max-height:180px!important}}
+@media(max-width:700px){
+  :root{--sidebar:280px}
+  .side{transform:translateX(-100%)}
+  .side.open{transform:translateX(0);box-shadow:8px 0 40px rgba(0,0,0,.5)}
+  .mc{margin-left:0;padding:14px;padding-top:70px}
+  .mob-tog{display:flex}
+  .th-btn{right:120px}
+  .notif-btn{right:68px}
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .cg{grid-template-columns:1fr}
+  .md{border-radius:16px;max-width:100%;width:calc(100% - 0px)}
+  .mo{padding:0;align-items:flex-end}
+  .md{border-bottom-left-radius:0;border-bottom-right-radius:0;max-height:92vh;max-height:92dvh}
+  table{min-width:600px}
+  .tw{border-radius:8px}
+  .idx-row{grid-template-columns:1fr 1fr;gap:6px}
+}
+@media(max-width:400px){.sg{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+<div id="lo"><div class="lo-logo">⛽ Marjan Oil Stations</div><div class="lo-spin"></div><div class="lo-txt">Chargement…</div></div>
+<div id="tb"></div>
 
-<button class="th-btn" onclick="toggleTheme()" aria-label="Theme"><i class="fas fa-sun" id="thI"></i></button>
-<!-- CLOCHE NOTIFICATIONS -->
-<button class="notif-btn" id="notif-btn" aria-label="Notifications">
-  <i class="fas fa-bell"></i>
-  <span class="notif-badge hidden" id="notif-badge">0</span>
-</button>
-
-<!-- PANNEAU NOTIFICATIONS -->
+<button class="th-btn" onclick="toggleTheme()" title="Thème"><i id="thI" class="fas fa-sun"></i></button>
+<button class="notif-btn" id="notif-btn" title="Notifications"><i class="fas fa-bell"></i><span class="notif-badge hidden" id="notif-badge"></span></button>
 <div class="notif-panel" id="notif-panel">
   <div class="notif-ph">
     <h4><i class="fas fa-bell"></i> Notifications</h4>
     <div class="notif-actions">
       <button class="notif-clear" id="notif-clear-btn">Tout effacer</button>
-      <span class="notif-close" id="notif-panel-close">×</span>
+      <span class="notif-close" id="notif-panel-close"><i class="fas fa-times"></i></span>
     </div>
   </div>
   <div class="notif-list" id="notif-list"></div>
 </div>
 
-<div id="lo"><div class="lo-logo">Marjan Oil Stations</div><div class="lo-spin"></div><div class="lo-txt">Chargement en cours…</div></div>
-<div id="tb"></div>
-
-<!-- LOGIN -->
-<div id="pl" style="display:none">
-  <div class="lc"><div class="lcard"><div class="l-logo"><h1><i class="fas fa-gas-pump"></i> Marjan Oil</h1><p>Système de gestion des stations</p></div>
-  <form id="login-form">
-    <div class="fg"><label>Identifiant</label><div class="iw"><i class="fas fa-user"></i><input type="text" id="l-u" class="fc" placeholder="Username" required autocomplete="username"/></div></div>
-    <div class="fg"><label>Mot de passe</label><div class="iw"><i class="fas fa-lock"></i><input type="password" id="l-p" class="fc" placeholder="••••••••" required autocomplete="current-password"/></div></div>
-    <button type="submit" class="btn btn1 btnw" id="l-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+<div id="pl"><div class="lc"><div class="lcard">
+  <div class="l-logo"><h1>⛽ Marjan Oil</h1><p>Système de gestion des stations</p></div>
+  <form onsubmit="return doLogin(event)">
+    <div class="fg"><label>Identifiant</label><div class="iw"><i class="fas fa-user"></i><input id="l-u" class="fc" type="text" placeholder="Votre identifiant" autocomplete="username"></div></div>
+    <div class="fg"><label>Mot de passe</label><div class="iw"><i class="fas fa-lock"></i><input id="l-p" class="fc" type="password" placeholder="••••••••" autocomplete="current-password"></div></div>
+    <button id="l-btn" class="btn btn1 btnw" type="submit"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
   </form>
-  <div class="l-foot">© <b>JolofLab EPR</b> · v1.6.0 · <span id="ver-check" style="color:var(--t3)">…</span></div></div></div>
-</div>
+  <div class="l-foot">Version <b id="ver-check">…</b></div>
+</div></div></div>
 
-<!-- APP -->
 <div id="app">
-  <button class="mob-tog" id="mob-tog-btn"><i class="fas fa-bars"></i></button>
+  <div class="mob-tog" id="mob-tog-btn"><i class="fas fa-bars"></i></div>
   <div class="mob-ov" id="mob-ov"></div>
-  <aside class="side" id="side">
-    <div class="s-hd"><div class="s-brand"><i class="fas fa-gas-pump"></i> Marjan Oil</div><div class="s-sub" id="s-role"></div></div>
-    <nav class="s-nav" id="s-nav"></nav>
-    <div class="s-ft"><div class="ub"><div class="ua" id="s-av">M</div><div style="flex:1;min-width:0"><div class="un" id="s-name">—</div><div class="ur" id="s-rl">—</div></div></div><button class="blo" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button></div>
-  </aside>
-  <main class="mc" id="mc">
+  <nav class="side" id="side">
+    <div class="s-hd"><div class="s-brand">⛽ Marjan Oil</div><div class="s-sub">Gestion des stations</div></div>
+    <div class="s-nav" id="s-nav"></div>
+    <div class="s-ft">
+      <div class="ub"><div class="ua" id="s-av">M</div><div><div class="un" id="s-name">—</div><div class="ur" id="s-rl">—</div></div></div>
+      <div style="font-size:10px;color:var(--t3);margin-bottom:8px" id="s-role"></div>
+      <div id="sale-wrap"></div>
+      <button class="blo" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+    </div>
+  </nav>
+  <main class="mc">
 
     <!-- DASHBOARD -->
     <div class="ps2" id="p-dashboard">
-      <div class="ph"><div class="pt">Tableau de bord <span class="live ok" id="live-ind"><span class="ldot"></span><span id="live-txt">LIVE</span></span><span class="upd-time" id="upd-time"></span></div><div class="ps">Vue consolidée · Rafraîchissement automatique 30s</div></div>
+      <div class="ph"><div class="pt"><i class="fas fa-chart-pie ta"></i> Tableau de bord</div><div class="ps">Vue d'ensemble en temps réel</div></div>
+      <div class="dash-bar">
+        <label>Du</label><input type="date" id="d-from">
+        <label>Au</label><input type="date" id="d-to">
+        <div class="sp"></div>
+        <div class="rfb"><span class="live loading" id="live-ind"><span class="ldot"></span><span id="live-txt">Sync…</span></span></div>
+        <div class="rfb"><span class="upd-time" id="upd-time"></span></div>
+        <div class="rfb"><i class="fas fa-redo" style="font-size:10px"></i> <span class="cd2" id="d-cd">30</span>s</div>
+        <button class="btn btn2" id="d-ref-btn"><i class="fas fa-sync-alt"></i> Actualiser</button>
+      </div>
       <div class="prog"><div class="prog-f" id="prog-f"></div></div>
-      <div class="dash-bar"><label><i class="fas fa-calendar"></i> Du</label><input type="date" id="d-from"/><label>Au</label><input type="date" id="d-to"/><button class="btn btn1" id="d-ref-btn"><i class="fas fa-sync-alt"></i> Actualiser</button><div class="sp"></div><div class="rfb"><i class="fas fa-clock"></i>&nbsp;<span class="cd2" id="d-cd">30</span>s</div></div>
       <div class="sg" id="d-stats"></div>
-      <div class="cg"><div class="cd"><div class="ct"><i class="fas fa-chart-bar ta"></i> CA par station</div><div class="cc"><canvas id="ch-st"></canvas></div></div><div class="cd"><div class="ct"><i class="fas fa-chart-pie" style="color:var(--pur)"></i> Top produits</div><div class="cc"><canvas id="ch-pr"></canvas></div></div></div>
-      <div class="cg"><div class="cd"><div class="ct"><i class="fas fa-gas-pump" style="color:var(--inf)"></i> Volume par station</div><div class="cc"><canvas id="ch-vol"></canvas></div></div></div>
-      <div class="cd mt1"><div class="ct" style="flex-wrap:wrap;gap:8px"><span><i class="fas fa-trophy ta"></i> Classement stations</span><div class="dash-search" style="flex:1;min-width:180px;margin-bottom:0"><i class="fas fa-search"></i><input type="text" id="d-search" placeholder="Rechercher…" autocomplete="off"/><button id="d-search-clr" style="background:none;border:none;color:var(--t3);cursor:pointer;padding:6px;font-size:12px;min-width:30px;min-height:30px" aria-label="Clear"><i class="fas fa-times"></i></button></div><span class="row-cnt" id="d-cnt"></span></div>
-      <!-- FIX 2: Ajout colonne Livraisons avant Ventes -->
-      <div class="tw"><table id="d-table"><thead><tr>
-        <th class="sortable" data-col="0">#</th>
-        <th class="sortable" data-col="1">Station</th>
-        <th class="sortable tr" data-col="2">Livraisons</th>
-        <th class="sortable" data-col="3">Ventes</th>
-        <th class="sortable tr" data-col="4">Volume (L)</th>
-        <th class="sortable tr" data-col="5">CA</th>
-        <th class="sortable tr" data-col="6">Versements</th>
-        <th class="sortable tr" data-col="7">Restant</th>
-      </tr></thead><tbody id="d-tbl"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--t3)"><i class="fas fa-circle-notch fa-spin"></i>&nbsp; Chargement…</td></tr></tbody></table></div></div>
+      <div class="dash-search"><i class="fas fa-search"></i><input id="d-search" placeholder="Rechercher une station…"><span class="row-cnt" id="d-cnt"></span><button class="btni" id="d-search-clr" title="Effacer"><i class="fas fa-times"></i></button></div>
+      <div class="tw"><table id="d-table">
+        <thead><tr>
+          <th class="sortable" data-col="0">#</th>
+          <th class="sortable" data-col="1">Station</th>
+          <th class="sortable" data-col="2" style="color:var(--inf)">Livraisons</th>
+          <th class="sortable" data-col="3">Ventes</th>
+          <th class="sortable" data-col="4">Litres</th>
+          <th class="sortable" data-col="5" style="color:var(--acc)">CA</th>
+          <th class="sortable" data-col="6" style="color:var(--ok)">Versements</th>
+          <th class="sortable" data-col="7">Restant</th>
+        </tr></thead>
+        <tbody id="d-tbl"></tbody>
+      </table></div>
+      <div class="cg mt2">
+        <div class="cd"><div class="ct"><i class="fas fa-chart-bar"></i> CA par station</div><div class="cc"><canvas id="ch-st"></canvas></div></div>
+        <div class="cd"><div class="ct"><i class="fas fa-chart-pie"></i> Top produits</div><div class="cc"><canvas id="ch-pr"></canvas></div></div>
+        <div class="cd"><div class="ct"><i class="fas fa-gas-pump"></i> Volume par station</div><div class="cc"><canvas id="ch-vol"></canvas></div></div>
+      </div>
     </div>
-
-    <!-- CONFIG STATIONS -->
-    <div class="ps2" id="p-config-stations"><div class="ph"><div class="pt"><i class="fas fa-map-marker-alt ta"></i> Stations</div></div><div class="tb2" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-st"><i class="fas fa-plus"></i> Nouvelle</button><div class="sp"></div><button class="btn btn2" id="btn-reload-st"><i class="fas fa-sync-alt"></i></button></div><div class="cd"><div class="tw"><table><thead><tr><th>#</th><th>Station</th><th>Date création</th><th>Actions</th></tr></thead><tbody id="cfg-st-tbl"></tbody></table></div></div></div>
-
-    <!-- CONFIG PRODUITS -->
-    <div class="ps2" id="p-config-produits"><div class="ph"><div class="pt"><i class="fas fa-tags ta"></i> Produits & Prix</div></div><div class="tb2" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-pr"><i class="fas fa-plus"></i> Nouveau</button><div class="sp"></div><button class="btn btn2" id="btn-reload-pr"><i class="fas fa-sync-alt"></i></button></div><div class="cd" style="margin-bottom:18px"><div class="ct"><i class="fas fa-tag"></i> Prix défaut</div><div class="tw"><table><thead><tr><th>Produit</th><th class="tr">Prix (F/L)</th><th>Modifié</th><th>Actions</th></tr></thead><tbody id="cfg-pr-tbl"></tbody></table></div></div><div class="cd"><div class="ct"><i class="fas fa-map-marker-alt"></i> Prix par station</div><div style="display:flex;gap:8px;align-items:center;margin-bottom:14px"><label style="font-size:11px;font-weight:600;color:var(--t2)">Station :</label><select id="px-st-sel" class="fp" style="min-width:200px"><option value="">-- Sélectionner --</option></select></div><div class="psg" id="px-st-grid"></div><div style="margin-top:12px;display:none" id="px-st-bar"><button class="btn btn1" id="btn-save-px" style="width:auto"><i class="fas fa-save"></i> Enregistrer</button></div></div></div>
-
-    <!-- CATEGORIES -->
-    <div class="ps2" id="p-config-categories"><div class="ph"><div class="pt"><i class="fas fa-folder-open ta"></i> Catégories</div></div><div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><input type="text" id="new-cat" class="fp" placeholder="Nouvelle catégorie…" style="width:230px"/><button class="btn btn1" id="btn-add-cat" style="width:auto"><i class="fas fa-plus"></i></button></div><div class="cd"><div id="cat-list" style="display:flex;flex-wrap:wrap;gap:4px;min-height:40px"></div></div></div>
-
-    <!-- SECURITY -->
-    <div class="ps2" id="p-security"><div class="ph"><div class="pt"><i class="fas fa-shield-alt ta"></i> Sécurité</div></div><div class="cd" style="max-width:420px"><h4 style="font-size:14px;font-weight:700;margin-bottom:4px">Mot de passe ventes</h4><p style="font-size:12px;color:var(--t3);margin-bottom:18px">Requis pour modifier/supprimer une vente (non-admin)</p><div class="fg"><label>Actuel</label><div style="display:flex;gap:8px"><input type="text" id="sec-cur" class="fp" readonly style="flex:1"/><button class="btn btn2" id="btn-show-pwd"><i class="fas fa-eye"></i></button></div></div><div class="fg"><label>Nouveau mot de passe</label><input type="text" id="sec-new" class="fp" placeholder="Min 3 caractères"/></div><button class="btn btn1" id="btn-save-sec" style="width:auto"><i class="fas fa-save"></i> Enregistrer</button></div></div>
-
-    <!-- USERS -->
-    <div class="ps2" id="p-users"><div class="ph"><div class="pt"><i class="fas fa-users-cog ta"></i> Utilisateurs</div></div><div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-usr"><i class="fas fa-plus"></i> Nouveau</button><div class="sp"></div><button class="btn btn2" id="btn-reload-usr"><i class="fas fa-sync-alt"></i></button></div><div class="cd"><div class="tw"><table><thead><tr><th>Username</th><th>Nom complet</th><th>Rôle</th><th>Station</th><th>Tél.</th><th>Actions</th></tr></thead><tbody id="usr-tbl"></tbody></table></div></div></div>
 
     <!-- STATION -->
     <div class="ps2" id="p-station">
       <div class="ph"><div class="pt" id="st-title"><i class="fas fa-gas-pump ta"></i> Station</div></div>
       <div class="st-tabs" id="st-tabs"></div>
       <div class="fb">
-        <div id="sale-wrap"></div>
-        <div class="sp"></div>
-        <label style="font-size:11px;font-weight:600;color:var(--t2)">Du</label>
-        <input type="date" id="sf-from"/>
-        <label style="font-size:11px;font-weight:600;color:var(--t2)">Au</label>
-        <input type="date" id="sf-to"/>
-        <button class="btn btn1" id="btn-load-sf"><i class="fas fa-sync-alt"></i> Actualiser</button>
+        <label>Du</label><input type="date" id="sf-from">
+        <label>Au</label><input type="date" id="sf-to">
+        <button class="btn btn2" id="btn-load-sf"><i class="fas fa-search"></i> Filtrer</button>
       </div>
-      <div id="st-res" class="sg" style="margin-bottom:22px"></div>
-      <div class="cd" style="margin-bottom:22px">
-        <div class="ct"><i class="fas fa-cubes" style="color:var(--inf)"></i> Stock produits</div>
-        <div class="tw"><table><thead><tr><th>Produit</th><th class="tr">Livraisons (L)</th><th class="tr">Ventes (L)</th><th class="tr">Stock (L)</th><th class="tr">Valeur</th></tr></thead><tbody id="stk-tbl"><tr><td colspan="5" class="empty-state"><i class="fas fa-database"></i><p>Chargement…</p></td></tr></tbody></table></div>
-      </div>
+      <div class="sg" id="st-res"></div>
       <div class="stb" id="st-subtabs">
-        <div class="stbi on" data-p="sp-res"><i class="fas fa-chart-area"></i>&nbsp;Résumé</div>
-        <div class="stbi" data-p="sp-ven"><i class="fas fa-receipt"></i>&nbsp;Ventes</div>
-        <div class="stbi" data-p="sp-liv"><i class="fas fa-truck"></i>&nbsp;Livraisons</div>
-        <div class="stbi" data-p="sp-ver"><i class="fas fa-hand-holding-usd"></i>&nbsp;Versements</div>
-        <div class="stbi" data-p="sp-dep"><i class="fas fa-file-invoice-dollar"></i>&nbsp;Dépenses</div>
-        <div class="stbi" data-p="sp-con"><i class="fas fa-tachometer-alt"></i>&nbsp;Conso</div>
+        <div class="stbi on" data-p="p-ven">Ventes</div>
+        <div class="stbi" data-p="p-liv">Livraisons</div>
+        <div class="stbi" data-p="p-ver">Versements</div>
+        <div class="stbi" data-p="p-dep">Dépenses</div>
+        <div class="stbi" data-p="p-con">Conso jauge</div>
+        <div class="stbi" data-p="p-stk">Stock</div>
+        <div class="stbi" data-p="p-chart">Graphique</div>
       </div>
-      <div class="sp2 on" id="sp-res">
-        <div class="cd"><div class="ct"><i class="fas fa-chart-bar ta"></i> Résumé financier</div><div style="position:relative;height:200px"><canvas id="ch-res"></canvas></div></div>
+
+      <div class="sp2 on" id="p-ven">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+          <button class="btn btn1" id="add-sale-btn" style="display:none"><i class="fas fa-plus"></i> Nouvelle vente</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr>
+            <th class="sortable" data-tbl="ven-tbl" data-col="0">#</th>
+            <th class="sortable" data-tbl="ven-tbl" data-col="1">Date</th>
+            <th class="sortable" data-tbl="ven-tbl" data-col="2">Produit</th>
+            <th class="sortable" data-tbl="ven-tbl" data-col="3">Prix/L</th>
+            <th class="sortable" data-tbl="ven-tbl" data-col="4">Idx Arrivée</th>
+            <th class="sortable" data-tbl="ven-tbl" data-col="5">Idx Départ</th>
+            <th class="sortable" data-tbl="ven-tbl" data-col="6">Qté (L)</th>
+            <th class="sortable" data-tbl="ven-tbl" data-col="7">Montant</th>
+            <th>Obs.</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="ven-tbl"></tbody>
+        </table></div>
       </div>
-      <div class="sp2" id="sp-ven">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="add-sale-btn" style="width:auto"><i class="fas fa-plus"></i> Nouvelle vente</button></div>
-        <div class="cd"><div class="tw"><table><thead><tr><th class="sortable" data-tbl="ven-tbl" data-col="0">#</th><th class="sortable" data-tbl="ven-tbl" data-col="1">Date</th><th class="sortable" data-tbl="ven-tbl" data-col="2">Produit</th><th class="sortable tr" data-tbl="ven-tbl" data-col="3">Prix/L</th><th class="sortable tr" data-tbl="ven-tbl" data-col="4">Qté (L)</th><th class="sortable tr" data-tbl="ven-tbl" data-col="5">Montant</th><th>Obs.</th><th>Actions</th></tr></thead><tbody id="ven-tbl"></tbody></table></div></div>
+
+      <div class="sp2" id="p-liv">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+          <button class="btn btn1" id="btn-add-liv"><i class="fas fa-plus"></i> Nouvelle livraison</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr>
+            <th class="sortable" data-tbl="liv-tbl" data-col="0">#</th>
+            <th class="sortable" data-tbl="liv-tbl" data-col="1">Date</th>
+            <th class="sortable" data-tbl="liv-tbl" data-col="2">Produit</th>
+            <th class="sortable" data-tbl="liv-tbl" data-col="3">Qté (L)</th>
+            <th class="sortable" data-tbl="liv-tbl" data-col="4">Prix/L</th>
+            <th class="sortable" data-tbl="liv-tbl" data-col="5">Montant</th>
+            <th>Obs.</th><th>Saisi par</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="liv-tbl"></tbody>
+        </table></div>
       </div>
-      <div class="sp2" id="sp-liv">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-liv" style="width:auto"><i class="fas fa-plus"></i> Livraison</button></div>
-        <div class="cd"><div class="tw"><table><thead><tr><th class="sortable" data-tbl="liv-tbl" data-col="0">#</th><th class="sortable" data-tbl="liv-tbl" data-col="1">Date</th><th class="sortable" data-tbl="liv-tbl" data-col="2">Produit</th><th class="sortable tr" data-tbl="liv-tbl" data-col="3">Qté (L)</th><th class="sortable tr" data-tbl="liv-tbl" data-col="4">Prix/L</th><th class="sortable tr" data-tbl="liv-tbl" data-col="5">Montant</th><th>Obs.</th><th>Saisi par</th><th>Actions</th></tr></thead><tbody id="liv-tbl"></tbody></table></div></div>
+
+      <div class="sp2" id="p-ver">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+          <button class="btn btn1" id="btn-add-ver"><i class="fas fa-plus"></i> Nouveau versement</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr>
+            <th class="sortable" data-tbl="ver-tbl" data-col="0">#</th>
+            <th class="sortable" data-tbl="ver-tbl" data-col="1">Date</th>
+            <th class="sortable" data-tbl="ver-tbl" data-col="2">Montant</th>
+            <th>Mode</th><th>Référence</th><th>Saisi par</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="ver-tbl"></tbody>
+        </table></div>
       </div>
-      <div class="sp2" id="sp-ver">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-ver" style="width:auto"><i class="fas fa-plus"></i> Versement</button></div>
-        <div class="cd"><div class="tw"><table><thead><tr><th>#</th><th>Date</th><th class="tr">Montant</th><th>Mode</th><th>Réf.</th><th>Saisi par</th><th>Actions</th></tr></thead><tbody id="ver-tbl"></tbody></table></div></div>
+
+      <div class="sp2" id="p-dep">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+          <button class="btn btn1" id="btn-add-dep"><i class="fas fa-plus"></i> Nouvelle dépense</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr>
+            <th class="sortable" data-tbl="dep-tbl" data-col="0">#</th>
+            <th class="sortable" data-tbl="dep-tbl" data-col="1">Date</th>
+            <th>Catégorie</th>
+            <th class="sortable" data-tbl="dep-tbl" data-col="3">Description</th>
+            <th class="sortable" data-tbl="dep-tbl" data-col="4">Montant</th>
+            <th>Actions</th>
+          </tr></thead>
+          <tbody id="dep-tbl"></tbody>
+        </table></div>
       </div>
-      <div class="sp2" id="sp-dep">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-dep" style="width:auto"><i class="fas fa-plus"></i> Dépense</button></div>
-        <div class="cd"><div class="tw"><table><thead><tr><th>#</th><th>Date</th><th>Catégorie</th><th>Description</th><th class="tr">Montant</th><th>Actions</th></tr></thead><tbody id="dep-tbl"></tbody></table></div></div>
+
+      <div class="sp2" id="p-con">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+          <button class="btn btn1" id="btn-add-con"><i class="fas fa-plus"></i> Nouveau relevé</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr>
+            <th class="sortable" data-tbl="con-tbl" data-col="0">Date</th>
+            <th class="sortable" data-tbl="con-tbl" data-col="1">Produit</th>
+            <th class="sortable" data-tbl="con-tbl" data-col="2">Jauge Ouv.</th>
+            <th class="sortable" data-tbl="con-tbl" data-col="3">Jauge Ferm.</th>
+            <th class="sortable" data-tbl="con-tbl" data-col="4">Sortie</th>
+            <th>Observations</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="con-tbl"></tbody>
+        </table></div>
       </div>
-      <div class="sp2" id="sp-con">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px"><button class="btn btn1" id="btn-add-con" style="width:auto"><i class="fas fa-plus"></i> Relevé</button></div>
-        <div class="cd"><div class="tw"><table><thead><tr><th>Date</th><th>Produit</th><th class="tr">J. ouverture</th><th class="tr">J. fermeture</th><th class="tr">Sortie</th><th>Obs.</th><th>Actions</th></tr></thead><tbody id="con-tbl"></tbody></table></div></div>
+
+      <div class="sp2" id="p-stk">
+        <div class="tw"><table>
+          <thead><tr>
+            <th>Produit</th>
+            <th class="sortable" data-tbl="stk-tbl" data-col="1">Livraisons (L)</th>
+            <th class="sortable" data-tbl="stk-tbl" data-col="2">Ventes (L)</th>
+            <th class="sortable" data-tbl="stk-tbl" data-col="3">Stock (L)</th>
+            <th class="sortable" data-tbl="stk-tbl" data-col="4">Valeur stock</th>
+          </tr></thead>
+          <tbody id="stk-tbl"></tbody>
+        </table></div>
+      </div>
+
+      <div class="sp2" id="p-chart">
+        <div class="cd"><div class="ct"><i class="fas fa-chart-bar"></i> Résumé financier</div><div class="cc"><canvas id="ch-res"></canvas></div></div>
       </div>
     </div>
+
+    <!-- CONFIG STATIONS -->
+    <div class="ps2" id="p-config-stations">
+      <div class="ph"><div class="pt"><i class="fas fa-map-marker-alt ta"></i> Stations</div></div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn btn1" id="btn-add-st"><i class="fas fa-plus"></i> Ajouter</button>
+        <button class="btn btn2" id="btn-reload-st"><i class="fas fa-sync-alt"></i> Actualiser</button>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>#</th><th>Nom station</th><th>Date ajout</th><th>Actions</th></tr></thead>
+        <tbody id="cfg-st-tbl"></tbody>
+      </table></div>
+    </div>
+
+    <!-- CONFIG PRODUITS -->
+    <div class="ps2" id="p-config-produits">
+      <div class="ph"><div class="pt"><i class="fas fa-tags ta"></i> Produits & Prix</div></div>
+      <div class="cd mt1">
+        <div class="ct"><i class="fas fa-tags"></i> Produits globaux</div>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <button class="btn btn1" id="btn-add-pr"><i class="fas fa-plus"></i> Ajouter</button>
+          <button class="btn btn2" id="btn-reload-pr"><i class="fas fa-sync-alt"></i> Actualiser</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Produit</th><th>Prix/L</th><th>Modifié</th><th>Actions</th></tr></thead>
+          <tbody id="cfg-pr-tbl"></tbody>
+        </table></div>
+      </div>
+      <div class="cd mt2">
+        <div class="ct"><i class="fas fa-sliders-h"></i> Prix par station</div>
+        <div class="fg"><label>Station</label><select class="fp" id="px-st-sel"></select></div>
+        <div class="psg" id="px-st-grid"></div>
+        <div id="px-st-bar" style="display:none;margin-top:14px"><button class="btn btn1" id="btn-save-px"><i class="fas fa-save"></i> Enregistrer les prix</button></div>
+      </div>
+    </div>
+
+    <!-- CONFIG CATÉGORIES -->
+    <div class="ps2" id="p-config-categories">
+      <div class="ph"><div class="pt"><i class="fas fa-folder-open ta"></i> Catégories dépenses</div></div>
+      <div class="cd">
+        <div class="ct"><i class="fas fa-tags"></i> Catégories</div>
+        <div id="cat-list" style="margin-bottom:16px"></div>
+        <div style="display:flex;gap:8px">
+          <input id="new-cat" class="fp" placeholder="Nouvelle catégorie…" style="flex:1">
+          <button class="btn btn1" id="btn-add-cat"><i class="fas fa-plus"></i> Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SÉCURITÉ -->
+    <div class="ps2" id="p-security">
+      <div class="ph"><div class="pt"><i class="fas fa-shield-alt ta"></i> Sécurité</div></div>
+      <div class="cd">
+        <div class="ct"><i class="fas fa-key"></i> Mot de passe ventes</div>
+        <div class="fg"><label>Mot de passe actuel</label><input id="sec-cur" class="fp" type="text" readonly></div>
+        <div class="fg"><label>Nouveau mot de passe</label><input id="sec-new" class="fp" type="text" placeholder="Nouveau…"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn2" id="btn-show-pwd"><i class="fas fa-eye"></i> Afficher actuel</button>
+          <button class="btn btn1" id="btn-save-sec"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- UTILISATEURS -->
+    <div class="ps2" id="p-users">
+      <div class="ph"><div class="pt"><i class="fas fa-users-cog ta"></i> Utilisateurs</div></div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn btn1" id="btn-add-usr"><i class="fas fa-plus"></i> Ajouter</button>
+        <button class="btn btn2" id="btn-reload-usr"><i class="fas fa-sync-alt"></i> Actualiser</button>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>Username</th><th>Nom complet</th><th>Rôle</th><th>Station(s)</th><th>Tél.</th><th>Actions</th></tr></thead>
+        <tbody id="usr-tbl"></tbody>
+      </table></div>
+    </div>
+
   </main>
 </div>
 
 <!-- MODALS -->
-<div class="mo" id="m-st"><div class="md"><div class="mh"><h3 id="m-st-t">Station</h3><button class="mx" data-close="m-st">&times;</button></div><div class="mb"><input type="hidden" id="m-st-old"/><div class="fg"><label>Nom de la station</label><input type="text" id="m-st-n" class="fp" placeholder="Ex: Station Marjan Dakar"/></div></div><div class="mf"><button class="btn btn2" data-close="m-st">Annuler</button><button class="btn btn1" id="btn-save-st"><i class="fas fa-check"></i> OK</button></div></div></div>
-<div class="mo" id="m-pr"><div class="md"><div class="mh"><h3 id="m-pr-t">Produit</h3><button class="mx" data-close="m-pr">&times;</button></div><div class="mb"><div class="fg"><label>Nom du produit</label><input type="text" id="m-pr-n" class="fp"/></div><div class="fg"><label>Prix unitaire (FCFA/L)</label><input type="number" id="m-pr-p" class="fp" step="1" min="1"/></div></div><div class="mf"><button class="btn btn2" data-close="m-pr">Annuler</button><button class="btn btn1" id="btn-save-pr"><i class="fas fa-check"></i> OK</button></div></div></div>
+<!-- Mot de passe ventes -->
+<div class="mo" id="m-pwd">
+  <div class="md">
+    <div class="mh"><h3><i class="fas fa-lock ta"></i> Mot de passe ventes</h3><button class="mx" id="btn-close-pwd"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <div class="fg"><label>Saisir le mot de passe</label><div class="iw"><i class="fas fa-key"></i><input id="pw-in" class="fc" type="password" placeholder="Mot de passe…"></div></div>
+      <div id="pw-err" style="display:none;color:var(--err);font-size:12px;margin-top:6px"><i class="fas fa-exclamation-circle"></i> Mot de passe requis</div>
+    </div>
+    <div class="mf"><button class="btn btn2" id="btn-cancel-pwd"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-confirm-pwd"><i class="fas fa-check"></i> Confirmer</button></div>
+  </div>
+</div>
 
-<div class="mo" id="m-usr"><div class="md"><div class="mh"><h3 id="m-usr-t">Utilisateur</h3><button class="mx" data-close="m-usr">&times;</button></div><div class="mb">
-  <div class="fg"><label>Username</label><input type="text" id="m-usr-u" class="fp"/></div>
-  <div class="fg"><label>Mot de passe</label><input type="password" id="m-usr-pw" class="fp" placeholder="Laisser vide pour conserver"/></div>
-  <div class="fg"><label>Nom complet</label><input type="text" id="m-usr-n" class="fp"/></div>
-  <div class="fg"><label>Rôle</label><select id="m-usr-r" class="fp"><option value="">-- Choisir --</option><option value="admin">Admin</option><option value="super_gerant">Super Gérant (multi-stations)</option><option value="directeur_commercial">Dir. Commercial</option><option value="inspecteur">Inspecteur</option><option value="gerant">Gérant</option><option value="pompiste">Pompiste</option></select></div>
-  <div class="fg" id="fg-station-single"><label>Station</label><select id="m-usr-s" class="fp"></select></div>
-  <div class="fg" id="fg-station-multi" style="display:none"><label>Stations assignées <span style="font-weight:400;color:var(--t3)">(cocher)</span></label><div class="ms-grid" id="m-usr-sm"></div></div>
-  <div class="fg"><label>Téléphone</label><input type="text" id="m-usr-t2" class="fp"/></div>
-</div><div class="mf"><button class="btn btn2" data-close="m-usr">Annuler</button><button class="btn btn1" id="btn-save-usr"><i class="fas fa-check"></i> OK</button></div></div></div>
+<!-- Vente — avec Index d'arrivée et Index de départ -->
+<div class="mo" id="m-sale">
+  <div class="md">
+    <div class="mh"><h3 id="m-sale-t"><i class="fas fa-receipt ta"></i> Vente</h3><button class="mx" data-close="m-sale"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="ms-id">
+      <div class="fg"><label>Date</label><input id="ms-dt" class="fp" type="date"></div>
+      <div class="fg"><label>Produit</label><select id="ms-pr" class="fp"></select></div>
+      <div class="fg"><label>Prix unitaire (F/L)</label><input id="ms-px" class="fp" type="number" step="1" min="0" placeholder="Ex: 830"></div>
+      <!-- Nouveaux champs index -->
+      <div style="background:var(--accg);border:1px solid var(--accb);border-radius:var(--r);padding:14px;margin-bottom:15px">
+        <div style="font-size:11px;font-weight:700;color:var(--acc);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px"><i class="fas fa-tachometer-alt"></i> Compteur / Index</div>
+        <div class="fg" style="margin-bottom:10px"><label>Index d'arrivée (début)</label><div class="iw"><i class="fas fa-arrow-down" style="color:var(--ok)"></i><input id="ms-ia" class="fc" type="number" step="0.01" min="0" placeholder="Ex: 15000" oninput="calcSale()"></div></div>
+        <div class="fg" style="margin-bottom:10px"><label>Index de départ (fin)</label><div class="iw"><i class="fas fa-arrow-up" style="color:var(--err)"></i><input id="ms-id" class="fc" type="number" step="0.01" min="0" placeholder="Ex: 14500" oninput="calcSale()"></div></div>
+        <!-- Résumé calculé -->
+        <div class="idx-row" id="ms-calc-row" style="display:none">
+          <div><div class="idx-lbl">Quantité (L)</div><div class="idx-val" id="ms-qte-disp">—</div></div>
+          <div><div class="idx-lbl">Prix/L</div><div class="idx-val" id="ms-px-disp">—</div></div>
+          <div><div class="idx-lbl">Montant (F)</div><div class="idx-val" id="ms-mt-disp">—</div></div>
+        </div>
+      </div>
+      <div class="fg"><label>Observations</label><input id="ms-ob" class="fp" type="text" placeholder="Optionnel…"></div>
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-sale"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-sale"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
 
-<div class="mo" id="m-sale"><div class="md"><div class="mh"><h3 id="m-sale-t">Vente</h3><button class="mx" data-close="m-sale">&times;</button></div><div class="mb"><input type="hidden" id="ms-id"/><div class="fg"><label>Date</label><input type="date" id="ms-dt" class="fp"/></div><div class="fg"><label>Produit</label><select id="ms-pr" class="fp"></select></div><div class="fg"><label>Prix unitaire (F/L)</label><input type="number" id="ms-px" class="fp" step="1" min="1"/></div><div class="fg"><label>Quantité (litres)</label><input type="number" id="ms-qt" class="fp" step="0.01" min="0.01"/></div><div class="fg"><label>Observations</label><input type="text" id="ms-ob" class="fp"/></div></div><div class="mf"><button class="btn btn2" data-close="m-sale">Annuler</button><button class="btn btn1" id="btn-save-sale"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
-<div class="mo" id="m-liv"><div class="md"><div class="mh"><h3 id="m-liv-t">Livraison</h3><button class="mx" data-close="m-liv">&times;</button></div><div class="mb"><input type="hidden" id="ml-id"/><div class="fg"><label>Date</label><input type="date" id="ml-dt" class="fp"/></div><div class="fg"><label>Produit</label><select id="ml-pr" class="fp"></select></div><div class="fg"><label>Quantité (litres)</label><input type="number" id="ml-qt" class="fp" step="0.01" min="0"/></div><div class="fg"><label>Prix unitaire (F/L)</label><input type="number" id="ml-px" class="fp" step="1" min="0"/></div><div class="fg"><label>Observations</label><input type="text" id="ml-ob" class="fp"/></div></div><div class="mf"><button class="btn btn2" data-close="m-liv">Annuler</button><button class="btn btn1" id="btn-save-liv"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
-<div class="mo" id="m-ver"><div class="md"><div class="mh"><h3 id="m-ver-title">Versement</h3><button class="mx" data-close="m-ver">&times;</button></div><div class="mb"><input type="hidden" id="mv-id"/><div class="fg"><label>Date</label><input type="date" id="mv-dt" class="fp"/></div><div class="fg"><label>Montant (FCFA)</label><input type="number" id="mv-mt" class="fp" min="1"/></div><div class="fg"><label>Mode de versement</label><select id="mv-md" class="fp"><option value="">-- Choisir --</option><option>Espèce</option><option>Banque</option><option>Wave</option><option value="OM">Orange Money</option><option>Chèque</option></select></div><div class="fg"><label>Référence</label><input type="text" id="mv-rf" class="fp" placeholder="N° reçu, chèque…"/></div></div><div class="mf"><button class="btn btn2" data-close="m-ver">Annuler</button><button class="btn btn1" id="btn-save-ver"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
-<div class="mo" id="m-dep"><div class="md"><div class="mh"><h3 id="m-dep-title">Dépense</h3><button class="mx" data-close="m-dep">&times;</button></div><div class="mb"><input type="hidden" id="md-id"/><div class="fg"><label>Date</label><input type="date" id="md-dt" class="fp"/></div><div class="fg"><label>Description</label><input type="text" id="md-ds" class="fp" placeholder="Nature de la dépense…"/></div><div class="fg"><label>Catégorie</label><select id="md-ct" class="fp"><option value="">-- Choisir --</option></select></div><div class="fg"><label>Montant (FCFA)</label><input type="number" id="md-mt" class="fp" min="1"/></div></div><div class="mf"><button class="btn btn2" data-close="m-dep">Annuler</button><button class="btn btn1" id="btn-save-dep"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
+<!-- Livraison -->
+<div class="mo" id="m-liv">
+  <div class="md">
+    <div class="mh"><h3 id="m-liv-t"><i class="fas fa-truck" style="color:var(--inf)"></i> Livraison</h3><button class="mx" data-close="m-liv"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="ml-id">
+      <div class="fg"><label>Date</label><input id="ml-dt" class="fp" type="date"></div>
+      <div class="fg"><label>Produit</label><select id="ml-pr" class="fp"></select></div>
+      <div class="fg"><label>Quantité (L)</label><div class="iw"><i class="fas fa-oil-can"></i><input id="ml-qt" class="fc" type="number" step="0.01" min="0" placeholder="0"></div></div>
+      <div class="fg"><label>Prix unitaire (F/L)</label><div class="iw"><i class="fas fa-tag"></i><input id="ml-px" class="fc" type="number" step="1" min="0" placeholder="0"></div></div>
+      <div class="fg"><label>Observations</label><input id="ml-ob" class="fp" type="text" placeholder="Optionnel…"></div>
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-liv"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-liv"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
 
-<div class="mo" id="m-con"><div class="md"><div class="mh"><h3>Relevé consommation</h3><button class="mx" data-close="m-con">&times;</button></div><div class="mb">
-  <input type="hidden" id="mc-con-orig-date"/>
-  <input type="hidden" id="mc-con-orig-pr"/>
-  <div class="fg"><label>Date</label><input type="date" id="mc-dt" class="fp"/></div>
-  <div class="fg"><label>Produit</label><select id="mc-pr" class="fp"><option value="">-- Choisir --</option></select></div>
-  <div class="fg"><label>Jauge ouverture (L)</label><input type="number" id="mc-jo" class="fp"/></div>
-  <div class="fg"><label>Jauge fermeture (L)</label><input type="number" id="mc-jf" class="fp"/></div>
-  <div class="fg"><label>Sortie calculée (L)</label><input type="number" id="mc-so" class="fp" readonly style="background:var(--accg);font-weight:800;color:var(--acc)"/></div>
-  <div class="fg"><label>Observations</label><input type="text" id="mc-ob" class="fp" placeholder="Commentaire optionnel…"/></div>
-</div><div class="mf"><button class="btn btn2" data-close="m-con">Annuler</button><button class="btn btn1" id="btn-save-con"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
+<!-- Versement -->
+<div class="mo" id="m-ver">
+  <div class="md">
+    <div class="mh"><h3 id="m-ver-title"><i class="fas fa-hand-holding-usd" style="color:var(--ok)"></i> Versement</h3><button class="mx" data-close="m-ver"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="mv-id">
+      <div class="fg"><label>Date</label><input id="mv-dt" class="fp" type="date"></div>
+      <div class="fg"><label>Montant (F)</label><div class="iw"><i class="fas fa-coins"></i><input id="mv-mt" class="fc" type="number" step="1" min="0" placeholder="0"></div></div>
+      <div class="fg"><label>Mode de versement</label><select id="mv-md" class="fp"><option value="Espèce">Espèce</option><option value="Virement">Virement</option><option value="Chèque">Chèque</option><option value="Orange Money">Orange Money</option><option value="Wave">Wave</option></select></div>
+      <div class="fg"><label>Référence</label><input id="mv-rf" class="fp" type="text" placeholder="Optionnel…"></div>
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-ver"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-ver"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
 
-<div class="mo" id="m-pwd"><div class="md" style="max-width:360px"><div class="mh"><h3><i class="fas fa-shield-alt ta"></i>&nbsp;Vérification</h3><button class="mx" id="btn-close-pwd">&times;</button></div><div class="mb" style="text-align:center;padding:28px 22px"><div style="font-size:48px;color:var(--acc);margin-bottom:14px"><i class="fas fa-lock"></i></div><p style="color:var(--t2);font-size:13px;margin-bottom:18px">Entrez le mot de passe de ventes</p><div class="fg" style="text-align:left"><div class="iw"><i class="fas fa-key"></i><input type="password" id="pw-in" class="fc" placeholder="Mot de passe…"/></div></div><div id="pw-err" style="color:var(--err);font-size:11px;font-weight:600;display:none;margin-top:6px"><i class="fas fa-times-circle"></i> Incorrect</div></div><div class="mf"><button class="btn btn2" id="btn-cancel-pwd">Annuler</button><button class="btn btn1" id="btn-confirm-pwd"><i class="fas fa-unlock"></i> Confirmer</button></div></div></div>
+<!-- Dépense -->
+<div class="mo" id="m-dep">
+  <div class="md">
+    <div class="mh"><h3 id="m-dep-title"><i class="fas fa-file-invoice-dollar" style="color:var(--err)"></i> Dépense</h3><button class="mx" data-close="m-dep"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="md-id">
+      <div class="fg"><label>Date</label><input id="md-dt" class="fp" type="date"></div>
+      <div class="fg"><label>Catégorie</label><select id="md-ct" class="fp"></select></div>
+      <div class="fg"><label>Description</label><input id="md-ds" class="fp" type="text" placeholder="Description…"></div>
+      <div class="fg"><label>Montant (F)</label><div class="iw"><i class="fas fa-coins"></i><input id="md-mt" class="fc" type="number" step="1" min="0" placeholder="0"></div></div>
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-dep"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-dep"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
 
+<!-- Conso -->
+<div class="mo" id="m-con">
+  <div class="md">
+    <div class="mh"><h3 id="m-con-t"><i class="fas fa-tachometer-alt" style="color:var(--pur)"></i> Relevé jauge</h3><button class="mx" data-close="m-con"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <div class="fg"><label>Date</label><input id="mc-dt" class="fp" type="date"></div>
+      <div class="fg"><label>Produit</label><select id="mc-pr" class="fp"></select></div>
+      <div class="fg"><label>Jauge ouverture</label><div class="iw"><i class="fas fa-tachometer-alt"></i><input id="mc-jo" class="fc" type="number" step="0.01" min="0" placeholder="0"></div></div>
+      <div class="fg"><label>Jauge fermeture</label><div class="iw"><i class="fas fa-tachometer-alt"></i><input id="mc-jf" class="fc" type="number" step="0.01" min="0" placeholder="0"></div></div>
+      <div class="fg"><label>Sortie calculée (L)</label><div class="iw"><i class="fas fa-gas-pump"></i><input id="mc-so" class="fc" type="number" readonly style="background:var(--bg2)"></div></div>
+      <div class="fg"><label>Observations</label><input id="mc-ob" class="fp" type="text" placeholder="Optionnel…"></div>
+      <input type="hidden" id="mc-orig-dt"><input type="hidden" id="mc-orig-pr">
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-con"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-con"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Station -->
+<div class="mo" id="m-st">
+  <div class="md">
+    <div class="mh"><h3 id="m-st-t">Station</h3><button class="mx" data-close="m-st"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="m-st-old">
+      <div class="fg"><label>Nom de la station</label><input id="m-st-n" class="fp" type="text" placeholder="Ex: Station Marjan Dakar"></div>
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-st"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-st"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Produit -->
+<div class="mo" id="m-pr">
+  <div class="md">
+    <div class="mh"><h3 id="m-pr-t">Produit</h3><button class="mx" data-close="m-pr"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <div class="fg"><label>Nom produit</label><input id="m-pr-n" class="fp" type="text" placeholder="Ex: Gasoil"></div>
+      <div class="fg"><label>Prix unitaire (F/L)</label><input id="m-pr-p" class="fp" type="number" step="1" min="1" placeholder="Ex: 830"></div>
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-pr"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-pr"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Utilisateur -->
+<div class="mo" id="m-usr">
+  <div class="md">
+    <div class="mh"><h3 id="m-usr-t">Utilisateur</h3><button class="mx" data-close="m-usr"><i class="fas fa-times"></i></button></div>
+    <div class="mb">
+      <div class="fg"><label>Identifiant</label><input id="m-usr-u" class="fp" type="text" placeholder="username" autocomplete="off"></div>
+      <div class="fg"><label>Mot de passe</label><input id="m-usr-pw" class="fp" type="password" placeholder="Laisser vide pour garder" autocomplete="new-password"></div>
+      <div class="fg"><label>Nom complet</label><input id="m-usr-n" class="fp" type="text" placeholder="Prénom Nom"></div>
+      <div class="fg"><label>Rôle</label>
+        <select id="m-usr-r" class="fp">
+          <option value="admin">Admin</option>
+          <option value="directeur_commercial">Directeur commercial</option>
+          <option value="inspecteur">Inspecteur</option>
+          <option value="super_gerant">Super gérant</option>
+          <option value="gerant">Gérant</option>
+          <option value="pompiste">Pompiste</option>
+        </select>
+      </div>
+      <div id="fg-station-single" class="fg"><label>Station</label><select id="m-usr-s" class="fp"></select></div>
+      <div id="fg-station-multi" class="fg" style="display:none"><label>Stations (multi-sélection)</label><div class="ms-grid" id="m-usr-sm"></div></div>
+      <div class="fg"><label>Téléphone</label><input id="m-usr-t2" class="fp" type="tel" placeholder="+221…"></div>
+    </div>
+    <div class="mf"><button class="btn btn2" data-close="m-usr"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-usr"><i class="fas fa-save"></i> Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 <script>
-(function(){
-'use strict';
+/* ===================== CONFIG ===================== */
+var IS_GAS = (typeof google !== 'undefined' && google.script);
+/* IMPORTANT: Remplacez cette URL par votre URL Google Apps Script déployée */
+var GAS_URL = 'https://script.google.com/macros/s/AKfycby65ALW3xZXj4uGzBhlOzclFUv6OR7uY81sdbZz_MCSlS8XOO_kH86XAkbrnn4w_pu7jA/exec';
+var CACHE_KEY = 'mj_dash_v1';
+var _cbId = 0;
+var _pa = null;
 
-var GAS_URL = 'https://script.google.com/macros/s/AKfycbxYv5qgvaXJh-aSPJvUp4CLjsyXwlJd5FxdO7YBsjorLQogQLGxkvYhmfNVuXClOkP_Qw/exec';
-var IS_GAS  = (typeof google !== 'undefined' && google.script && google.script.run);
-var CACHE_KEY = 'mj_dash_v6';
-
-var S = {tk:null,u:null,pm:null,st:[],pr:[],sp:[],cat:[],cs:null,cp:null,sc:[],lc:[],vc:[],dc:[],ch:{},fd:null,_lsp:null,_llp:null};
-var _dashRows=[], _dashSort={col:-1,asc:true}, _dashBusy=false, _sfBusy=false, _pa=null, _arTimer=null, _arSec=30, _cbId=0;
-var PL=['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ef4444','#06b6d4','#ec4899','#14b8a6'];
-var RL={admin:'Admin',super_gerant:'Super Gérant',directeur_commercial:'Dir. Commercial',inspecteur:'Inspecteur',gerant:'Gérant',pompiste:'Pompiste'};
-
-/* ============================================================
-   FIX 3 — Protection anti-doublons (saving lock global)
-   ============================================================ */
-var _saving = false;
-function _lockSave(btn){
-  if(_saving) return false;
-  _saving = true;
-  if(btn){ btn._origHTML = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enregistrement…'; }
-  /* overlay transparent bloquant tous les clics */
-  var ov = document.createElement('div'); ov.className='saving-overlay'; ov.id='__sov'; document.body.appendChild(ov);
-  return true;
-}
-function _unlockSave(btn){
-  _saving = false;
-  var ov = document.getElementById('__sov'); if(ov) ov.remove();
-  if(btn){ btn.disabled = false; if(btn._origHTML){ btn.innerHTML = btn._origHTML; delete btn._origHTML; } }
-}
-
-/* ============================================================
-   FIX 1 — Système de notifications centralisé
-   ============================================================ */
-var _notifs = [];       /* {id, type, station, detail, time, read, target} */
-var _notifOpen = false;
-var NOTIF_ROLES = ['admin','super_gerant','directeur_commercial','inspecteur']; /* rôles qui voient la cloche */
-
-var NOTIF_ICONS = {
-  vente:     {cls:'vente',   ico:'fas fa-receipt',             lbl:'Vente enregistrée'},
-  livraison: {cls:'livraison',ico:'fas fa-truck',              lbl:'Livraison ajoutée'},
-  versement: {cls:'versement',ico:'fas fa-hand-holding-usd',  lbl:'Versement ajouté'},
-  depense:   {cls:'depense', ico:'fas fa-file-invoice-dollar', lbl:'Dépense enregistrée'},
-  conso:     {cls:'conso',   ico:'fas fa-tachometer-alt',      lbl:'Relevé conso'}
+var RL = {
+  admin:'Admin',directeur_commercial:'Dir. Commercial',inspecteur:'Inspecteur',
+  gerant:'Gérant',pompiste:'Pompiste',super_gerant:'Super Gérant'
 };
+var PL = ['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ef4444','#06b6d4'];
 
-/* Cible de navigation selon le type */
-function _notifTarget(type, station){
-  /* On navigue vers la station si on a accès, sinon dashboard */
-  return {page:'station', station:station, tab:type==='livraison'?'sp-liv':type==='versement'?'sp-ver':type==='depense'?'sp-dep':type==='conso'?'sp-con':'sp-ven'};
+/* ===================== STATE ===================== */
+var S = {
+  tk:null,u:null,pm:null,st:[],pr:[],sp:[],cat:[],cp:null,cs:'',
+  fd:null,sc:[],lc:[],vc:[],dc:[],ch:{s:null,p:null,l:null,res:null}
+};
+var _dashRows=[], _dashSort={col:5,asc:false};
+var _arTimer=null, _arSec=30;
+var _dashBusy=false, _sfBusy=false;
+
+/* ===================== NOTIFICATIONS ===================== */
+var _notifs = [];
+var _notifOpen = false;
+var NOTIF_ICONS = {
+  vente:   {cls:'vente',   ico:'fas fa-receipt',          lbl:'Vente'},
+  livraison:{cls:'livraison',ico:'fas fa-truck',           lbl:'Livraison'},
+  versement:{cls:'versement',ico:'fas fa-hand-holding-usd',lbl:'Versement'},
+  depense: {cls:'depense', ico:'fas fa-file-invoice-dollar',lbl:'Dépense'},
+  conso:   {cls:'conso',   ico:'fas fa-tachometer-alt',    lbl:'Conso'}
+};
+var NOTIF_ROLES = ['admin','directeur_commercial','inspecteur','super_gerant'];
+
+function _pushNotif(type, station, detail){
+  var n={type:type,station:station||'',detail:detail||'',time:new Date(),read:false,target:{station:station,tab:'p-'+type}};
+  _notifs.unshift(n);
+  if(_notifs.length>50) _notifs=_notifs.slice(0,50);
+  _renderNotifBadge();
+  _ringBell();
 }
 
-function _addNotif(type, station, detail){
-  var meta = NOTIF_ICONS[type] || {cls:'vente', ico:'fas fa-bell', lbl:'Mouvement'};
-  var n = {
-    id: Date.now() + Math.random(),
-    type: type,
-    station: station,
-    detail: detail||'',
-    time: new Date(),
-    read: false,
-    target: _notifTarget(type, station)
-  };
-  _notifs.unshift(n);
-  if(_notifs.length > 50) _notifs.length = 50;
-  _renderNotifBadge();
-  _renderNotifList();
-  /* Animation cloche */
-  var btn = document.getElementById('notif-btn');
-  if(btn){ btn.classList.remove('ringing'); void btn.offsetWidth; btn.classList.add('ringing'); setTimeout(function(){btn.classList.remove('ringing');}, 700); }
+function _ringBell(){
+  var btn=document.getElementById('notif-btn');
+  if(btn){btn.classList.remove('ringing');void btn.offsetWidth;btn.classList.add('ringing');setTimeout(function(){btn.classList.remove('ringing');},700);}
 }
 
 function _renderNotifBadge(){
-  var btn = document.getElementById('notif-btn');
-  var badge = document.getElementById('notif-badge');
-  if(!btn || !badge) return;
-  var unread = _notifs.filter(function(n){return !n.read;}).length;
-  if(unread > 0){ badge.textContent = unread > 99 ? '99+' : unread; badge.classList.remove('hidden'); }
-  else { badge.classList.add('hidden'); }
+  var btn=document.getElementById('notif-btn');
+  var badge=document.getElementById('notif-badge');
+  if(!btn||!badge) return;
+  var unread=_notifs.filter(function(n){return !n.read;}).length;
+  if(unread>0){badge.textContent=unread>99?'99+':unread;badge.classList.remove('hidden');}
+  else{badge.classList.add('hidden');}
 }
 
 function _timeAgo(date){
-  var diff = Math.floor((Date.now() - date.getTime()) / 1000);
-  if(diff < 5) return 'à l\'instant';
-  if(diff < 60) return 'il y a ' + diff + 's';
-  if(diff < 3600) return 'il y a ' + Math.floor(diff/60) + 'min';
-  return 'il y a ' + Math.floor(diff/3600) + 'h';
+  var diff=Math.floor((Date.now()-date.getTime())/1000);
+  if(diff<5)return'à l\'instant';if(diff<60)return'il y a '+diff+'s';
+  if(diff<3600)return'il y a '+Math.floor(diff/60)+'min';return'il y a '+Math.floor(diff/3600)+'h';
 }
 
 function _renderNotifList(){
-  var list = document.getElementById('notif-list');
-  if(!list) return;
-  if(!_notifs.length){
-    list.innerHTML = '<div class="notif-empty"><i class="fas fa-bell-slash"></i><p>Aucune notification</p></div>';
-    return;
-  }
-  var h = '';
-  _notifs.forEach(function(n, idx){
-    var meta = NOTIF_ICONS[n.type] || {cls:'vente', ico:'fas fa-bell'};
-    var stShort = n.station.replace(/Station Marjan /gi,'').replace(/Station /gi,'');
-    h += '<div class="notif-item'+(n.read?'':' unread')+'" data-nid="'+idx+'">'
-       + '<div class="notif-icon '+meta.cls+'"><i class="'+meta.ico+'"></i></div>'
-       + '<div class="notif-body">'
-       + '<div class="notif-title">'+escH(meta.lbl||n.type)+' — '+escH(stShort)+'</div>'
-       + '<div class="notif-detail">'+escH(n.detail||'')+'</div>'
-       + '</div>'
-       + '<div class="notif-time">'+_timeAgo(n.time instanceof Date ? n.time : new Date(n.time))+'</div>'
-       + '</div>';
+  var list=document.getElementById('notif-list');
+  if(!list)return;
+  if(!_notifs.length){list.innerHTML='<div class="notif-empty"><i class="fas fa-bell-slash"></i><p>Aucune notification</p></div>';return;}
+  var h='';
+  _notifs.forEach(function(n,idx){
+    var meta=NOTIF_ICONS[n.type]||{cls:'vente',ico:'fas fa-bell'};
+    var stShort=n.station.replace(/Station Marjan /gi,'').replace(/Station /gi,'');
+    h+='<div class="notif-item'+(n.read?'':' unread')+'" data-nid="'+idx+'">'
+      +'<div class="notif-icon '+meta.cls+'"><i class="'+meta.ico+'"></i></div>'
+      +'<div class="notif-body"><div class="notif-title">'+escH(meta.lbl||n.type)+' — '+escH(stShort)+'</div>'
+      +'<div class="notif-detail">'+escH(n.detail||'')+'</div></div>'
+      +'<div class="notif-time">'+_timeAgo(n.time instanceof Date?n.time:new Date(n.time))+'</div></div>';
   });
-  list.innerHTML = h;
-  /* Bind clics */
+  list.innerHTML=h;
   list.querySelectorAll('.notif-item').forEach(function(el){
-    el.addEventListener('click', function(){
-      var idx = parseInt(el.dataset.nid, 10);
-      var n = _notifs[idx];
-      if(!n) return;
-      n.read = true;
-      _renderNotifBadge();
-      _renderNotifList();
-      _closeNotifPanel();
-      /* Navigation vers la page correspondante */
-      if(n.target){
-        if(n.target.station && gv()){
-          S.cs = n.target.station;
-          _sfBusy = false;
-          navTo('station');
-          /* Activer le bon sous-onglet après chargement */
-          if(n.target.tab){
-            var _waitTab = setInterval(function(){
-              var tab = document.querySelector('.stbi[data-p="'+n.target.tab+'"]');
-              if(tab){ swSub(tab); clearInterval(_waitTab); }
-            }, 200);
-            setTimeout(function(){ clearInterval(_waitTab); }, 4000);
-          }
-        } else if(n.target.page === 'station'){
-          _sfBusy = false;
-          navTo('station');
-          if(n.target.tab){
-            var _waitTab2 = setInterval(function(){
-              var tab = document.querySelector('.stbi[data-p="'+n.target.tab+'"]');
-              if(tab){ swSub(tab); clearInterval(_waitTab2); }
-            }, 200);
-            setTimeout(function(){ clearInterval(_waitTab2); }, 4000);
-          }
-        }
+    el.addEventListener('click',function(){
+      var idx=parseInt(el.dataset.nid,10);
+      var n=_notifs[idx];if(!n)return;
+      n.read=true;_renderNotifBadge();_renderNotifList();_closeNotifPanel();
+      if(n.target&&n.target.station&&gv()){
+        S.cs=n.target.station;_sfBusy=false;navTo('station');
+        if(n.target.tab){var _wt=setInterval(function(){var tab=document.querySelector('.stbi[data-p="'+n.target.tab+'"]');if(tab){swSub(tab);clearInterval(_wt);}},200);setTimeout(function(){clearInterval(_wt);},4000);}
       }
     });
   });
 }
 
-function _toggleNotifPanel(){
-  _notifOpen = !_notifOpen;
-  var panel = document.getElementById('notif-panel');
-  if(panel) panel.classList.toggle('sh', _notifOpen);
-  if(_notifOpen) _renderNotifList();
-}
-function _closeNotifPanel(){
-  _notifOpen = false;
-  var panel = document.getElementById('notif-panel');
-  if(panel) panel.classList.remove('sh');
-}
+function _toggleNotifPanel(){_notifOpen=!_notifOpen;var panel=document.getElementById('notif-panel');if(panel)panel.classList.toggle('sh',_notifOpen);if(_notifOpen)_renderNotifList();}
+function _closeNotifPanel(){_notifOpen=false;var panel=document.getElementById('notif-panel');if(panel)panel.classList.remove('sh');}
+function _showNotifBtn(){var btn=document.getElementById('notif-btn');if(btn)btn.classList.add('active');}
+function _hideNotifBtn(){var btn=document.getElementById('notif-btn');if(btn)btn.classList.remove('active');_closeNotifPanel();}
 
-function _showNotifBtn(){
-  var btn = document.getElementById('notif-btn');
-  if(btn) btn.classList.add('active');
-}
-function _hideNotifBtn(){
-  var btn = document.getElementById('notif-btn');
-  if(btn) btn.classList.remove('active');
-  _closeNotifPanel();
-}
-
-/* ---- DOM helpers ---- */
+/* ===================== DOM ===================== */
 var _domCache={};
 function $(id){return _domCache[id]||(_domCache[id]=document.getElementById(id));}
 function _clearDomCache(){_domCache={};}
@@ -619,13 +823,17 @@ function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
 function hide(id){var e=$(id);if(e)e.style.display='none';}
 function show(id,d){var e=$(id);if(e)e.style.display=(d||'flex');}
 
-function toast(m,t){var c=$('tb');var d=document.createElement('div');d.className='toast '+(t||'info');var ico=t==='success'?'check-circle':t==='error'?'exclamation-circle':'info-circle';d.innerHTML='<i class="fas fa-'+ico+'"></i> '+escH(m);c.appendChild(d);setTimeout(function(){d.style.opacity='0';d.style.transform='translateX(20px)';d.style.transition='all .3s';setTimeout(function(){try{d.remove();}catch(e){}},300);},3200);}
+function toast(m,t){
+  var c=$('tb');var d=document.createElement('div');d.className='toast '+(t||'info');
+  var ico=t==='success'?'check-circle':t==='error'?'exclamation-circle':'info-circle';
+  d.innerHTML='<i class="fas fa-'+ico+'"></i> '+escH(m);c.appendChild(d);
+  setTimeout(function(){d.style.opacity='0';d.style.transform='translateX(20px)';d.style.transition='all .3s';setTimeout(function(){try{d.remove();}catch(e){}},300);},3200);
+}
 
 function opM(id){var e=$(id);if(!e)return;e.classList.add('sh');e.style.display='flex';document.body.style.overflow='hidden';requestAnimationFrame(function(){var i=e.querySelector('input:not([type=hidden]):not([readonly]),select');if(i){i.focus();if(i.type==='date')i.blur();}});}
 function clM(id){var e=$(id);if(!e)return;e.classList.remove('sh');e.style.display='none';document.body.style.overflow='';}
 function togSide(){$('side').classList.toggle('open');$('mob-ov').classList.toggle('sh');}
 function closeSide(){$('side').classList.remove('open');$('mob-ov').classList.remove('sh');}
-
 function toggleTheme(){var n=(localStorage.getItem('mj_th')||'dark')==='dark'?'light':'dark';localStorage.setItem('mj_th',n);document.documentElement.setAttribute('data-theme',n);$('thI').className=n==='light'?'fas fa-moon':'fas fa-sun';if(S.cp==='dashboard'&&S._lastDash)setTimeout(function(){rCharts(S._lastDash);},100);}
 window.toggleTheme=toggleTheme;
 
@@ -644,15 +852,41 @@ function reqPwd(type,data){var r=S.u?String(S.u.role||'').toLowerCase():'';if(r=
 function doPwdOk(){if(!_pa)return;var pw=$('pw-in').value;if(!pw){$('pw-err').style.display='block';return;}var t=_pa.t,d=_pa.d;_pa=null;clM('m-pwd');execPwd(t,d,pw);}
 function execPwd(t,d,pw){switch(t){case'edit':S._lsp=pw;openSaleM(d);break;case'del':doDelSale(d.id,pw);break;case'eliv':S._llp=pw;openLivM(d);break;case'dliv':doDelLiv(d.id,pw);break;}}
 
-/* ---- API ---- */
-function api(action,params){
-  var body=Object.assign({action:action},params||{});
-  if(IS_GAS){return new Promise(function(res,rej){var done=false;var _t=setTimeout(function(){if(!done){done=true;rej(new Error('Délai dépassé'));}},90000);google.script.run.withSuccessHandler(function(r){clearTimeout(_t);if(done)return;done=true;if(typeof r==='string'){try{r=JSON.parse(r);}catch(e){rej(new Error('Réponse invalide'));return;}}if(r&&r.ok===false&&r.message){rej(new Error(r.message));return;}res(r);}).withFailureHandler(function(e){clearTimeout(_t);if(!done){done=true;rej(new Error(e.message||String(e)));}}).apiFromClient(body);});}
+/* ===================== API ===================== */
+function api(action, params){
+  var body = Object.assign({action:action}, params||{});
+  /* Mode Google Apps Script (hébergé directement) */
+  if(IS_GAS){
+    return new Promise(function(res,rej){
+      var done=false;
+      var _t=setTimeout(function(){if(!done){done=true;rej(new Error('Délai dépassé'));}},90000);
+      google.script.run
+        .withSuccessHandler(function(r){
+          clearTimeout(_t);if(done)return;done=true;
+          if(typeof r==='string'){try{r=JSON.parse(r);}catch(e){rej(new Error('Réponse invalide'));return;}}
+          if(r&&r.ok===false&&r.message){rej(new Error(r.message));return;}
+          res(r);
+        })
+        .withFailureHandler(function(e){
+          clearTimeout(_t);if(!done){done=true;rej(new Error(e.message||String(e)));}
+        })
+        .apiFromClient(body);
+    });
+  }
+  /* Mode Netlify / externe — utilise JSONP (GET uniquement via balise script) */
   return new Promise(function(res,rej){
-    var cb='_mj_'+(++_cbId)+'_'+Date.now(),done=false;
+    var cb='_mj_'+(++_cbId)+'_'+Date.now(), done=false;
     var tid=setTimeout(function(){if(done)return;done=true;cleanup();rej(new Error('Timeout'));},35000);
-    window[cb]=function(r){if(done)return;done=true;clearTimeout(tid);cleanup();if(typeof r==='string'){try{r=JSON.parse(r);}catch(e){rej(new Error('Réponse invalide'));return;}}if(r&&r.ok===false&&r.message){rej(new Error(r.message));return;}res(r);};
-    function cleanup(){try{delete window[cb];}catch(e){window[cb]=undefined;}var el=document.getElementById(cb);if(el&&el.parentNode)el.parentNode.removeChild(el);}
+    window[cb]=function(r){
+      if(done)return;done=true;clearTimeout(tid);cleanup();
+      if(typeof r==='string'){try{r=JSON.parse(r);}catch(e){rej(new Error('Réponse invalide'));return;}}
+      if(r&&r.ok===false&&r.message){rej(new Error(r.message));return;}
+      res(r);
+    };
+    function cleanup(){
+      try{delete window[cb];}catch(e){window[cb]=undefined;}
+      var el=document.getElementById(cb);if(el&&el.parentNode)el.parentNode.removeChild(el);
+    }
     var sc=document.createElement('script');sc.id=cb;
     sc.src=GAS_URL+'?data='+encodeURIComponent(JSON.stringify(body))+'&callback='+cb+'&_t='+Date.now();
     sc.onerror=function(){if(done)return;done=true;clearTimeout(tid);cleanup();rej(new Error('Erreur réseau'));};
@@ -660,7 +894,7 @@ function api(action,params){
   });
 }
 
-function checkVer(){api('apiPing',{}).then(function(r){var vc=$('ver-check');vc.textContent='Serveur v'+(r.version||'?');vc.style.color=r.version?'#10b981':'#ef4444';}).catch(function(){var vc=$('ver-check');vc.textContent='Serveur ✓';vc.style.color='#f59e0b';});}
+function checkVer(){api('apiPing',{}).then(function(r){var vc=$('ver-check');vc.textContent='v'+(r.version||'?');vc.style.color=r.version?'#10b981':'#ef4444';}).catch(function(){var vc=$('ver-check');vc.textContent='…';vc.style.color='#f59e0b';});}
 
 function doLogin(e){e.preventDefault();var u=$('l-u').value.trim(),p=$('l-p').value;if(!u||!p)return toast('Champs requis','error');var b=$('l-btn');b.disabled=true;b.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Connexion…';api('apiLogin',{username:u,password:p}).then(function(r){if(!r.ok){toast(r.message,'error');return;}S.tk=r.token;S.u=r.user;S.pm=r.user.permissions;S.st=r.stations||[];S.pr=r.produits||[];S.sp=r.stationPrix||[];S.cat=r.categories||[];sessionStorage.setItem('mt',r.token);initApp();setTimeout(checkVer,3000);}).catch(function(er){toast(er.message||'Erreur réseau','error');}).finally(function(){b.disabled=false;b.innerHTML='<i class="fas fa-sign-in-alt"></i> Se connecter';});return false;}
 function doLogout(){stopAR();api('apiLogout',{token:S.tk}).catch(function(){});sessionStorage.removeItem('mt');S.tk=null;S.u=null;S.pm=null;_clearDomCache();_notifs=[];_notifOpen=false;_hideNotifBtn();hide('app');show('pl','flex');}
@@ -672,10 +906,8 @@ function initApp(){
   var n=S.u.nom_complet||S.u.username;
   $('s-name').textContent=n;$('s-rl').textContent=rl(S.u.role);$('s-av').textContent=(n[0]||'M').toUpperCase();
   $('s-role').textContent=gv()?rl(S.u.role):(S.u.station||'');
-  /* Afficher cloche si rôle concerné */
-  var role = String(S.u.role||'').toLowerCase();
-  if(NOTIF_ROLES.indexOf(role) > -1) _showNotifBtn();
-  else _hideNotifBtn();
+  var role=String(S.u.role||'').toLowerCase();
+  if(NOTIF_ROLES.indexOf(role)>-1)_showNotifBtn();else _hideNotifBtn();
   buildNav();bindEvents();popSel();popCatSel();
   if(gv()){$('sale-wrap').innerHTML='';nav('dashboard');}
   else{$('sale-wrap').innerHTML='<button class="btn btng" id="btn-quick-sale"><i class="fas fa-plus-circle"></i> Nouvelle vente</button>';var qs=$('btn-quick-sale');if(qs)qs.addEventListener('click',function(){openSaleM();});var sl=userStationList();S.cs=sl[0]||'';nav('station');}
@@ -684,22 +916,13 @@ function initApp(){
 
 function bindEvents(){
   function tap(el,fn){if(!el)return;el.addEventListener('click',fn);}
-
   tap($('mob-tog-btn'),togSide);tap($('mob-ov'),togSide);tap($('logout-btn'),doLogout);
   tap($('d-ref-btn'),function(){loadDash(true);});
-
-  /* Cloche */
-  tap($('notif-btn'),function(e){ e.stopPropagation(); _toggleNotifPanel(); });
-  tap($('notif-panel-close'),function(){ _closeNotifPanel(); });
-  tap($('notif-clear-btn'),function(){ _notifs=[]; _renderNotifBadge(); _renderNotifList(); });
-  document.addEventListener('click',function(e){
-    var panel=document.getElementById('notif-panel');
-    var btn=document.getElementById('notif-btn');
-    if(_notifOpen && panel && !panel.contains(e.target) && btn && !btn.contains(e.target)) _closeNotifPanel();
-  });
-
-  var dsr=$('d-search');
-  if(dsr){var _dbt=null;dsr.addEventListener('input',function(){clearTimeout(_dbt);_dbt=setTimeout(filterDash,200);});}
+  tap($('notif-btn'),function(e){e.stopPropagation();_toggleNotifPanel();});
+  tap($('notif-panel-close'),function(){_closeNotifPanel();});
+  tap($('notif-clear-btn'),function(){_notifs=[];_renderNotifBadge();_renderNotifList();});
+  document.addEventListener('click',function(e){var panel=document.getElementById('notif-panel');var btn=document.getElementById('notif-btn');if(_notifOpen&&panel&&!panel.contains(e.target)&&btn&&!btn.contains(e.target))_closeNotifPanel();});
+  var dsr=$('d-search');if(dsr){var _dbt=null;dsr.addEventListener('input',function(){clearTimeout(_dbt);_dbt=setTimeout(filterDash,200);});}
   tap($('d-search-clr'),function(){$('d-search').value='';filterDash();});
   document.querySelectorAll('#d-table thead th.sortable').forEach(function(th){tap(th,function(){sortDash(parseInt(th.dataset.col,10));});});
   $('st-subtabs').querySelectorAll('.stbi').forEach(function(tab){tap(tab,function(){swSub(tab);});});
@@ -714,12 +937,36 @@ function bindEvents(){
   document.querySelectorAll('[data-close]').forEach(function(btn){tap(btn,function(){clM(btn.dataset.close);});});
   tap($('btn-save-st'),saveSt);tap($('btn-save-pr'),saveProd);tap($('btn-save-usr'),saveUsr);tap($('btn-save-sale'),saveSale);tap($('btn-save-liv'),saveLiv);tap($('btn-save-ver'),saveVer);tap($('btn-save-dep'),saveDep);tap($('btn-save-con'),saveCon);
   tap($('btn-close-pwd'),function(){_pa=null;clM('m-pwd');});tap($('btn-cancel-pwd'),function(){_pa=null;clM('m-pwd');});tap($('btn-confirm-pwd'),doPwdOk);$('pw-in').addEventListener('keydown',function(e){if(e.key==='Enter')doPwdOk();});
+  /* Conso calc */
   function calcSo(){var jo=+(($('mc-jo').value)||0),jf=+(($('mc-jf').value)||0);$('mc-so').value=jo-jf;}
   $('mc-jo').addEventListener('input',calcSo);$('mc-jf').addEventListener('input',calcSo);
-  $('ms-pr').addEventListener('change',function(){var o=this.options[this.selectedIndex];if(o&&o.dataset.px)$('ms-px').value=o.dataset.px;});
+  /* Produit auto-prix livraison */
   $('ml-pr').addEventListener('change',function(){var o=this.options[this.selectedIndex];if(o&&o.dataset.px)$('ml-px').value=o.dataset.px;});
+  /* Produit auto-prix vente */
+  $('ms-pr').addEventListener('change',function(){var o=this.options[this.selectedIndex];if(o&&o.dataset.px)$('ms-px').value=o.dataset.px;calcSale();});
+  $('ms-px').addEventListener('input',calcSale);
+  /* User role */
   $('m-usr-r').addEventListener('change',function(){var isSG=(this.value==='super_gerant');$('fg-station-single').style.display=isSG?'none':'block';$('fg-station-multi').style.display=isSG?'block':'none';if(isSG)buildMultiStationGrid();});
 }
+
+/* Calcul automatique dans le modal vente */
+function calcSale(){
+  var ia=parseFloat($('ms-ia').value)||0;
+  var id2=parseFloat($('ms-id').value)||0;
+  var px=parseFloat($('ms-px').value)||0;
+  var qte=ia-id2;
+  var mt=qte*px;
+  var row=$('ms-calc-row');
+  if(ia>0||id2>0){
+    row.style.display='grid';
+    $('ms-qte-disp').textContent=fm(qte)+' L';
+    $('ms-px-disp').textContent=fm(px)+' F';
+    $('ms-mt-disp').textContent=fmF(mt);
+  } else {
+    row.style.display='none';
+  }
+}
+window.calcSale=calcSale;
 
 function buildMultiStationGrid(selected){
   var sel=(selected||'').split(',').map(function(s){return s.trim();});
@@ -821,7 +1068,6 @@ function _applyDashData(r,fromCache,prevDash){
   if(!fromCache)requestAnimationFrame(function(){rCharts(r);});
 }
 
-/* FIX 2 — Rendu tableau avec colonne Livraisons */
 function renderDash(){
   var q=($('d-search').value||'').toLowerCase().trim();
   var filtered=q?_dashRows.filter(function(r){return r.short.toLowerCase().indexOf(q)>-1||r.station.toLowerCase().indexOf(q)>-1;}):_dashRows;
@@ -846,13 +1092,11 @@ function renderDash(){
 }
 function filterDash(){renderDash();}
 
-/* FIX 2 — Tri avec la nouvelle colonne */
 function sortDash(col){
   var ths=document.querySelectorAll('#d-table thead th');
   var asc=(col===_dashSort.col)?!_dashSort.asc:true;
   _dashSort={col:col,asc:asc};
   ths.forEach(function(th,i){th.classList.remove('sort-asc','sort-desc');if(i===col)th.classList.add(asc?'sort-asc':'sort-desc');});
-  /* 0:rank 1:short 2:livraisons 3:ventes 4:litres 5:montant 6:versements 7:restant */
   var keys=['rank','short','livraisons','ventes','litres','montant','versements','restant'];
   var key=keys[col]||'montant';
   _dashRows.sort(function(a,b){var av=a[key],bv=b[key];if(typeof av==='string')return asc?av.localeCompare(bv,'fr'):bv.localeCompare(av,'fr');return asc?av-bv:bv-av;});
@@ -989,13 +1233,89 @@ function rRes(res,stockVal){
 
 function rStk(stock){var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});(stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');$('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';}
 
-function rVen(items){var h=[],canE=ce(),canD=cd();if(!items||!items.length){$('ven-tbl').innerHTML='<tr><td colspan="8" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-receipt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune vente</td></tr>';return;}items.forEach(function(o){h.push('<tr><td class="fw7" style="color:var(--acc)">'+o.id+'</td><td>'+o.date+'</td><td class="fw6">'+escH(o.produit)+'</td><td class="tr">'+fm(o.prix_unitaire)+'</td><td class="tr">'+fm(o.quantite_litres)+'</td><td class="tr fw7 ta">'+fmF(o.montant_total)+'</td><td style="color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis">'+(o.observations||'—')+'</td><td class="ac">'+(canE?'<button class="btni btn-edit-sale" data-id="'+o.id+'"><i class="fas fa-pen"></i></button>':'')+(canD?'<button class="btni btn-del-sale" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>');});$('ven-tbl').innerHTML=h.join('');$('ven-tbl').querySelectorAll('.btn-edit-sale').forEach(function(b){b.addEventListener('click',function(){editSale(+b.dataset.id);});});$('ven-tbl').querySelectorAll('.btn-del-sale').forEach(function(b){b.addEventListener('click',function(){delSale(+b.dataset.id);});});}
+/* rVen — affiche index_arrivee et index_depart */
+function rVen(items){
+  var h=[],canE=ce(),canD=cd();
+  if(!items||!items.length){$('ven-tbl').innerHTML='<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-receipt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune vente</td></tr>';return;}
+  items.forEach(function(o){
+    h.push('<tr>'
+      +'<td class="fw7" style="color:var(--acc)">'+o.id+'</td>'
+      +'<td>'+o.date+'</td>'
+      +'<td class="fw6">'+escH(o.produit)+'</td>'
+      +'<td class="tr">'+fm(o.prix_unitaire)+'</td>'
+      +'<td class="tr" style="color:var(--ok)">'+fm(o.index_arrivee||0)+'</td>'
+      +'<td class="tr" style="color:var(--err)">'+fm(o.index_depart||0)+'</td>'
+      +'<td class="tr fw6">'+fm(o.quantite_litres)+'</td>'
+      +'<td class="tr fw7 ta">'+fmF(o.montant_total)+'</td>'
+      +'<td style="color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis">'+(o.observations||'—')+'</td>'
+      +'<td class="ac">'
+        +(canE?'<button class="btni btn-edit-sale" data-id="'+o.id+'"><i class="fas fa-pen"></i></button>':'')
+        +(canD?'<button class="btni btn-del-sale" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')
+      +'</td></tr>');
+  });
+  $('ven-tbl').innerHTML=h.join('');
+  $('ven-tbl').querySelectorAll('.btn-edit-sale').forEach(function(b){b.addEventListener('click',function(){editSale(+b.dataset.id);});});
+  $('ven-tbl').querySelectorAll('.btn-del-sale').forEach(function(b){b.addEventListener('click',function(){delSale(+b.dataset.id);});});
+}
 
 function rLiv(items){var h=[],tQ=0,tM=0,canE=ce(),canD=cd();if(!items||!items.length){$('liv-tbl').innerHTML='<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-truck" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune livraison</td></tr>';return;}items.forEach(function(o){tQ+=o.quantite_litres||0;tM+=o.montant_total||0;h.push('<tr><td class="fw7" style="color:var(--inf)">'+o.id+'</td><td>'+o.date+'</td><td class="fw6">'+escH(o.produit)+'</td><td class="tr">'+fm(o.quantite_litres||0)+'</td><td class="tr">'+fm(o.prix_unitaire||0)+'</td><td class="tr fw6 ta">'+fmF(o.montant_total||0)+'</td><td style="color:var(--t3)">'+(o.observations||'—')+'</td><td>'+escH(o.saisi_par)+'</td><td class="ac">'+(canE?'<button class="btni btn-edit-liv" data-id="'+o.id+'"><i class="fas fa-pen"></i></button>':'')+(canD?'<button class="btni btn-del-liv" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>');});h.push('<tr style="font-weight:800;background:var(--accg)"><td colspan="3">TOTAL</td><td class="tr">'+fm(tQ)+' L</td><td></td><td class="tr ta">'+fmF(tM)+'</td><td colspan="3"></td></tr>');$('liv-tbl').innerHTML=h.join('');$('liv-tbl').querySelectorAll('.btn-edit-liv').forEach(function(b){b.addEventListener('click',function(){editLiv(+b.dataset.id);});});$('liv-tbl').querySelectorAll('.btn-del-liv').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer cette livraison?'))return;reqPwd('dliv',{id:+b.dataset.id});});});}
 
-function rVer(items){var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();if(!items||!items.length){$('ver-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-hand-holding-usd" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun versement</td></tr>';return;}items.forEach(function(o){tot+=o.montant_verse||0;var acts='';if(canE)acts+='<button class="btni btn-edit-ver" data-id="'+o.id+'" data-dt="'+o.date+'" data-mt="'+(o.montant_verse||0)+'" data-md="'+escH(o.mode_versement||'')+'" data-rf="'+escH(o.reference||'')+'"><i class="fas fa-pen"></i></button>';if(canD)acts+='<button class="btni btn-del-ver" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h.push('<tr><td class="fw7" style="color:var(--ok)">'+o.id+'</td><td>'+o.date+'</td><td class="tr fw7 ts">'+fmF(o.montant_verse||0)+'</td><td><span class="bg bg-g">'+(o.mode_versement||'—')+'</span></td><td style="color:var(--t3)">'+(o.reference||'—')+'</td><td>'+escH(o.saisi_par)+'</td><td class="ac">'+acts+'</td></tr>');});h.push('<tr style="font-weight:800;background:var(--okg)"><td colspan="2">TOTAL</td><td class="tr ts">'+fmF(tot)+'</td><td colspan="4"></td></tr>');$('ver-tbl').innerHTML=h.join('');$('ver-tbl').querySelectorAll('.btn-edit-ver').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut modifier','error');return;}$('m-ver-title').textContent='Modifier versement #'+b.dataset.id;$('mv-id').value=b.dataset.id;$('mv-dt').value=b.dataset.dt;$('mv-mt').value=b.dataset.mt;$('mv-md').value=b.dataset.md;$('mv-rf').value=b.dataset.rf;opM('m-ver');});});$('ver-tbl').querySelectorAll('.btn-del-ver').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut supprimer','error');return;}if(!confirm('Supprimer ce versement?'))return;api('apiDeleteVersement',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
+function rVer(items){
+  var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();
+  if(!items||!items.length){$('ver-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-hand-holding-usd" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun versement</td></tr>';return;}
+  items.forEach(function(o){
+    tot+=o.montant_verse||0;
+    var acts='';
+    if(canE)acts+='<button class="btni btn-edit-ver" data-id="'+o.id+'" data-dt="'+o.date+'" data-mt="'+(o.montant_verse||0)+'" data-md="'+escH(o.mode_versement||'')+'" data-rf="'+escH(o.reference||'')+'"><i class="fas fa-pen"></i></button>';
+    if(canD)acts+='<button class="btni btn-del-ver" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';
+    h.push('<tr><td class="fw7" style="color:var(--ok)">'+o.id+'</td><td>'+o.date+'</td><td class="tr fw7 ts">'+fmF(o.montant_verse||0)+'</td><td><span class="bg bg-g">'+(o.mode_versement||'—')+'</span></td><td style="color:var(--t3)">'+(o.reference||'—')+'</td><td>'+escH(o.saisi_par)+'</td><td class="ac">'+acts+'</td></tr>');
+  });
+  h.push('<tr style="font-weight:800;background:var(--okg)"><td colspan="2">TOTAL</td><td class="tr ts">'+fmF(tot)+'</td><td colspan="4"></td></tr>');
+  $('ver-tbl').innerHTML=h.join('');
+  $('ver-tbl').querySelectorAll('.btn-edit-ver').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(!admin){toast('Seul l\'admin peut modifier','error');return;}
+      $('m-ver-title').textContent='Modifier versement #'+b.dataset.id;
+      $('mv-id').value=b.dataset.id;$('mv-dt').value=b.dataset.dt;$('mv-mt').value=b.dataset.mt;$('mv-md').value=b.dataset.md;$('mv-rf').value=b.dataset.rf;opM('m-ver');
+    });
+  });
+  $('ver-tbl').querySelectorAll('.btn-del-ver').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(!admin){toast('Seul l\'admin peut supprimer','error');return;}
+      if(!confirm('Supprimer ce versement?'))return;
+      api('apiDeleteVersement',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else{toast(r.message||'Erreur','error');}}).catch(function(e){toast(e.message,'error');});
+    });
+  });
+}
 
-function rDep(items){var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();if(!items||!items.length){$('dep-tbl').innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}items.forEach(function(o){tot+=o.montant||0;var acts='';if(canE)acts+='<button class="btni btn-edit-dep" data-id="'+o.id+'" data-dt="'+o.date+'" data-ds="'+escH(o.description||'')+'" data-ct="'+escH(o.categorie||'')+'" data-mt="'+(o.montant||0)+'"><i class="fas fa-pen"></i></button>';if(canD)acts+='<button class="btni btn-del-dep" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h.push('<tr><td class="fw7" style="color:var(--err)">'+o.id+'</td><td>'+o.date+'</td><td><span class="bg bg-p">'+(o.categorie||'—')+'</span></td><td>'+escH(o.description)+'</td><td class="tr fw7 td">'+fmF(o.montant||0)+'</td><td class="ac">'+acts+'</td></tr>');});h.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td></td></tr>');$('dep-tbl').innerHTML=h.join('');$('dep-tbl').querySelectorAll('.btn-edit-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut modifier','error');return;}$('m-dep-title').textContent='Modifier dépense #'+b.dataset.id;$('md-id').value=b.dataset.id;$('md-dt').value=b.dataset.dt;$('md-ds').value=b.dataset.ds;$('md-ct').value=b.dataset.ct;$('md-mt').value=b.dataset.mt;popCatSel();setTimeout(function(){$('md-ct').value=b.dataset.ct;},50);opM('m-dep');});});$('dep-tbl').querySelectorAll('.btn-del-dep').forEach(function(b){b.addEventListener('click',function(){if(!admin){toast('Seul l\'admin peut supprimer','error');return;}if(!confirm('Supprimer cette dépense?'))return;api('apiDeleteDepense',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});});});}
+function rDep(items){
+  var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();
+  if(!items||!items.length){$('dep-tbl').innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}
+  items.forEach(function(o){
+    tot+=o.montant||0;
+    var acts='';
+    if(canE)acts+='<button class="btni btn-edit-dep" data-id="'+o.id+'" data-dt="'+o.date+'" data-ds="'+escH(o.description||'')+'" data-ct="'+escH(o.categorie||'')+'" data-mt="'+(o.montant||0)+'"><i class="fas fa-pen"></i></button>';
+    if(canD)acts+='<button class="btni btn-del-dep" data-id="'+o.id+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';
+    h.push('<tr><td class="fw7" style="color:var(--err)">'+o.id+'</td><td>'+o.date+'</td><td><span class="bg bg-p">'+(o.categorie||'—')+'</span></td><td>'+escH(o.description)+'</td><td class="tr fw7 td">'+fmF(o.montant||0)+'</td><td class="ac">'+acts+'</td></tr>');
+  });
+  h.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td></td></tr>');
+  $('dep-tbl').innerHTML=h.join('');
+  $('dep-tbl').querySelectorAll('.btn-edit-dep').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(!admin){toast('Seul l\'admin peut modifier','error');return;}
+      $('m-dep-title').textContent='Modifier dépense #'+b.dataset.id;
+      $('md-id').value=b.dataset.id;$('md-dt').value=b.dataset.dt;$('md-ds').value=b.dataset.ds;$('md-ct').value=b.dataset.ct;$('md-mt').value=b.dataset.mt;
+      popCatSel();setTimeout(function(){$('md-ct').value=b.dataset.ct;},50);opM('m-dep');
+    });
+  });
+  $('dep-tbl').querySelectorAll('.btn-del-dep').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(!admin){toast('Seul l\'admin peut supprimer','error');return;}
+      if(!confirm('Supprimer cette dépense?'))return;
+      api('apiDeleteDepense',{token:S.tk,id:+b.dataset.id}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else{toast(r.message||'Erreur','error');}}).catch(function(e){toast(e.message,'error');});
+    });
+  });
+}
 
 function rCon(items){
   var h=[],admin=isAd();
@@ -1003,163 +1323,142 @@ function rCon(items){
   items.forEach(function(o,idx){
     var acts='';
     if(admin)acts='<button class="btni btn-edit-con" data-idx="'+idx+'" title="Modifier"><i class="fas fa-pen"></i></button>'
-                  +'<button class="btni btn-del-con" data-idx="'+idx+'" style="color:var(--err)" title="Supprimer"><i class="fas fa-trash-alt"></i></button>';
-    h.push('<tr><td>'+o.date+'</td><td class="fw6">'+(o.produit||'—')+'</td><td class="tr">'+fm(o.jauge_ouverture||0)+'</td><td class="tr">'+fm(o.jauge_fermeture||0)+'</td><td class="tr fw7 ta">'+fm(o.sortie||0)+'</td><td style="color:var(--t3)">'+(o.observations||'—')+'</td><td class="ac">'+acts+'</td></tr>');
+                 +'<button class="btni btn-del-con" data-idx="'+idx+'" title="Supprimer" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';
+    h.push('<tr>'
+      +'<td>'+o.date+'</td>'
+      +'<td class="fw6">'+escH(o.produit)+'</td>'
+      +'<td class="tr">'+fm(o.jauge_ouverture)+'</td>'
+      +'<td class="tr">'+fm(o.jauge_fermeture)+'</td>'
+      +'<td class="tr fw7 ta">'+fm(o.sortie)+'</td>'
+      +'<td style="color:var(--t3)">'+(o.observations||'—')+'</td>'
+      +'<td class="ac">'+acts+'</td>'
+      +'</tr>');
   });
   $('con-tbl').innerHTML=h.join('');
   var conItems=items;
-  $('con-tbl').querySelectorAll('.btn-edit-con').forEach(function(b){b.addEventListener('click',function(){
-    if(!isAd()){toast('Seul l\'admin peut modifier','error');return;}
-    var o=conItems[+b.dataset.idx];if(!o)return;
-    $('mc-dt').value=o.date||'';
-    var sel=$('mc-pr');for(var i=0;i<sel.options.length;i++){if(sel.options[i].value===o.produit){sel.selectedIndex=i;break;}}
-    $('mc-jo').value=o.jauge_ouverture||0;$('mc-jf').value=o.jauge_fermeture||0;$('mc-so').value=o.sortie||0;$('mc-ob').value=o.observations||'';
-    $('mc-con-orig-date').value=o.date||'';$('mc-con-orig-pr').value=o.produit||'';
-    opM('m-con');
-  });});
-  $('con-tbl').querySelectorAll('.btn-del-con').forEach(function(b){b.addEventListener('click',function(){
-    if(!isAd()){toast('Seul l\'admin peut supprimer','error');return;}
-    var o=conItems[+b.dataset.idx];if(!o)return;
-    if(!confirm('Supprimer ce relevé ?'))return;
-    api('apiDeleteConso',{token:S.tk,obj:{date:o.date,produit:o.produit,station:S.cs}}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else{toast(r.message||'Erreur','error');}}).catch(function(e){toast(e.message,'error');});
-  });});
+  $('con-tbl').querySelectorAll('.btn-edit-con').forEach(function(b){
+    b.addEventListener('click',function(){
+      var o=conItems[+b.dataset.idx];if(!o)return;
+      $('m-con-t').textContent='Modifier relevé';
+      $('mc-dt').value=o.date;$('mc-pr').value=o.produit;$('mc-jo').value=o.jauge_ouverture;$('mc-jf').value=o.jauge_fermeture;$('mc-so').value=o.sortie;$('mc-ob').value=o.observations||'';
+      $('mc-orig-dt').value=o.date;$('mc-orig-pr').value=o.produit;opM('m-con');
+    });
+  });
+  $('con-tbl').querySelectorAll('.btn-del-con').forEach(function(b){
+    b.addEventListener('click',function(){
+      var o=conItems[+b.dataset.idx];if(!o)return;
+      if(!confirm('Supprimer ce relevé?'))return;
+      api('apiDeleteConso',{token:S.tk,obj:{date:o.date,produit:o.produit,station:S.cs}}).then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else toast(r.message,'error');}).catch(function(e){toast(e.message,'error');});
+    });
+  });
 }
 
-/* ===== VENTES — FIX 3 anti-doublons ===== */
-function openSaleM(d){d=d||null;$('m-sale-t').textContent=d?'Modifier vente #'+d.id:'Nouvelle vente';$('ms-id').value=d?d.id:'';$('ms-dt').value=d?d.date:td();rPS();setTimeout(function(){$('ms-pr').value=d?d.produit:'';$('ms-px').value=d?d.prix_unitaire:'';},30);$('ms-qt').value=d?d.quantite_litres:'';$('ms-ob').value=d?(d.observations||''):'';opM('m-sale');}
-function editSale(id){var x=(S.sc||[]).filter(function(s){return s.id===id;})[0];if(x)reqPwd('edit',x);else toast('Vente introuvable','error');}
+/* ===== MODALS VENTE ===== */
+function openSaleM(d){
+  $('m-sale-t').textContent=d?'<i class="fas fa-receipt ta"></i> Modifier vente #'+d.id:'<i class="fas fa-receipt ta"></i> Nouvelle vente';
+  $('ms-id').value=d?d.id:'';
+  $('ms-dt').value=d?d.date:td();
+  $('ms-pr').value=d?d.produit:'';
+  $('ms-px').value=d?d.prix_unitaire:'';
+  $('ms-ia').value=d?(d.index_arrivee||0):'';
+  $('ms-id').value=d?(d.index_depart||0):'';
+  $('ms-ob').value=d?d.observations||'':'';
+  calcSale();
+  opM('m-sale');
+}
+
+function editSale(id){
+  var o=(S.sc||[]).filter(function(v){return v.id===id;})[0];
+  if(!o)return toast('Vente introuvable','error');
+  reqPwd('edit',o);
+}
+
+function doDelSale(id,pwd){
+  api('apiDeleteStationSale',{token:S.tk,stationName:S.cs,id:id,salesPassword:pwd}).then(function(r){if(r.ok){toast('Vente supprimée','success');_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');}).catch(function(e){toast(e.message,'error');});
+}
+function delSale(id){reqPwd('del',{id:id});}
 
 function saveSale(){
-  var btn=$('btn-save-sale');
-  if(!_lockSave(btn)) return; /* double-clic bloqué */
-  var obj={id:$('ms-id').value||0,date:$('ms-dt').value,produit:$('ms-pr').value,prix_unitaire:$('ms-px').value,quantite_litres:$('ms-qt').value,observations:$('ms-ob').value};
-  if(!obj.produit){_unlockSave(btn);return toast('Produit requis','error');}
-  if(!obj.quantite_litres||+obj.quantite_litres<=0){_unlockSave(btn);return toast('Quantité invalide','error');}
-  clM('m-sale');
-  api('apiUpsertStationSale',{token:S.tk,stationName:S.cs,obj:obj,salesPassword:S._lsp||null})
-  .then(function(r){S._lsp=null;toast(r.message,r.ok?'success':'error');if(r.ok){handleNotify(r);_sfBusy=false;loadSF();}})
-  .catch(function(e){S._lsp=null;toast(e.message,'error');})
-  .finally(function(){_unlockSave(btn);});
-}
-
-function delSale(id){if(!confirm('Supprimer vente #'+id+' ?'))return;if(!cd())return toast('Réservé admin','error');reqPwd('del',{id:id});}
-function doDelSale(id,pw){api('apiDeleteStationSale',{token:S.tk,stationName:S.cs,id:id,salesPassword:pw}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});}
-
-/* ===== LIVRAISONS — FIX 3 anti-doublons ===== */
-function openLivM(d){d=d||null;$('m-liv-t').textContent=d?'Modifier livraison #'+d.id:'Nouvelle livraison';$('ml-id').value=d?d.id:'';$('ml-dt').value=d?d.date:td();rPS();setTimeout(function(){$('ml-pr').value=d?d.produit:'';$('ml-px').value=d?d.prix_unitaire:'';},30);$('ml-qt').value=d?d.quantite_litres:'';$('ml-ob').value=d?(d.observations||''):'';opM('m-liv');}
-function editLiv(id){var x=(S.lc||[]).filter(function(l){return l.id===id;})[0];if(x)reqPwd('eliv',x);else toast('Livraison introuvable','error');}
-
-function saveLiv(){
-  var btn=$('btn-save-liv');
-  if(!_lockSave(btn)) return;
-  var id=$('ml-id').value;
-  var obj={id:id||0,station:S.cs,date:$('ml-dt').value,produit:$('ml-pr').value,quantite_litres:$('ml-qt').value,prix_unitaire:$('ml-px').value,observations:$('ml-ob').value};
-  if(!obj.produit){_unlockSave(btn);return toast('Produit requis','error');}
-  clM('m-liv');
-  var req=id
-    ?api('apiUpdateLivraison',{token:S.tk,obj:obj,livraisonPassword:S._llp||null}).then(function(r){S._llp=null;return r;}).catch(function(e){S._llp=null;throw e;})
-    :api('apiAddLivraison',{token:S.tk,obj:obj});
-  req.then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){if(!id)handleNotify(r);_sfBusy=false;loadSF();}})
-     .catch(function(e){toast(e.message,'error');})
-     .finally(function(){_unlockSave(btn);});
-}
-
-function doDelLiv(id,pw){api('apiDeleteLivraison',{token:S.tk,id:id,livraisonPassword:pw}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){_sfBusy=false;loadSF();}}).catch(function(e){toast(e.message,'error');});}
-
-/* ===== VERSEMENTS — FIX 3 anti-doublons ===== */
-function openVerM(){$('m-ver-title').textContent='Nouveau versement';$('mv-id').value='';$('mv-dt').value=td();$('mv-mt').value='';$('mv-md').value='';$('mv-rf').value='';opM('m-ver');}
-
-function saveVer(){
-  var btn=$('btn-save-ver');
-  if(!_lockSave(btn)) return;
-  var id=$('mv-id').value;
-  var obj={id:id||0,station:S.cs,date:$('mv-dt').value,montant_verse:$('mv-mt').value,mode_versement:$('mv-md').value,reference:$('mv-rf').value};
-  if(!obj.montant_verse||+obj.montant_verse<=0){_unlockSave(btn);return toast('Montant requis','error');}
-  var req=id?api('apiUpdateVersement',{token:S.tk,obj:obj}):api('apiAddVersement',{token:S.tk,obj:obj});
-  req.then(function(r){
-    if(r.ok){clM('m-ver');toast(id?'Versement mis à jour':'Versement enregistré','success');if(!id)handleNotify(r);_sfBusy=false;loadSF();}
-    else toast(r.message,'error');
-  }).catch(function(e){toast(e.message,'error');}).finally(function(){_unlockSave(btn);});
-}
-
-/* ===== DÉPENSES — FIX 3 anti-doublons ===== */
-function openDepM(){$('m-dep-title').textContent='Nouvelle dépense';$('md-id').value='';$('md-dt').value=td();$('md-ds').value='';$('md-ct').value='';$('md-mt').value='';popCatSel();opM('m-dep');}
-
-function saveDep(){
-  var btn=$('btn-save-dep');
-  if(!_lockSave(btn)) return;
-  var id=$('md-id').value;
-  var obj={id:id||0,station:S.cs,date:$('md-dt').value,description:$('md-ds').value,categorie:$('md-ct').value,montant:$('md-mt').value};
-  if(!obj.montant||+obj.montant<=0){_unlockSave(btn);return toast('Montant requis','error');}
-  var req=id?api('apiUpdateDepense',{token:S.tk,obj:obj}):api('apiAddDepense',{token:S.tk,obj:obj});
-  req.then(function(r){
-    if(r.ok){clM('m-dep');toast(id?'Dépense mise à jour':'Dépense enregistrée','success');if(!id)handleNotify(r);_sfBusy=false;loadSF();}
-    else toast(r.message,'error');
-  }).catch(function(e){toast(e.message,'error');}).finally(function(){_unlockSave(btn);});
-}
-
-/* ===== CONSO — FIX 3 anti-doublons ===== */
-function openConM(){$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';$('mc-con-orig-date').value='';$('mc-con-orig-pr').value='';rPS();opM('m-con');}
-
-function saveCon(){
-  var btn=$('btn-save-con');
-  if(!_lockSave(btn)) return;
-  var prod=$('mc-pr').value;
-  if(!prod){_unlockSave(btn);return toast('Produit requis','error');}
-  var jo=$('mc-jo').value,jf=$('mc-jf').value;
-  if(!jo&&jo!==0){_unlockSave(btn);return toast('Jauge ouverture requise','error');}
-  var origDate=$('mc-con-orig-date').value,origPr=$('mc-con-orig-pr').value;
-  var isEdit=origDate&&origPr;
-  var action=isEdit?'apiUpdateConso':'apiAddConso';
-  var obj={station:S.cs,date:$('mc-dt').value,produit:prod,jauge_ouverture:+jo,jauge_fermeture:+jf,observations:$('mc-ob').value};
-  if(isEdit){obj.orig_date=origDate;obj.orig_produit=origPr;}
-  api(action,{token:S.tk,obj:obj})
-  .then(function(r){
+  var id=+($('ms-id').value||0);
+  var ia=parseFloat($('ms-ia').value)||0;
+  var id2=parseFloat($('ms-id').value)||0;
+  var px=parseFloat($('ms-px').value)||0;
+  var dt=$('ms-dt').value;
+  var pr=$('ms-pr').value;
+  var ob=$('ms-ob').value;
+  if(!pr)return toast('Produit requis','error');
+  if(!dt)return toast('Date requise','error');
+  if(ia<=0&&id2<=0)return toast('Index requis','error');
+  var qte=ia-id2;
+  if(qte<=0)return toast('Index d\'arrivée doit être > Index de départ','error');
+  var obj={id:id||0,date:dt,produit:pr,prix_unitaire:px,index_arrivee:ia,index_depart:id2,quantite_litres:qte,observations:ob};
+  api('apiUpsertStationSale',{token:S.tk,stationName:S.cs,obj:obj,salesPassword:S._lsp||null}).then(function(r){
     if(r.ok){
-      clM('m-con');
-      $('mc-con-orig-date').value='';$('mc-con-orig-pr').value='';
-      toast(isEdit?'Relevé modifié':'Relevé enregistré','success');
-      handleNotify(r);_sfBusy=false;loadSF();
+      clM('m-sale');S._lsp=null;
+      toast(r.message,'success');
+      if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);
+      _sfBusy=false;loadSF();
     }else toast(r.message||'Erreur','error');
-  })
-  .catch(function(e){toast(e.message,'error');})
-  .finally(function(){_unlockSave(btn);});
+  }).catch(function(e){toast(e.message,'error');});
 }
 
-/* ===== NOTIFICATIONS — handleNotify enrichi ===== */
-function handleNotify(r){
-  if(r&&r.notify){
-    var n=r.notify;
-    var role=S.u?String(S.u.role||'').toLowerCase():'';
-    /* Alimenter le panneau uniquement pour les rôles concernés */
-    if(NOTIF_ROLES.indexOf(role)>-1){
-      _addNotif(n.type||'vente', n.station||S.cs||'', n.detail||'');
-    }
-    /* Toast in-app pour tout le monde */
-    var typeLabel={vente:'Nouvelle vente',livraison:'Livraison',versement:'Versement',depense:'Dépense',conso:'Relevé conso'};
-    showInAppNotif((typeLabel[n.type]||'Données')+' — '+(n.station||'')+': '+(n.detail||''));
+/* ===== MODALS LIVRAISON ===== */
+function openLivM(d){
+  $('m-liv-t').textContent=d?'<i class="fas fa-truck" style="color:var(--inf)"></i> Modifier livraison #'+d.id:'<i class="fas fa-truck" style="color:var(--inf)"></i> Nouvelle livraison';
+  $('ml-id').value=d?d.id:'';$('ml-dt').value=d?d.date:td();$('ml-pr').value=d?d.produit:'';$('ml-qt').value=d?d.quantite_litres:'';$('ml-px').value=d?d.prix_unitaire:'';$('ml-ob').value=d?d.observations||'':'';opM('m-liv');
+}
+function editLiv(id){var o=(S.lc||[]).filter(function(v){return v.id===id;})[0];if(!o)return;reqPwd('eliv',o);}
+function doDelLiv(id,pwd){api('apiDeleteLivraison',{token:S.tk,id:id,livraisonPassword:pwd}).then(function(r){if(r.ok){toast('Livraison supprimée','success');_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');}).catch(function(e){toast(e.message,'error');});}
+function saveLiv(){
+  var id=+($('ml-id').value||0);
+  var obj={id:id||undefined,date:$('ml-dt').value,produit:$('ml-pr').value,quantite_litres:$('ml-qt').value,prix_unitaire:$('ml-px').value,observations:$('ml-ob').value};
+  if(!obj.produit)return toast('Produit requis','error');
+  var action=id?'apiUpdateLivraison':'apiAddLivraison';
+  var params=id?{token:S.tk,obj:obj,livraisonPassword:S._llp||null}:{token:S.tk,obj:Object.assign({station:S.cs},obj)};
+  api(action,params).then(function(r){if(r.ok){clM('m-liv');S._llp=null;toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');}).catch(function(e){toast(e.message,'error');});
+}
+
+/* ===== MODALS VERSEMENT ===== */
+function openVerM(){$('m-ver-title').textContent='<i class="fas fa-hand-holding-usd" style="color:var(--ok)"></i> Nouveau versement';$('mv-id').value='';$('mv-dt').value=td();$('mv-mt').value='';$('mv-md').value='Espèce';$('mv-rf').value='';opM('m-ver');}
+function saveVer(){
+  var id=+($('mv-id').value||0);
+  var obj={id:id||undefined,date:$('mv-dt').value,montant_verse:$('mv-mt').value,mode_versement:$('mv-md').value,reference:$('mv-rf').value};
+  if(!obj.montant_verse)return toast('Montant requis','error');
+  var action=id?'apiUpdateVersement':'apiAddVersement';
+  var params=id?{token:S.tk,obj:obj}:{token:S.tk,obj:Object.assign({station:S.cs},obj)};
+  api(action,params).then(function(r){if(r.ok){clM('m-ver');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');}).catch(function(e){toast(e.message,'error');});
+}
+
+/* ===== MODALS DÉPENSE ===== */
+function openDepM(){$('m-dep-title').textContent='<i class="fas fa-file-invoice-dollar" style="color:var(--err)"></i> Nouvelle dépense';$('md-id').value='';$('md-dt').value=td();popCatSel();$('md-ct').value='';$('md-ds').value='';$('md-mt').value='';opM('m-dep');}
+function saveDep(){
+  var id=+($('md-id').value||0);
+  var obj={id:id||undefined,date:$('md-dt').value,categorie:$('md-ct').value,description:$('md-ds').value,montant:$('md-mt').value};
+  if(!obj.description)return toast('Description requise','error');if(!obj.montant)return toast('Montant requis','error');
+  var action=id?'apiUpdateDepense':'apiAddDepense';
+  var params=id?{token:S.tk,obj:obj}:{token:S.tk,obj:Object.assign({station:S.cs},obj)};
+  api(action,params).then(function(r){if(r.ok){clM('m-dep');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');}).catch(function(e){toast(e.message,'error');});
+}
+
+/* ===== MODALS CONSO ===== */
+function openConM(){$('m-con-t').textContent='<i class="fas fa-tachometer-alt" style="color:var(--pur)"></i> Nouveau relevé';$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';$('mc-orig-dt').value='';$('mc-orig-pr').value='';opM('m-con');}
+function saveCon(){
+  var dt=$('mc-dt').value,pr=$('mc-pr').value,jo=+$('mc-jo').value,jf=+$('mc-jf').value,ob=$('mc-ob').value;
+  var origDt=$('mc-orig-dt').value,origPr=$('mc-orig-pr').value;
+  if(!dt)return toast('Date requise','error');if(!pr)return toast('Produit requis','error');
+  var obj={date:dt,produit:pr,jauge_ouverture:jo,jauge_fermeture:jf,observations:ob,station:S.cs};
+  if(origDt&&origPr){
+    obj.orig_date=origDt;obj.orig_produit=origPr;
+    api('apiUpdateConso',{token:S.tk,obj:obj}).then(function(r){if(r.ok){clM('m-con');toast('Mis à jour','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message,'error');}).catch(function(e){toast(e.message,'error');});
+  }else{
+    api('apiAddConso',{token:S.tk,obj:obj}).then(function(r){if(r.ok){clM('m-con');toast('Ajouté','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message,'error');}).catch(function(e){toast(e.message,'error');});
   }
 }
 
-function showInAppNotif(msg){
-  var d=document.createElement('div');d.className='notif-bar';d.innerHTML='<i class="fas fa-bell"></i> '+escH(msg);
-  document.body.appendChild(d);setTimeout(function(){d.style.opacity='0';d.style.transform='translateX(-50%) translateY(20px)';d.style.transition='all .4s';setTimeout(function(){try{d.remove();}catch(e){}},400);},4000);
-}
-
-window.togSide=togSide;
-
-document.addEventListener('DOMContentLoaded',function(){
-  $('login-form').addEventListener('submit',function(e){e.preventDefault();doLogin(e);});
+/* Démarrage */
+window.addEventListener('DOMContentLoaded',function(){
   checkSess();
 });
-
-(function(){
-  var s=document.createElement('script');
-  s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
-  s.async=true;document.head.appendChild(s);
-})();
-
-})();
 </script>
 </body>
 </html>
