@@ -353,10 +353,12 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
     <div class="ps2" id="p-station">
       <div class="ph"><div class="pt" id="st-title"><i class="fas fa-gas-pump ta"></i> Station</div></div>
       <div class="st-tabs" id="st-tabs"></div>
+      <div id="st-name-bar" style="background:var(--card);border:1px solid var(--brd);border-radius:var(--r2);padding:12px 18px;margin-bottom:14px;font-size:16px;font-weight:800;color:var(--t1);letter-spacing:-.3px;display:none"><i class="fas fa-gas-pump ta" style="margin-right:8px"></i><span id="st-name-display">—</span></div>
       <div class="fb">
         <label>Du</label><input type="date" id="sf-from">
         <label>Au</label><input type="date" id="sf-to">
         <button class="btn btn2" id="btn-load-sf"><i class="fas fa-search"></i> Filtrer</button>
+        <button class="btn btn1" id="add-sale-btn" style="display:none;margin-left:auto"><i class="fas fa-plus"></i> Nouvelle vente</button>
       </div>
       <div class="sg" id="st-res"></div>
       <div class="stb" id="st-subtabs">
@@ -365,14 +367,10 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
         <div class="stbi" data-p="p-ver">Versements</div>
         <div class="stbi" data-p="p-dep">Dépenses</div>
         <div class="stbi" data-p="p-con">Conso jauge</div>
-        <div class="stbi" data-p="p-stk">Stock</div>
-        <div class="stbi" data-p="p-chart">Graphique</div>
+        <div class="stbi" data-p="p-chart">Résumé financier</div>
       </div>
 
       <div class="sp2 on" id="p-ven">
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
-          <button class="btn btn1" id="add-sale-btn" style="display:none"><i class="fas fa-plus"></i> Nouvelle vente</button>
-        </div>
         <div class="tw"><table>
           <thead><tr>
             <th class="sortable" data-tbl="ven-tbl" data-col="0">#</th>
@@ -456,7 +454,12 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
         </table></div>
       </div>
 
-      <div class="sp2" id="p-stk">
+
+      <div class="sp2" id="p-chart">
+        <div class="cd"><div class="ct"><i class="fas fa-chart-bar"></i> Résumé financier</div><div class="cc"><canvas id="ch-res"></canvas></div></div>
+      <!-- STOCK PRODUIT - Section toujours visible -->
+      <div class="cd mt2" id="stk-section">
+        <div class="ct"><i class="fas fa-box"></i> Stock produit</div>
         <div class="tw"><table>
           <thead><tr>
             <th>Produit</th>
@@ -467,10 +470,6 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
           </tr></thead>
           <tbody id="stk-tbl"></tbody>
         </table></div>
-      </div>
-
-      <div class="sp2" id="p-chart">
-        <div class="cd"><div class="ct"><i class="fas fa-chart-bar"></i> Résumé financier</div><div class="cc"><canvas id="ch-res"></canvas></div></div>
       </div>
     </div>
 
@@ -570,15 +569,15 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
   <div class="md">
     <div class="mh"><h3 id="m-sale-t"><i class="fas fa-receipt ta"></i> Vente</h3><button class="mx" data-close="m-sale"><i class="fas fa-times"></i></button></div>
     <div class="mb">
-      <input type="hidden" id="ms-id">
+      <input type="hidden" id="ms-sale-id">
       <div class="fg"><label>Date</label><input id="ms-dt" class="fp" type="date"></div>
       <div class="fg"><label>Produit</label><select id="ms-pr" class="fp"></select></div>
       <div class="fg"><label>Prix unitaire (F/L)</label><input id="ms-px" class="fp" type="number" step="1" min="0" placeholder="Ex: 830"></div>
       <!-- Nouveaux champs index -->
       <div style="background:var(--accg);border:1px solid var(--accb);border-radius:var(--r);padding:14px;margin-bottom:15px">
-        <div style="font-size:11px;font-weight:700;color:var(--acc);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px"><i class="fas fa-tachometer-alt"></i> Compteur / Index</div>
-        <div class="fg" style="margin-bottom:10px"><label>Index d'arrivée (début)</label><div class="iw"><i class="fas fa-arrow-down" style="color:var(--ok)"></i><input id="ms-ia" class="fc" type="number" step="0.01" min="0" placeholder="Ex: 15000" oninput="calcSale()"></div></div>
-        <div class="fg" style="margin-bottom:10px"><label>Index de départ (fin)</label><div class="iw"><i class="fas fa-arrow-up" style="color:var(--err)"></i><input id="ms-id" class="fc" type="number" step="0.01" min="0" placeholder="Ex: 14500" oninput="calcSale()"></div></div>
+        <div style="font-size:11px;font-weight:700;color:var(--acc);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px"><i class="fas fa-tachometer-alt"></i> Ventes Compteur / Index</div>
+        <div class="fg" style="margin-bottom:10px"><label>Index d'arrivée</label><div class="iw"><i class="fas fa-arrow-down" style="color:var(--ok)"></i><input id="ms-ia" class="fc" type="number" step="0.01" min="0" placeholder="Ex: 15000" oninput="calcSale()"></div></div>
+        <div class="fg" style="margin-bottom:10px"><label>Index de départ</label><div class="iw"><i class="fas fa-arrow-up" style="color:var(--err)"></i><input id="ms-idep" class="fc" type="number" step="0.01" min="0" placeholder="Ex: 14500" oninput="calcSale()"></div></div>
         <!-- Résumé calculé -->
         <div class="idx-row" id="ms-calc-row" style="display:none">
           <div><div class="idx-lbl">Quantité (L)</div><div class="idx-val" id="ms-qte-disp">—</div></div>
@@ -910,7 +909,7 @@ function initApp(){
   if(NOTIF_ROLES.indexOf(role)>-1)_showNotifBtn();else _hideNotifBtn();
   buildNav();bindEvents();popSel();popCatSel();
   if(gv()){$('sale-wrap').innerHTML='';nav('dashboard');}
-  else{$('sale-wrap').innerHTML='<button class="btn btng" id="btn-quick-sale"><i class="fas fa-plus-circle"></i> Nouvelle vente</button>';var qs=$('btn-quick-sale');if(qs)qs.addEventListener('click',function(){openSaleM();});var sl=userStationList();S.cs=sl[0]||'';nav('station');}
+  else{$('sale-wrap').innerHTML='';var sl=userStationList();S.cs=sl[0]||'';nav('station');}
   document.addEventListener('visibilitychange',function(){if(document.hidden)stopAR();else if(S.cp==='dashboard'){loadDash(false);startAR();}});
 }
 
@@ -952,7 +951,7 @@ function bindEvents(){
 /* Calcul automatique dans le modal vente */
 function calcSale(){
   var ia=parseFloat($('ms-ia').value)||0;
-  var id2=parseFloat($('ms-id').value)||0;
+  var id2=parseFloat($('ms-idep').value)||0;
   var px=parseFloat($('ms-px').value)||0;
   var qte=ia-id2;
   var mt=qte*px;
@@ -1176,11 +1175,11 @@ function initSt(){
     tab.addEventListener('click',function(){swSt(st);});frag.appendChild(tab);
   });
   tabs.appendChild(frag);
-  $('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+(S.cs||'Station');
+  $('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+(S.cs||'Station');var snb=$('st-name-display');if(snb)snb.textContent=S.cs||'';var snbar=$('st-name-bar');if(snbar)snbar.style.display=S.cs?'block':'none';
   var ab=$('add-sale-btn');if(ab)ab.style.display=ce()?'inline-flex':'none';
   _sfBusy=false;loadSF();
 }
-function swSt(n){S.cs=n;_sfBusy=false;$('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+escH(n);$('st-tabs').querySelectorAll('.st-tab').forEach(function(t){t.classList.toggle('on',t.dataset.station===n);});loadSF();}
+function swSt(n){S.cs=n;_sfBusy=false;$('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+escH(n);var snb=$('st-name-display');if(snb)snb.textContent=n;var snbar=$('st-name-bar');if(snbar)snbar.style.display='block';$('st-tabs').querySelectorAll('.st-tab').forEach(function(t){t.classList.toggle('on',t.dataset.station===n);});loadSF();}
 
 function loadSF(){
   if(!S.cs||_sfBusy)return;_sfBusy=true;
@@ -1356,12 +1355,12 @@ function rCon(items){
 /* ===== MODALS VENTE ===== */
 function openSaleM(d){
   $('m-sale-t').textContent=d?'<i class="fas fa-receipt ta"></i> Modifier vente #'+d.id:'<i class="fas fa-receipt ta"></i> Nouvelle vente';
-  $('ms-id').value=d?d.id:'';
+  $('ms-sale-id').value=d?d.id:'';
   $('ms-dt').value=d?d.date:td();
   $('ms-pr').value=d?d.produit:'';
   $('ms-px').value=d?d.prix_unitaire:'';
   $('ms-ia').value=d?(d.index_arrivee||0):'';
-  $('ms-id').value=d?(d.index_depart||0):'';
+  $('ms-idep').value=d?(d.index_depart||0):'';
   $('ms-ob').value=d?d.observations||'':'';
   calcSale();
   opM('m-sale');
@@ -1379,9 +1378,9 @@ function doDelSale(id,pwd){
 function delSale(id){reqPwd('del',{id:id});}
 
 function saveSale(){
-  var id=+($('ms-id').value||0);
+  var id=+($('ms-sale-id').value||0);
   var ia=parseFloat($('ms-ia').value)||0;
-  var id2=parseFloat($('ms-id').value)||0;
+  var id2=parseFloat($('ms-idep').value)||0;
   var px=parseFloat($('ms-px').value)||0;
   var dt=$('ms-dt').value;
   var pr=$('ms-pr').value;
