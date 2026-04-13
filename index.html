@@ -60,6 +60,7 @@ button{cursor:pointer;-webkit-appearance:none;appearance:none}
 .l-logo h1{font-size:21px;font-weight:800;background:linear-gradient(135deg,var(--acc2),var(--acc3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
 .l-logo p{color:var(--t3);font-size:12px;margin-top:5px}
 .l-foot{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--brd);font-size:11px;color:var(--t3)}.l-foot b{color:var(--acc)}
+.l-brand{text-align:center;margin-top:10px;font-size:10px;color:var(--t3);letter-spacing:.3px}.l-brand span{color:var(--acc);font-weight:700}
 .th-btn{position:fixed;top:9px;right:64px;z-index:500;width:48px;height:48px;background:var(--card);border:1px solid var(--brd);border-radius:10px;color:var(--t2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;touch-action:manipulation}
 .th-btn:hover{color:var(--acc);border-color:var(--accb)}
 .notif-btn{position:fixed;top:9px;right:9px;z-index:501;width:48px;height:48px;background:var(--card);border:1px solid var(--brd);border-radius:10px;color:var(--t2);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;touch-action:manipulation}
@@ -297,6 +298,7 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
     <button id="l-btn" class="btn btn1 btnw" type="submit"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
   </form>
   <div class="l-foot">Version <b id="ver-check">…</b></div>
+  <div class="l-brand"><span>Jolof Lab</span> &nbsp;·&nbsp; v1.7.0</div>
 </div></div></div>
 
 <div id="app">
@@ -327,25 +329,31 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
         <button class="btn btn2" id="d-ref-btn"><i class="fas fa-sync-alt"></i> Actualiser</button>
       </div>
       <div class="prog"><div class="prog-f" id="prog-f"></div></div>
+      <!-- 1. STATISTIQUES EN HAUT -->
       <div class="sg" id="d-stats"></div>
-      <div class="dash-search"><i class="fas fa-search"></i><input id="d-search" placeholder="Rechercher une station…"><span class="row-cnt" id="d-cnt"></span><button class="btni" id="d-search-clr" title="Effacer"><i class="fas fa-times"></i></button></div>
-      <div class="tw"><table id="d-table">
-        <thead><tr>
-          <th class="sortable" data-col="0">#</th>
-          <th class="sortable" data-col="1">Station</th>
-          <th class="sortable" data-col="2" style="color:var(--inf)">Livraisons</th>
-          <th class="sortable" data-col="3">Ventes</th>
-          <th class="sortable" data-col="4">Litres</th>
-          <th class="sortable" data-col="5" style="color:var(--acc)">CA</th>
-          <th class="sortable" data-col="6" style="color:var(--ok)">Versements</th>
-          <th class="sortable" data-col="7">Restant</th>
-        </tr></thead>
-        <tbody id="d-tbl"></tbody>
-      </table></div>
-      <div class="cg mt2">
+      <!-- 2. GRAPHIQUES AU MILIEU -->
+      <div class="cg mt2" id="d-charts">
         <div class="cd"><div class="ct"><i class="fas fa-chart-bar"></i> CA par station</div><div class="cc"><canvas id="ch-st"></canvas></div></div>
         <div class="cd"><div class="ct"><i class="fas fa-chart-pie"></i> Top produits</div><div class="cc"><canvas id="ch-pr"></canvas></div></div>
         <div class="cd"><div class="ct"><i class="fas fa-gas-pump"></i> Volume par station</div><div class="cc"><canvas id="ch-vol"></canvas></div></div>
+      </div>
+      <!-- 3. LISTE DES STATIONS EN BAS -->
+      <div class="cd mt2">
+        <div class="ct"><i class="fas fa-list"></i> Liste des stations</div>
+        <div class="dash-search"><i class="fas fa-search"></i><input id="d-search" placeholder="Rechercher une station…"><span class="row-cnt" id="d-cnt"></span><button class="btni" id="d-search-clr" title="Effacer"><i class="fas fa-times"></i></button></div>
+        <div class="tw"><table id="d-table">
+          <thead><tr>
+            <th class="sortable" data-col="0">#</th>
+            <th class="sortable" data-col="1">Station</th>
+            <th class="sortable" data-col="2" style="color:var(--inf)">Livraisons</th>
+            <th class="sortable" data-col="3">Ventes</th>
+            <th class="sortable" data-col="4">Litres</th>
+            <th class="sortable" data-col="5" style="color:var(--acc)">CA</th>
+            <th class="sortable" data-col="6" style="color:var(--ok)">Versements</th>
+            <th class="sortable" data-col="7">Restant</th>
+          </tr></thead>
+          <tbody id="d-tbl"></tbody>
+        </table></div>
       </div>
     </div>
 
@@ -371,6 +379,9 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
       </div>
 
       <div class="sp2 on" id="p-ven">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+          <button class="btn btn1" id="btn-add-sale-ven" style="display:none"><i class="fas fa-plus"></i> Nouvelle vente</button>
+        </div>
         <div class="tw"><table>
           <thead><tr>
             <th class="sortable" data-tbl="ven-tbl" data-col="0">#</th>
@@ -454,22 +465,22 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
         </table></div>
       </div>
 
-
       <div class="sp2" id="p-chart">
         <div class="cd"><div class="ct"><i class="fas fa-chart-bar"></i> Résumé financier</div><div class="cc"><canvas id="ch-res"></canvas></div></div>
-      <!-- STOCK PRODUIT - Section toujours visible -->
-      <div class="cd mt2" id="stk-section">
-        <div class="ct"><i class="fas fa-box"></i> Stock produit</div>
-        <div class="tw"><table>
-          <thead><tr>
-            <th>Produit</th>
-            <th class="sortable" data-tbl="stk-tbl" data-col="1">Livraisons (L)</th>
-            <th class="sortable" data-tbl="stk-tbl" data-col="2">Ventes (L)</th>
-            <th class="sortable" data-tbl="stk-tbl" data-col="3">Stock (L)</th>
-            <th class="sortable" data-tbl="stk-tbl" data-col="4">Valeur stock</th>
-          </tr></thead>
-          <tbody id="stk-tbl"></tbody>
-        </table></div>
+        <!-- STOCK PRODUIT -->
+        <div class="cd mt2" id="stk-section">
+          <div class="ct"><i class="fas fa-box"></i> Stock produit</div>
+          <div class="tw"><table>
+            <thead><tr>
+              <th>Produit</th>
+              <th class="sortable" data-tbl="stk-tbl" data-col="1">Livraisons (L)</th>
+              <th class="sortable" data-tbl="stk-tbl" data-col="2">Ventes (L)</th>
+              <th class="sortable" data-tbl="stk-tbl" data-col="3">Stock (L)</th>
+              <th class="sortable" data-tbl="stk-tbl" data-col="4">Valeur stock</th>
+            </tr></thead>
+            <tbody id="stk-tbl"></tbody>
+          </table></div>
+        </div>
       </div>
     </div>
 
@@ -710,7 +721,7 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 /* ===================== CONFIG ===================== */
 var IS_GAS = (typeof google !== 'undefined' && google.script);
 /* IMPORTANT: Remplacez cette URL par votre URL Google Apps Script déployée */
-var GAS_URL = 'https://script.google.com/macros/s/AKfycby65ALW3xZXj4uGzBhlOzclFUv6OR7uY81sdbZz_MCSlS8XOO_kH86XAkbrnn4w_pu7jA/exec';
+var GAS_URL = 'https://script.google.com/macros/s/AKfycbxYv5qgvaXJh-aSPJvUp4CLjsyXwlJd5FxdO7YBsjorLQogQLGxkvYhmfNVuXClOkP_Qw/exec';
 var CACHE_KEY = 'mj_dash_v1';
 var _cbId = 0;
 var _pa = null;
@@ -858,7 +869,7 @@ function api(action, params){
   if(IS_GAS){
     return new Promise(function(res,rej){
       var done=false;
-      var _t=setTimeout(function(){if(!done){done=true;rej(new Error('Délai dépassé'));}},90000);
+      var _t=setTimeout(function(){if(!done){done=true;rej(new Error('Délai dépassé — veuillez réessayer'));}},60000);
       google.script.run
         .withSuccessHandler(function(r){
           clearTimeout(_t);if(done)return;done=true;
@@ -875,7 +886,7 @@ function api(action, params){
   /* Mode Netlify / externe — utilise JSONP (GET uniquement via balise script) */
   return new Promise(function(res,rej){
     var cb='_mj_'+(++_cbId)+'_'+Date.now(), done=false;
-    var tid=setTimeout(function(){if(done)return;done=true;cleanup();rej(new Error('Timeout'));},35000);
+    var tid=setTimeout(function(){if(done)return;done=true;cleanup();rej(new Error('Timeout — connexion lente, réessayez'));},25000);
     window[cb]=function(r){
       if(done)return;done=true;clearTimeout(tid);cleanup();
       if(typeof r==='string'){try{r=JSON.parse(r);}catch(e){rej(new Error('Réponse invalide'));return;}}
@@ -931,7 +942,10 @@ function bindEvents(){
   tap($('btn-add-cat'),addCat);$('new-cat').addEventListener('keydown',function(e){if(e.key==='Enter')addCat();});
   tap($('btn-show-pwd'),loadSecPwd);tap($('btn-save-sec'),saveSecPwd);
   tap($('btn-add-usr'),function(){openUserM();});tap($('btn-reload-usr'),loadUsers);
-  tap($('add-sale-btn'),function(){openSaleM();});tap($('btn-add-liv'),function(){openLivM();});tap($('btn-add-ver'),openVerM);tap($('btn-add-dep'),openDepM);tap($('btn-add-con'),openConM);
+  /* Bouton Nouvelle vente — barre filtre ET onglet Ventes */
+  tap($('add-sale-btn'),function(){openSaleM();});
+  tap($('btn-add-sale-ven'),function(){openSaleM();});
+  tap($('btn-add-liv'),function(){openLivM();});tap($('btn-add-ver'),openVerM);tap($('btn-add-dep'),openDepM);tap($('btn-add-con'),openConM);
   document.querySelectorAll('thead th.sortable[data-tbl]').forEach(function(th){tap(th,function(){sortTbl(th.dataset.tbl,parseInt(th.dataset.col,10));});});
   document.querySelectorAll('[data-close]').forEach(function(btn){tap(btn,function(){clM(btn.dataset.close);});});
   tap($('btn-save-st'),saveSt);tap($('btn-save-pr'),saveProd);tap($('btn-save-usr'),saveUsr);tap($('btn-save-sale'),saveSale);tap($('btn-save-liv'),saveLiv);tap($('btn-save-ver'),saveVer);tap($('btn-save-dep'),saveDep);tap($('btn-save-con'),saveCon);
@@ -1055,11 +1069,24 @@ function loadDash(force){
 function _applyDashData(r,fromCache,prevDash){
   var sm=r.summary||{},sts=r.stations||[],actif=0;
   for(var i=0;i<sts.length;i++)if((sts[i].ventes||0)>0)actif++;
-  var totalRestantGlobal=0;for(var ri=0;ri<sts.length;ri++)totalRestantGlobal+=(sts[ri].restant!=null?sts[ri].restant:0);
-  var argentCaisse=(sm.total_montant||0)-totalRestantGlobal;
-  var acBgClass=argentCaisse<0?'':argentCaisse===0?'zero':'positive';
-  var acTxtClass=argentCaisse<0?'td':argentCaisse===0?'ts':'ts';
-  $('d-stats').innerHTML='<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Total</div><div class="sv ta">'+fmF(sm.total_montant||0)+'</div></div><div class="sc"><div class="si bl"><i class="fas fa-gas-pump"></i></div><div class="sl">Volume total</div><div class="sv">'+fm(sm.total_litres||0)+' L</div></div><div class="sc"><div class="si gr"><i class="fas fa-receipt"></i></div><div class="sl">Ventes</div><div class="sv">'+fm(sm.total_ventes||0)+'</div></div><div class="sc"><div class="si pu"><i class="fas fa-building"></i></div><div class="sl">Stations actives</div><div class="sv">'+actif+' / '+sts.length+'</div></div><div class="sc sc-restant '+acBgClass+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxtClass+'" style="font-size:22px">'+fmF(argentCaisse)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">CA Total - Restant dû (Stock)</div></div>';
+  /* Argent en caisse global = ABS(montant_restant) - Valeur_stock globale */
+  /* montant_restant est dans summary si disponible, sinon calcul par stations */
+  var mrGlobal=0;
+  if(sm.montant_restant!=null){
+    mrGlobal=sm.montant_restant;
+  } else {
+    for(var ri=0;ri<sts.length;ri++) mrGlobal+=(sts[ri].restant!=null?sts[ri].restant:0);
+  }
+  /* Valeur stock global = 0 ici (non disponible au niveau dashboard) */
+  var argentCaisse=Math.abs(mrGlobal);
+  var acBgClass=argentCaisse>0?'positive':argentCaisse===0?'zero':'';
+  var acTxtClass=argentCaisse<0?'td':'ts';
+  $('d-stats').innerHTML=
+    '<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Total</div><div class="sv ta">'+fmF(sm.total_montant||0)+'</div></div>'
+   +'<div class="sc"><div class="si bl"><i class="fas fa-gas-pump"></i></div><div class="sl">Volume total</div><div class="sv">'+fm(sm.total_litres||0)+' L</div></div>'
+   +'<div class="sc"><div class="si gr"><i class="fas fa-receipt"></i></div><div class="sl">Ventes</div><div class="sv">'+fm(sm.total_ventes||0)+'</div></div>'
+   +'<div class="sc"><div class="si pu"><i class="fas fa-building"></i></div><div class="sl">Stations actives</div><div class="sv">'+actif+' / '+sts.length+'</div></div>'
+   +'<div class="sc sc-restant '+acBgClass+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxtClass+'" style="font-size:22px">'+fmF(argentCaisse)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">ABS(Restant dû)</div></div>';
   var prevMap={};if(prevDash&&!fromCache){var prev=prevDash.stations||[];for(var i2=0;i2<prev.length;i2++)prevMap[prev[i2].station]=prev[i2].montant;}
   _dashRows=[];
   for(var j=0;j<sts.length;j++){var s=sts[j];_dashRows.push({rank:j+1,station:s.station,short:s.station.replace(/Station Marjan /gi,'').replace(/Station /gi,''),livraisons:s.livraisons||0,ventes:s.ventes||0,litres:s.litres||0,montant:s.montant||0,versements:s.versements||0,restant:s.restant!=null?s.restant:0,_changed:prevMap[s.station]!=null&&prevMap[s.station]!==s.montant});}
@@ -1177,6 +1204,7 @@ function initSt(){
   tabs.appendChild(frag);
   $('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+(S.cs||'Station');var snb=$('st-name-display');if(snb)snb.textContent=S.cs||'';var snbar=$('st-name-bar');if(snbar)snbar.style.display=S.cs?'block':'none';
   var ab=$('add-sale-btn');if(ab)ab.style.display=ce()?'inline-flex':'none';
+  var ab2=$('btn-add-sale-ven');if(ab2)ab2.style.display=ce()?'inline-flex':'none';
   _sfBusy=false;loadSF();
 }
 function swSt(n){S.cs=n;_sfBusy=false;$('st-title').innerHTML='<i class="fas fa-gas-pump ta"></i> '+escH(n);var snb=$('st-name-display');if(snb)snb.textContent=n;var snbar=$('st-name-bar');if(snbar)snbar.style.display='block';$('st-tabs').querySelectorAll('.st-tab').forEach(function(t){t.classList.toggle('on',t.dataset.station===n);});loadSF();}
@@ -1219,7 +1247,8 @@ function rRes(res,stockVal){
   if(!res)return;
   stockVal=stockVal||0;
   var mr=res.montant_restant||0,rcClass=mr>0?'positive':mr===0?'zero':'',mc=mr<0?'td':'ts';
-  var ac=(-mr)-stockVal;
+  /* Argent en caisse = ABS(montant_restant) - Valeur_stock */
+  var ac=Math.abs(mr)-stockVal;
   var acBg=ac>0?'positive':ac===0?'zero':'',acTxt=ac<0?'td':'ts';
   $('st-res').innerHTML=
     '<div class="sc"><div class="si bl"><i class="fas fa-truck"></i></div><div class="sl">Livraisons</div><div class="sv">'+fmF(res.total_livraisons||0)+'</div></div>'
@@ -1227,7 +1256,7 @@ function rRes(res,stockVal){
    +'<div class="sc"><div class="si pu"><i class="fas fa-file-invoice-dollar"></i></div><div class="sl">Dépenses</div><div class="sv td">'+fmF(res.total_depenses||0)+'</div></div>'
    +'<div class="sc sc-restant '+rcClass+'"><div class="si re"><i class="fas fa-exclamation-triangle"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.8px">RESTANT DÛ</div><div class="sv '+mc+'" style="font-size:24px">'+fmF(mr)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">Versements + Dépenses - Livraisons</div></div>'
    +'<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Ventes</div><div class="sv ta">'+fmF(res.total_ventes||0)+'</div></div>'
-   +'<div class="sc sc-restant '+acBg+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxt+'" style="font-size:22px">'+fmF(ac)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">Restant dû − Stock</div></div>';
+   +'<div class="sc sc-restant '+acBg+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxt+'" style="font-size:22px">'+fmF(ac)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">ABS(Restant dû) − Valeur stock</div></div>';
 }
 
 function rStk(stock){var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});(stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');$('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';}
@@ -1354,7 +1383,7 @@ function rCon(items){
 
 /* ===== MODALS VENTE ===== */
 function openSaleM(d){
-  $('m-sale-t').textContent=d?'<i class="fas fa-receipt ta"></i> Modifier vente #'+d.id:'<i class="fas fa-receipt ta"></i> Nouvelle vente';
+  $('m-sale-t').textContent=d?'Modifier vente #'+d.id:'Nouvelle vente';
   $('ms-sale-id').value=d?d.id:'';
   $('ms-dt').value=d?d.date:td();
   $('ms-pr').value=d?d.produit:'';
@@ -1403,7 +1432,7 @@ function saveSale(){
 
 /* ===== MODALS LIVRAISON ===== */
 function openLivM(d){
-  $('m-liv-t').textContent=d?'<i class="fas fa-truck" style="color:var(--inf)"></i> Modifier livraison #'+d.id:'<i class="fas fa-truck" style="color:var(--inf)"></i> Nouvelle livraison';
+  $('m-liv-t').textContent=d?'Modifier livraison #'+d.id:'Nouvelle livraison';
   $('ml-id').value=d?d.id:'';$('ml-dt').value=d?d.date:td();$('ml-pr').value=d?d.produit:'';$('ml-qt').value=d?d.quantite_litres:'';$('ml-px').value=d?d.prix_unitaire:'';$('ml-ob').value=d?d.observations||'':'';opM('m-liv');
 }
 function editLiv(id){var o=(S.lc||[]).filter(function(v){return v.id===id;})[0];if(!o)return;reqPwd('eliv',o);}
@@ -1418,7 +1447,7 @@ function saveLiv(){
 }
 
 /* ===== MODALS VERSEMENT ===== */
-function openVerM(){$('m-ver-title').textContent='<i class="fas fa-hand-holding-usd" style="color:var(--ok)"></i> Nouveau versement';$('mv-id').value='';$('mv-dt').value=td();$('mv-mt').value='';$('mv-md').value='Espèce';$('mv-rf').value='';opM('m-ver');}
+function openVerM(){$('m-ver-title').textContent='Nouveau versement';$('mv-id').value='';$('mv-dt').value=td();$('mv-mt').value='';$('mv-md').value='Espèce';$('mv-rf').value='';opM('m-ver');}
 function saveVer(){
   var id=+($('mv-id').value||0);
   var obj={id:id||undefined,date:$('mv-dt').value,montant_verse:$('mv-mt').value,mode_versement:$('mv-md').value,reference:$('mv-rf').value};
@@ -1429,7 +1458,7 @@ function saveVer(){
 }
 
 /* ===== MODALS DÉPENSE ===== */
-function openDepM(){$('m-dep-title').textContent='<i class="fas fa-file-invoice-dollar" style="color:var(--err)"></i> Nouvelle dépense';$('md-id').value='';$('md-dt').value=td();popCatSel();$('md-ct').value='';$('md-ds').value='';$('md-mt').value='';opM('m-dep');}
+function openDepM(){$('m-dep-title').textContent='Nouvelle dépense';$('md-id').value='';$('md-dt').value=td();popCatSel();$('md-ct').value='';$('md-ds').value='';$('md-mt').value='';opM('m-dep');}
 function saveDep(){
   var id=+($('md-id').value||0);
   var obj={id:id||undefined,date:$('md-dt').value,categorie:$('md-ct').value,description:$('md-ds').value,montant:$('md-mt').value};
@@ -1440,7 +1469,7 @@ function saveDep(){
 }
 
 /* ===== MODALS CONSO ===== */
-function openConM(){$('m-con-t').textContent='<i class="fas fa-tachometer-alt" style="color:var(--pur)"></i> Nouveau relevé';$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';$('mc-orig-dt').value='';$('mc-orig-pr').value='';opM('m-con');}
+function openConM(){$('m-con-t').textContent='Nouveau relevé';$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';$('mc-orig-dt').value='';$('mc-orig-pr').value='';opM('m-con');}
 function saveCon(){
   var dt=$('mc-dt').value,pr=$('mc-pr').value,jo=+$('mc-jo').value,jf=+$('mc-jf').value,ob=$('mc-ob').value;
   var origDt=$('mc-orig-dt').value,origPr=$('mc-orig-pr').value;
@@ -1458,6 +1487,5 @@ function saveCon(){
 window.addEventListener('DOMContentLoaded',function(){
   checkSess();
 });
-</script>
-</body>
+</script></body>
 </html>
