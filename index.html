@@ -635,7 +635,6 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
       <div class="fg">
         <label>Jauge ouverture</label>
         <div class="iw"><i class="fas fa-tachometer-alt"></i><input id="mc-jo" class="fc" type="number" step="0.01" min="0" placeholder="0"></div>
-        <!-- FIX v1.7.6: indice d'auto-fill depuis dernière fermeture -->
         <div class="autofill-hint" id="mc-jo-hint" style="display:none"><i class="fas fa-magic"></i> <span id="mc-jo-hint-txt"></span></div>
       </div>
       <div class="fg"><label>Jauge fermeture</label><div class="iw"><i class="fas fa-tachometer-alt"></i><input id="mc-jf" class="fc" type="number" step="0.01" min="0" placeholder="0"></div></div>
@@ -710,7 +709,7 @@ var PL = ['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ef4444','#06b6d4'];
 var S = {
   tk:null,u:null,pm:null,st:[],pr:[],sp:[],cat:[],cp:null,cs:'',
   fd:null,sc:[],lc:[],vc:[],dc:[],
-  lastReadings:{}, /* FIX v1.7.6: dernières lectures jauge par produit */
+  lastReadings:{},
   ch:{s:null,p:null,l:null,res:null}
 };
 var _dashRows=[], _dashSort={col:5,asc:false};
@@ -882,7 +881,6 @@ function initApp(){
   }catch(err){
     toast('Erreur initialisation: '+err.message,'error');
     console.error('initApp error',err);
-    /* Afficher l'erreur à l'écran pour faciliter le diagnostic */
     var el=document.getElementById('app')||document.body;
     var div=document.createElement('div');
     div.style='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#c00;color:#fff;padding:16px 24px;border-radius:8px;z-index:9999;font-family:monospace;max-width:90%';
@@ -919,7 +917,6 @@ function bindEvents(){
   tap($('btn-close-pwd'),function(){_pa=null;clM('m-pwd');});tap($('btn-cancel-pwd'),function(){_pa=null;clM('m-pwd');});tap($('btn-confirm-pwd'),doPwdOk);$('pw-in').addEventListener('keydown',function(e){if(e.key==='Enter')doPwdOk();});
   function calcSo(){var jo=+(($('mc-jo').value)||0),jf=+(($('mc-jf').value)||0);$('mc-so').value=jo-jf;}
   $('mc-jo').addEventListener('input',calcSo);$('mc-jf').addEventListener('input',calcSo);
-  /* FIX v1.7.6: quand produit conso change, auto-fill jauge ouverture depuis dernière fermeture */
   $('mc-pr').addEventListener('change',function(){
     var pr=this.value;
     var hint=$('mc-jo-hint');
@@ -927,7 +924,6 @@ function bindEvents(){
     if(!pr){if(hint)hint.style.display='none';return;}
     var lr=S.lastReadings&&S.lastReadings[pr];
     if(lr&&lr.jauge_fermeture>0){
-      /* Seulement si la jauge ouverture est vide (nouveau relevé) */
       if(!$('mc-orig-dt').value){
         $('mc-jo').value=lr.jauge_fermeture;
         calcSo();
@@ -1179,7 +1175,6 @@ function loadSF(){
   .then(function(r){
     if(!r.ok){toast(r.message||'Erreur','error');return;}
     S.fd=r;S.sc=r.sales||[];S.lc=r.livraisons||[];S.vc=r.versements||[];S.dc=r.depenses||[];
-    /* FIX v1.7.6: stocker les dernières lectures pour auto-fill */
     S.lastReadings=r.lastReadings||{};
     if(r.permissions)S.pm=r.permissions;
     if(r.stationPrix&&r.stationPrix.length){S.sp=r.stationPrix;rPS();}
@@ -1221,8 +1216,17 @@ function rRes(res,stockVal){
    +'<div class="sc sc-restant '+acBg+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxt+'" style="font-size:22px">'+fmF(ac)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">ABS(Restant dû) − Valeur stock</div></div>';
 }
 function rStk(stock){var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});(stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');$('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';}
+
+/* =====================================================
+   CORRECTIONS : édition/suppression réservées à admin
+   ===================================================== */
+
+/* VENTES — seul admin peut éditer/supprimer */
 function rVen(items){
-  var h=[],canE=ce(),canD=cd();
+  var h=[];
+  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
+  var canE=isAd();
+  var canD=isAd();
   if(!items||!items.length){$('ven-tbl').innerHTML='<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-receipt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune vente</td></tr>';return;}
   items.forEach(function(o){
     h.push('<tr>'
@@ -1244,8 +1248,13 @@ function rVen(items){
   $('ven-tbl').querySelectorAll('.btn-edit-sale').forEach(function(b){b.addEventListener('click',function(){editSale(+b.dataset.id);});});
   $('ven-tbl').querySelectorAll('.btn-del-sale').forEach(function(b){b.addEventListener('click',function(){delSale(+b.dataset.id);});});
 }
+
+/* LIVRAISONS — seul admin peut éditer/supprimer */
 function rLiv(items){
-  var h=[],tQ=0,tM=0,admin=isAd(),canE=admin,canD=admin;
+  var h=[],tQ=0,tM=0;
+  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
+  var canE=isAd();
+  var canD=isAd();
   if(!items||!items.length){$('liv-tbl').innerHTML='<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-truck" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune livraison</td></tr>';return;}
   items.forEach(function(o){
     tQ+=o.quantite_litres||0;tM+=o.montant_total||0;
@@ -1268,8 +1277,13 @@ function rLiv(items){
   $('liv-tbl').querySelectorAll('.btn-edit-liv').forEach(function(b){b.addEventListener('click',function(){editLiv(+b.dataset.id);});});
   $('liv-tbl').querySelectorAll('.btn-del-liv').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer cette livraison?'))return;reqPwd('dliv',{id:+b.dataset.id});});});
 }
+
+/* VERSEMENTS — seul admin peut éditer/supprimer */
 function rVer(items){
-  var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();
+  var h=[],tot=0;
+  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
+  var canE=isAd();
+  var canD=isAd();
   if(!items||!items.length){$('ver-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-hand-holding-usd" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun versement</td></tr>';return;}
   items.forEach(function(o){
     tot+=o.montant_verse||0;
@@ -1288,17 +1302,17 @@ function rVer(items){
   });
   h.push('<tr style="font-weight:800;background:var(--okg)"><td colspan="2">TOTAL</td><td class="tr ts">'+fmF(tot)+'</td><td colspan="4"></td></tr>');
   $('ver-tbl').innerHTML=h.join('');
+  /* Boutons édition versement — visibles uniquement pour admin */
   $('ver-tbl').querySelectorAll('.btn-edit-ver').forEach(function(b){
     b.addEventListener('click',function(){
-      if(!admin){toast('Seul l\'admin peut modifier','error');return;}
       $('m-ver-title').textContent='Modifier versement #'+b.dataset.id;
       $('mv-id').value=b.dataset.id;$('mv-dt').value=b.dataset.dt;$('mv-mt').value=b.dataset.mt;$('mv-md').value=b.dataset.md;$('mv-rf').value=b.dataset.rf;
       opM('m-ver');
     });
   });
+  /* Boutons suppression versement — visibles uniquement pour admin */
   $('ver-tbl').querySelectorAll('.btn-del-ver').forEach(function(b){
     b.addEventListener('click',function(){
-      if(!admin){toast('Seul l\'admin peut supprimer','error');return;}
       if(!confirm('Supprimer ce versement?'))return;
       api('apiDeleteVersement',{token:S.tk,id:+b.dataset.id})
         .then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else{toast(r.message||'Erreur','error');}})
@@ -1306,8 +1320,13 @@ function rVer(items){
     });
   });
 }
+
+/* DÉPENSES — seul admin peut éditer/supprimer */
 function rDep(items){
-  var h=[],tot=0,canE=ce()||cd(),canD=cd(),admin=isAd();
+  var h=[],tot=0;
+  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
+  var canE=isAd();
+  var canD=isAd();
   if(!items||!items.length){$('dep-tbl').innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}
   items.forEach(function(o){
     tot+=o.montant||0;
@@ -1325,18 +1344,18 @@ function rDep(items){
   });
   h.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td></td></tr>');
   $('dep-tbl').innerHTML=h.join('');
+  /* Boutons édition dépense — visibles uniquement pour admin */
   $('dep-tbl').querySelectorAll('.btn-edit-dep').forEach(function(b){
     b.addEventListener('click',function(){
-      if(!admin){toast('Seul l\'admin peut modifier','error');return;}
       $('m-dep-title').textContent='Modifier dépense #'+b.dataset.id;
       $('md-id').value=b.dataset.id;$('md-dt').value=b.dataset.dt;$('md-ds').value=b.dataset.ds;$('md-mt').value=b.dataset.mt;
       popCatSel();setTimeout(function(){$('md-ct').value=b.dataset.ct;},50);
       opM('m-dep');
     });
   });
+  /* Boutons suppression dépense — visibles uniquement pour admin */
   $('dep-tbl').querySelectorAll('.btn-del-dep').forEach(function(b){
     b.addEventListener('click',function(){
-      if(!admin){toast('Seul l\'admin peut supprimer','error');return;}
       if(!confirm('Supprimer cette dépense?'))return;
       api('apiDeleteDepense',{token:S.tk,id:+b.dataset.id})
         .then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else{toast(r.message||'Erreur','error');}})
@@ -1344,10 +1363,12 @@ function rDep(items){
     });
   });
 }
+
+/* CONSO JAUGE — seul admin peut éditer/supprimer */
 function rCon(items){
   var h=[];
-  var sgUser=isSG();
-  var canE=ce()&&!sgUser;
+  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
+  var canE=isAd();
   var canD=isAd();
   if(!items||!items.length){
     $('con-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-tachometer-alt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun relevé de jauge</td></tr>';
@@ -1387,7 +1408,6 @@ function rCon(items){
       $('mc-orig-dt').value=o.date||'';
       $('mc-orig-pr').value=o.produit||'';
       $('mc-row-line').value=b.dataset.rl||o._rowLine||0;
-      /* En mode édition, masquer le hint auto-fill */
       var hint=$('mc-jo-hint');if(hint)hint.style.display='none';
       opM('m-con');
     });
@@ -1410,6 +1430,7 @@ function rCon(items){
     });
   });
 }
+
 /* ===== MODALS VENTE ===== */
 function openSaleM(d){
   $('m-sale-t').textContent=d?'Modifier vente #'+d.id:'Nouvelle vente';
@@ -1514,7 +1535,6 @@ function saveDep(){
     }).catch(function(e){toast(e.message,'error');});
 }
 /* ===== MODALS CONSO ===== */
-/* FIX v1.7.6: openConM réinitialise le hint et vide les champs proprement */
 function openConM(){
   $('m-con-t').textContent='Nouveau relevé';
   $('mc-dt').value=td();
@@ -1526,7 +1546,6 @@ function openConM(){
   $('mc-orig-dt').value='';
   $('mc-orig-pr').value='';
   $('mc-row-line').value='0';
-  /* Masquer le hint auto-fill */
   var hint=$('mc-jo-hint');if(hint)hint.style.display='none';
   opM('m-con');
 }
@@ -1559,7 +1578,6 @@ function saveCon(){
           clM('m-con');
           toast('Relevé ajouté','success');
           if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);
-          /* FIX v1.7.6: recharger depuis serveur — flush() garantit visibilité immédiate */
           _sfBusy=false;loadSF();
         }else toast(r.message,'error');
       }).catch(function(e){toast(e.message,'error');});
