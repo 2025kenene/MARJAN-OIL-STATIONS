@@ -298,7 +298,7 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
     <button id="l-btn" class="btn btn1 btnw" type="submit"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
   </form>
   <div class="l-foot">Version <b id="ver-check">…</b></div>
-  <div class="l-brand"><span>Jolof Lab</span> &nbsp;·&nbsp; v1.7.6</div>
+  <div class="l-brand"><span>Jolof Lab</span> &nbsp;·&nbsp; v1.7.7</div>
 </div></div></div>
 <div id="app">
   <div class="mob-tog" id="mob-tog-btn"><i class="fas fa-bars"></i></div>
@@ -715,6 +715,7 @@ var S = {
 var _dashRows=[], _dashSort={col:5,asc:false};
 var _arTimer=null, _arSec=30;
 var _dashBusy=false, _sfBusy=false;
+var _saving=false; /* anti-doublon global */
 /* ===================== NOTIFICATIONS ===================== */
 var _notifs = [];
 var _notifOpen = false;
@@ -786,7 +787,7 @@ var _domCache={};
 function $(id){return _domCache[id]||(_domCache[id]=document.getElementById(id));}
 function _clearDomCache(){_domCache={};}
 function gv(){return S.pm&&S.pm.globalView;}
-function cd(){return S.pm&&S.pm.canDelete;}
+function cd(){return S.pm&&(S.pm.canDelete||S.pm.role==='inspecteur');}
 function cc(){return S.pm&&S.pm.canConfig;}
 function ce(){return S.pm&&S.pm.canEdit;}
 function isAd(){return S.pm&&S.pm.role==='admin';}
@@ -1216,17 +1217,14 @@ function rRes(res,stockVal){
    +'<div class="sc sc-restant '+acBg+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxt+'" style="font-size:22px">'+fmF(ac)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">ABS(Restant dû) − Valeur stock</div></div>';
 }
 function rStk(stock){var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});(stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');$('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';}
-
 /* =====================================================
    CORRECTIONS : édition/suppression réservées à admin
    ===================================================== */
-
-/* VENTES — seul admin peut éditer/supprimer */
+/* VENTES — admin et inspecteur peuvent éditer/supprimer */
 function rVen(items){
   var h=[];
-  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
-  var canE=isAd();
-  var canD=isAd();
+  var canE=cd();
+  var canD=cd();
   if(!items||!items.length){$('ven-tbl').innerHTML='<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-receipt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune vente</td></tr>';return;}
   items.forEach(function(o){
     h.push('<tr>'
@@ -1248,13 +1246,11 @@ function rVen(items){
   $('ven-tbl').querySelectorAll('.btn-edit-sale').forEach(function(b){b.addEventListener('click',function(){editSale(+b.dataset.id);});});
   $('ven-tbl').querySelectorAll('.btn-del-sale').forEach(function(b){b.addEventListener('click',function(){delSale(+b.dataset.id);});});
 }
-
-/* LIVRAISONS — seul admin peut éditer/supprimer */
+/* LIVRAISONS — admin et inspecteur peuvent éditer/supprimer */
 function rLiv(items){
   var h=[],tQ=0,tM=0;
-  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
-  var canE=isAd();
-  var canD=isAd();
+  var canE=cd();
+  var canD=cd();
   if(!items||!items.length){$('liv-tbl').innerHTML='<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-truck" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune livraison</td></tr>';return;}
   items.forEach(function(o){
     tQ+=o.quantite_litres||0;tM+=o.montant_total||0;
@@ -1277,13 +1273,11 @@ function rLiv(items){
   $('liv-tbl').querySelectorAll('.btn-edit-liv').forEach(function(b){b.addEventListener('click',function(){editLiv(+b.dataset.id);});});
   $('liv-tbl').querySelectorAll('.btn-del-liv').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer cette livraison?'))return;reqPwd('dliv',{id:+b.dataset.id});});});
 }
-
-/* VERSEMENTS — seul admin peut éditer/supprimer */
+/* VERSEMENTS — admin et inspecteur peuvent éditer/supprimer */
 function rVer(items){
   var h=[],tot=0;
-  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
-  var canE=isAd();
-  var canD=isAd();
+  var canE=cd();
+  var canD=cd();
   if(!items||!items.length){$('ver-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-hand-holding-usd" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun versement</td></tr>';return;}
   items.forEach(function(o){
     tot+=o.montant_verse||0;
@@ -1302,7 +1296,6 @@ function rVer(items){
   });
   h.push('<tr style="font-weight:800;background:var(--okg)"><td colspan="2">TOTAL</td><td class="tr ts">'+fmF(tot)+'</td><td colspan="4"></td></tr>');
   $('ver-tbl').innerHTML=h.join('');
-  /* Boutons édition versement — visibles uniquement pour admin */
   $('ver-tbl').querySelectorAll('.btn-edit-ver').forEach(function(b){
     b.addEventListener('click',function(){
       $('m-ver-title').textContent='Modifier versement #'+b.dataset.id;
@@ -1310,7 +1303,6 @@ function rVer(items){
       opM('m-ver');
     });
   });
-  /* Boutons suppression versement — visibles uniquement pour admin */
   $('ver-tbl').querySelectorAll('.btn-del-ver').forEach(function(b){
     b.addEventListener('click',function(){
       if(!confirm('Supprimer ce versement?'))return;
@@ -1320,13 +1312,11 @@ function rVer(items){
     });
   });
 }
-
-/* DÉPENSES — seul admin peut éditer/supprimer */
+/* DÉPENSES — admin et inspecteur peuvent éditer/supprimer */
 function rDep(items){
   var h=[],tot=0;
-  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
-  var canE=isAd();
-  var canD=isAd();
+  var canE=cd();
+  var canD=cd();
   if(!items||!items.length){$('dep-tbl').innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-file-invoice-dollar" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucune dépense</td></tr>';return;}
   items.forEach(function(o){
     tot+=o.montant||0;
@@ -1344,7 +1334,6 @@ function rDep(items){
   });
   h.push('<tr style="font-weight:800;background:var(--errg)"><td colspan="4">TOTAL</td><td class="tr td">'+fmF(tot)+'</td><td></td></tr>');
   $('dep-tbl').innerHTML=h.join('');
-  /* Boutons édition dépense — visibles uniquement pour admin */
   $('dep-tbl').querySelectorAll('.btn-edit-dep').forEach(function(b){
     b.addEventListener('click',function(){
       $('m-dep-title').textContent='Modifier dépense #'+b.dataset.id;
@@ -1353,7 +1342,6 @@ function rDep(items){
       opM('m-dep');
     });
   });
-  /* Boutons suppression dépense — visibles uniquement pour admin */
   $('dep-tbl').querySelectorAll('.btn-del-dep').forEach(function(b){
     b.addEventListener('click',function(){
       if(!confirm('Supprimer cette dépense?'))return;
@@ -1363,25 +1351,19 @@ function rDep(items){
     });
   });
 }
-
-/* CONSO JAUGE — seul admin peut éditer/supprimer */
+/* CONSO JAUGE — admin et inspecteur peuvent éditer/supprimer */
 function rCon(items){
   var h=[];
-  /* CORRECTION: canEdit et canDelete réservés à l'admin uniquement */
-  var canE=isAd();
-  var canD=isAd();
+  var canE=cd();
+  var canD=cd();
   if(!items||!items.length){
     $('con-tbl').innerHTML='<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--t3)"><i class="fas fa-tachometer-alt" style="font-size:24px;opacity:.3;display:block;margin-bottom:8px"></i>Aucun relevé de jauge</td></tr>';
     return;
   }
   items.forEach(function(o,idx){
     var acts='';
-    if(canE){
-      acts+='<button class="btni btn-edit-con" data-idx="'+idx+'" data-rl="'+(o._rowLine||0)+'" title="Modifier"><i class="fas fa-pen"></i></button>';
-    }
-    if(canD){
-      acts+='<button class="btni btn-del-con" data-idx="'+idx+'" data-rl="'+(o._rowLine||0)+'" title="Supprimer" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';
-    }
+    if(canE){acts+='<button class="btni btn-edit-con" data-idx="'+idx+'" data-rl="'+(o._rowLine||0)+'" title="Modifier"><i class="fas fa-pen"></i></button>';}
+    if(canD){acts+='<button class="btni btn-del-con" data-idx="'+idx+'" data-rl="'+(o._rowLine||0)+'" title="Supprimer" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';}
     var rowStyle=o._valid===false?'opacity:.55;':'';
     h.push('<tr style="'+rowStyle+'">'
       +'<td>'+escH(o.date||'—')+'</td>'
@@ -1417,20 +1399,13 @@ function rCon(items){
       var o=conItems[+b.dataset.idx];if(!o)return;
       if(!confirm('Supprimer ce relevé?'))return;
       api('apiDeleteConso',{token:S.tk,obj:{
-        date:o.date,
-        produit:o.produit,
-        station:S.cs,
-        _rowLine:+(b.dataset.rl||o._rowLine||0)
+        date:o.date,produit:o.produit,station:S.cs,_rowLine:+(b.dataset.rl||o._rowLine||0)
       }})
-        .then(function(r){
-          if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}
-          else toast(r.message,'error');
-        })
+        .then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else toast(r.message,'error');})
         .catch(function(e){toast(e.message,'error');});
     });
   });
 }
-
 /* ===== MODALS VENTE ===== */
 function openSaleM(d){
   $('m-sale-t').textContent=d?'Modifier vente #'+d.id:'Nouvelle vente';
@@ -1456,6 +1431,7 @@ function doDelSale(id,pwd){
 }
 function delSale(id){reqPwd('del',{id:id});}
 function saveSale(){
+  if(_saving)return toast('Enregistrement en cours…','info');
   var id=+($('ms-sale-id').value||0);
   var ia=parseFloat($('ms-ia').value)||0;
   var id2=parseFloat($('ms-idep').value)||0;
@@ -1469,6 +1445,7 @@ function saveSale(){
   var qte=ia-id2;
   if(qte<=0)return toast('Index d\'arrivée doit être > Index de départ','error');
   var obj={id:id||0,date:dt,produit:pr,prix_unitaire:px,index_arrivee:ia,index_depart:id2,quantite_litres:qte,observations:ob};
+  _saving=true;var sb=$('btn-save-sale');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api('apiUpsertStationSale',{token:S.tk,stationName:S.cs,obj:obj,salesPassword:S._lsp||null})
     .then(function(r){
       if(r.ok){
@@ -1477,7 +1454,8 @@ function saveSale(){
         if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);
         _sfBusy=false;loadSF();
       }else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');});
+    }).catch(function(e){toast(e.message,'error');})
+    .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
 /* ===== MODALS LIVRAISON ===== */
 function openLivM(d){
@@ -1491,36 +1469,43 @@ function doDelLiv(id,pwd){
     .catch(function(e){toast(e.message,'error');});
 }
 function saveLiv(){
+  if(_saving)return toast('Enregistrement en cours…','info');
   var id=+($('ml-id').value||0);
   var obj={date:$('ml-dt').value,produit:$('ml-pr').value,quantite_litres:$('ml-qt').value,prix_unitaire:$('ml-px').value,observations:$('ml-ob').value,station:S.cs};
   if(!obj.produit)return toast('Produit requis','error');
   var action,params;
   if(id){obj.id=id;action='apiUpdateLivraison';params={token:S.tk,obj:obj,livraisonPassword:S._llp||null};}
   else{action='apiAddLivraison';params={token:S.tk,obj:Object.assign({station:S.cs},obj)};}
+  _saving=true;var sb=$('btn-save-liv');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api(action,params)
     .then(function(r){
       if(r.ok){clM('m-liv');S._llp=null;toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
       else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');});
+    }).catch(function(e){toast(e.message,'error');})
+    .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
 /* ===== MODALS VERSEMENT ===== */
 function openVerM(){$('m-ver-title').textContent='Nouveau versement';$('mv-id').value='';$('mv-dt').value=td();$('mv-mt').value='';$('mv-md').value='Espèce';$('mv-rf').value='';opM('m-ver');}
 function saveVer(){
+  if(_saving)return toast('Enregistrement en cours…','info');
   var id=+($('mv-id').value||0);
   var obj={date:$('mv-dt').value,montant_verse:$('mv-mt').value,mode_versement:$('mv-md').value,reference:$('mv-rf').value,station:S.cs};
   if(!obj.montant_verse)return toast('Montant requis','error');
   var action,params;
   if(id){obj.id=id;action='apiUpdateVersement';params={token:S.tk,obj:obj};}
   else{action='apiAddVersement';params={token:S.tk,obj:Object.assign({station:S.cs},obj)};}
+  _saving=true;var sb=$('btn-save-ver');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api(action,params)
     .then(function(r){
       if(r.ok){clM('m-ver');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
       else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');});
+    }).catch(function(e){toast(e.message,'error');})
+    .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
 /* ===== MODALS DÉPENSE ===== */
 function openDepM(){$('m-dep-title').textContent='Nouvelle dépense';$('md-id').value='';$('md-dt').value=td();popCatSel();$('md-ct').value='';$('md-ds').value='';$('md-mt').value='';opM('m-dep');}
 function saveDep(){
+  if(_saving)return toast('Enregistrement en cours…','info');
   var id=+($('md-id').value||0);
   var obj={date:$('md-dt').value,categorie:$('md-ct').value,description:$('md-ds').value,montant:$('md-mt').value,station:S.cs};
   if(!obj.description)return toast('Description requise','error');
@@ -1528,11 +1513,13 @@ function saveDep(){
   var action,params;
   if(id){obj.id=id;action='apiUpdateDepense';params={token:S.tk,obj:obj};}
   else{action='apiAddDepense';params={token:S.tk,obj:Object.assign({station:S.cs},obj)};}
+  _saving=true;var sb=$('btn-save-dep');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api(action,params)
     .then(function(r){
       if(r.ok){clM('m-dep');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
       else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');});
+    }).catch(function(e){toast(e.message,'error');})
+    .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
 /* ===== MODALS CONSO ===== */
 function openConM(){
@@ -1550,37 +1537,29 @@ function openConM(){
   opM('m-con');
 }
 function saveCon(){
+  if(_saving)return toast('Enregistrement en cours…','info');
   var dt=$('mc-dt').value,pr=$('mc-pr').value,jo=+$('mc-jo').value,jf=+$('mc-jf').value,ob=$('mc-ob').value;
   var origDt=$('mc-orig-dt').value,origPr=$('mc-orig-pr').value;
   var rowLine=+($('mc-row-line').value||0);
   if(!dt)return toast('Date requise','error');
   if(!pr)return toast('Produit requis','error');
-  var obj={
-    date:dt,produit:pr,jauge_ouverture:jo,jauge_fermeture:jf,
-    observations:ob,station:S.cs,
-    _rowLine:rowLine
-  };
+  var obj={date:dt,produit:pr,jauge_ouverture:jo,jauge_fermeture:jf,observations:ob,station:S.cs,_rowLine:rowLine};
+  var sb=$('btn-save-con');
+  _saving=true;if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
+  function _done(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}}
   if(origDt&&origPr){
     obj.orig_date=origDt;obj.orig_produit=origPr;
     api('apiUpdateConso',{token:S.tk,obj:obj})
       .then(function(r){
-        if(r.ok){
-          clM('m-con');
-          toast('Relevé mis à jour','success');
-          if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);
-          _sfBusy=false;loadSF();
-        }else toast(r.message,'error');
-      }).catch(function(e){toast(e.message,'error');});
+        if(r.ok){clM('m-con');toast('Relevé mis à jour','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
+        else toast(r.message,'error');
+      }).catch(function(e){toast(e.message,'error');}).finally(_done);
   }else{
     api('apiAddConso',{token:S.tk,obj:obj})
       .then(function(r){
-        if(r.ok){
-          clM('m-con');
-          toast('Relevé ajouté','success');
-          if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);
-          _sfBusy=false;loadSF();
-        }else toast(r.message,'error');
-      }).catch(function(e){toast(e.message,'error');});
+        if(r.ok){clM('m-con');toast('Relevé ajouté','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
+        else toast(r.message,'error');
+      }).catch(function(e){toast(e.message,'error');}).finally(_done);
   }
 }
 /* Démarrage */
