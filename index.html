@@ -254,6 +254,8 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 .btn-refresh-dash{background:linear-gradient(135deg,var(--acc),var(--acc3));color:#000;font-weight:700;min-width:120px}
 .btn-refresh-dash:hover{filter:brightness(1.12);box-shadow:0 4px 16px rgba(245,158,11,.4)}
 .autofill-hint{font-size:10px;color:var(--ok);margin-top:3px;display:flex;align-items:center;gap:4px}
+/* Total row in dashboard table */
+.dash-total-row td{font-weight:800;background:var(--accg);border-top:2px solid var(--accb);color:var(--t1)!important}
 @media(max-width:900px){:root{--sidebar:220px}.mc{padding:18px}.cg{grid-template-columns:1fr}.psg{grid-template-columns:1fr}.md{max-width:96vw}}
 @media(max-width:700px){
   :root{--sidebar:280px}
@@ -298,7 +300,7 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
     <button id="l-btn" class="btn btn1 btnw" type="submit"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
   </form>
   <div class="l-foot">Version <b id="ver-check">…</b></div>
-  <div class="l-brand"><span>Jolof Lab</span> &nbsp;·&nbsp; v1.7.7</div>
+  <div class="l-brand"><span>Jolof Lab</span> &nbsp;·&nbsp; v1.8.0</div>
 </div></div></div>
 <div id="app">
   <div class="mob-tog" id="mob-tog-btn"><i class="fas fa-bars"></i></div>
@@ -333,12 +335,9 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
         <button class="btn btn2" id="d-ref-btn"><i class="fas fa-sync-alt"></i> Actualiser</button>
       </div>
       <div class="prog"><div class="prog-f" id="prog-f"></div></div>
+      <!-- 6 cartes statistiques admin -->
       <div class="sg" id="d-stats"></div>
-      <div class="cg mt2" id="d-charts">
-        <div class="cd"><div class="ct"><i class="fas fa-chart-bar"></i> CA par station</div><div class="cc"><canvas id="ch-st"></canvas></div></div>
-        <div class="cd"><div class="ct"><i class="fas fa-chart-pie"></i> Top produits</div><div class="cc"><canvas id="ch-pr"></canvas></div></div>
-        <div class="cd"><div class="ct"><i class="fas fa-gas-pump"></i> Volume par station</div><div class="cc"><canvas id="ch-vol"></canvas></div></div>
-      </div>
+      <!-- Tableau des stations (sans graphiques) -->
       <div class="cd mt2">
         <div class="ct"><i class="fas fa-list"></i> Liste des stations</div>
         <div class="dash-search"><i class="fas fa-search"></i><input id="d-search" placeholder="Rechercher une station…"><span class="row-cnt" id="d-cnt"></span><button class="btni" id="d-search-clr" title="Effacer"><i class="fas fa-times"></i></button></div>
@@ -346,12 +345,12 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
           <thead><tr>
             <th class="sortable" data-col="0">#</th>
             <th class="sortable" data-col="1">Station</th>
-            <th class="sortable" data-col="2" style="color:var(--inf)">Livraisons</th>
-            <th class="sortable" data-col="3">Ventes</th>
-            <th class="sortable" data-col="4">Litres</th>
-            <th class="sortable" data-col="5" style="color:var(--acc)">CA</th>
-            <th class="sortable" data-col="6" style="color:var(--ok)">Versements</th>
-            <th class="sortable" data-col="7">Restant</th>
+            <th class="sortable" data-col="2" style="color:var(--inf)">Livraison (F)</th>
+            <th class="sortable" data-col="3" style="color:var(--inf)">Litres</th>
+            <th class="sortable" data-col="4" style="color:var(--err)">Dépenses</th>
+            <th class="sortable" data-col="5" style="color:var(--ok)">Versements</th>
+            <th class="sortable" data-col="6">Argent en caisse</th>
+            <th class="sortable" data-col="7">Restant dû</th>
           </tr></thead>
           <tbody id="d-tbl"></tbody>
         </table></div>
@@ -622,7 +621,6 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
     <div class="mf"><button class="btn btn2" data-close="m-dep"><i class="fas fa-times"></i> Annuler</button><button class="btn btn1" id="btn-save-dep"><i class="fas fa-save"></i> Enregistrer</button></div>
   </div>
 </div>
-<!-- Modal Conso -->
 <div class="mo" id="m-con">
   <div class="md">
     <div class="mh"><h3 id="m-con-t"><i class="fas fa-tachometer-alt" style="color:var(--pur)"></i> Relevé jauge</h3><button class="mx" data-close="m-con"><i class="fas fa-times"></i></button></div>
@@ -696,8 +694,8 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
 <script>
 /* ===================== CONFIG ===================== */
 var IS_GAS = (typeof google !== 'undefined' && google.script);
-var GAS_URL = 'https://script.google.com/macros/s/AKfycbxYv5qgvaXJh-aSPJvUp4CLjsyXwlJd5FxdO7YBsjorLQogQLGxkvYhmfNVuXClOkP_Qw/exec';
-var CACHE_KEY = 'mj_dash_v1';
+var GAS_URL = 'https://script.google.com/macros/s/AKfycby65ALW3xZXj4uGzBhlOzclFUv6OR7uY81sdbZz_MCSlS8XOO_kH86XAkbrnn4w_pu7jA/exec';
+var CACHE_KEY = 'mj_dash_v2';
 var _cbId = 0;
 var _pa = null;
 var RL = {
@@ -710,12 +708,12 @@ var S = {
   tk:null,u:null,pm:null,st:[],pr:[],sp:[],cat:[],cp:null,cs:'',
   fd:null,sc:[],lc:[],vc:[],dc:[],
   lastReadings:{},
-  ch:{s:null,p:null,l:null,res:null}
+  ch:{res:null}
 };
-var _dashRows=[], _dashSort={col:5,asc:false};
+var _dashRows=[], _dashSort={col:2,asc:false};
 var _arTimer=null, _arSec=30;
 var _dashBusy=false, _sfBusy=false;
-var _saving=false; /* anti-doublon global */
+var _saving=false;
 /* ===================== NOTIFICATIONS ===================== */
 var _notifs = [];
 var _notifOpen = false;
@@ -810,7 +808,7 @@ function opM(id){var e=$(id);if(!e)return;e.classList.add('sh');e.style.display=
 function clM(id){var e=$(id);if(!e)return;e.classList.remove('sh');e.style.display='none';document.body.style.overflow='';}
 function togSide(){$('side').classList.toggle('open');$('mob-ov').classList.toggle('sh');}
 function closeSide(){$('side').classList.remove('open');$('mob-ov').classList.remove('sh');}
-function toggleTheme(){var n=(localStorage.getItem('mj_th')||'dark')==='dark'?'light':'dark';localStorage.setItem('mj_th',n);document.documentElement.setAttribute('data-theme',n);$('thI').className=n==='light'?'fas fa-moon':'fas fa-sun';if(S.cp==='dashboard'&&S._lastDash)setTimeout(function(){rCharts(S._lastDash);},100);}
+function toggleTheme(){var n=(localStorage.getItem('mj_th')||'dark')==='dark'?'light':'dark';localStorage.setItem('mj_th',n);document.documentElement.setAttribute('data-theme',n);$('thI').className=n==='light'?'fas fa-moon':'fas fa-sun';}
 window.toggleTheme=toggleTheme;
 function swSub(el){var p=el.closest('.ps2');if(!p)return;var tabs=el.parentNode.querySelectorAll('.stbi');var panels=p.querySelectorAll(':scope > .sp2');for(var i=0;i<tabs.length;i++)tabs[i].classList.remove('on');el.classList.add('on');for(var j=0;j<panels.length;j++)panels[j].classList.remove('on');var tgt=$(el.dataset.p);if(tgt)tgt.classList.add('on');}
 function userStationList(){
@@ -830,7 +828,7 @@ function api(action, params){
   if(IS_GAS){
     return new Promise(function(res,rej){
       var done=false;
-      var _t=setTimeout(function(){if(!done){done=true;rej(new Error('Délai dépassé — veuillez réessayer'));}},60000);
+      var _t=setTimeout(function(){if(!done){done=true;rej(new Error('Délai dépassé — veuillez réessayer'));}},55000);
       google.script.run
         .withSuccessHandler(function(r){
           clearTimeout(_t);if(done)return;done=true;
@@ -1042,45 +1040,104 @@ function loadDash(force){
     if(btn2){btn2.disabled=false;btn2.innerHTML='<i class="fas fa-sync-alt"></i> Actualiser';}
   });
 }
+/* ===================== DASHBOARD — apply data ===================== */
 function _applyDashData(r,fromCache,prevDash){
-  var sm=r.summary||{},sts=r.stations||[],actif=0;
-  for(var i=0;i<sts.length;i++)if((sts[i].ventes||0)>0)actif++;
-  var mrGlobal=0;
-  if(sm.montant_restant!=null){mrGlobal=sm.montant_restant;}
-  else{for(var ri=0;ri<sts.length;ri++) mrGlobal+=(sts[ri].restant!=null?sts[ri].restant:0);}
-  var argentCaisse=Math.abs(mrGlobal);
-  var acBgClass=argentCaisse>0?'positive':argentCaisse===0?'zero':'';
-  var acTxtClass=argentCaisse<0?'td':'ts';
-  $('d-stats').innerHTML=
-    '<div class="sc"><div class="si am"><i class="fas fa-coins"></i></div><div class="sl">CA Total</div><div class="sv ta">'+fmF(sm.total_montant||0)+'</div></div>'
-   +'<div class="sc"><div class="si bl"><i class="fas fa-gas-pump"></i></div><div class="sl">Volume total</div><div class="sv">'+fm(sm.total_litres||0)+' L</div></div>'
-   +'<div class="sc"><div class="si gr"><i class="fas fa-receipt"></i></div><div class="sl">Ventes</div><div class="sv">'+fm(sm.total_ventes||0)+'</div></div>'
-   +'<div class="sc"><div class="si pu"><i class="fas fa-building"></i></div><div class="sl">Stations actives</div><div class="sv">'+actif+' / '+sts.length+'</div></div>'
-   +'<div class="sc sc-restant '+acBgClass+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxtClass+'" style="font-size:22px">'+fmF(argentCaisse)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">ABS(Restant dû)</div></div>';
-  var prevMap={};if(prevDash&&!fromCache){var prev=prevDash.stations||[];for(var i2=0;i2<prev.length;i2++)prevMap[prev[i2].station]=prev[i2].montant;}
+  var sm=r.summary||{},sts=r.stations||[];
+
+  /* --- 6 nouvelles cartes (admin seulement) --- */
+  var totalLiv   = sm.total_livraisons  || 0;
+  var totalLitres= sm.total_livraisons_litres || (function(){var t=0;sts.forEach(function(s){t+=(s.livraisons_litres||0);});return t;}());
+  var totalDep   = sm.total_depenses    || 0;
+  var totalVer   = sm.total_versements  || 0;
+  var totalRestant = sm.montant_restant != null ? sm.montant_restant : (totalVer + totalDep - totalLiv);
+  /* argent_caisse = SOMME des valeurs absolues par station (≠ Math.abs du total)
+     On utilise sm.argent_caisse envoyé par le serveur (somme des abs par station).
+     Fallback sur Math.abs(totalRestant) si champ absent (cache ancien). */
+  var argentCaisse = (sm.argent_caisse != null) ? sm.argent_caisse : Math.abs(totalRestant);
+
+  var acBg = argentCaisse > 0 ? 'positive' : argentCaisse === 0 ? 'zero' : '';
+  var acTxt = argentCaisse < 0 ? 'td' : 'ts';
+  var rdBg  = totalRestant < 0 ? '' : totalRestant === 0 ? 'zero' : 'positive';
+  var rdTxt = totalRestant < 0 ? 'td' : totalRestant > 0 ? 'ts' : '';
+
+  $('d-stats').innerHTML =
+    '<div class="sc"><div class="si bl"><i class="fas fa-truck"></i></div><div class="sl">Livraison (total)</div><div class="sv" style="color:var(--inf)">'+fmF(totalLiv)+'</div></div>'
+   +'<div class="sc"><div class="si bl"><i class="fas fa-oil-can"></i></div><div class="sl">Litres (total)</div><div class="sv" style="color:var(--inf)">'+fm(totalLitres)+' L</div></div>'
+   +'<div class="sc"><div class="si re"><i class="fas fa-file-invoice-dollar"></i></div><div class="sl">Dépense (total)</div><div class="sv td">'+fmF(totalDep)+'</div></div>'
+   +'<div class="sc"><div class="si gr"><i class="fas fa-hand-holding-usd"></i></div><div class="sl">Versement (total)</div><div class="sv ts">'+fmF(totalVer)+'</div></div>'
+   +'<div class="sc sc-restant '+acBg+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:10px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE (total)</div><div class="sv '+acTxt+'" style="font-size:20px">'+fmF(argentCaisse)+'</div></div>'
+   +'<div class="sc sc-restant '+rdBg+'"><div class="si re"><i class="fas fa-exclamation-triangle"></i></div><div class="sl" style="font-size:10px;font-weight:800;letter-spacing:.6px">RESTANT DÛ (total)</div><div class="sv '+rdTxt+'" style="font-size:20px">'+fmF(totalRestant)+'</div></div>';
+
+  /* --- Build _dashRows --- */
+  var prevMap={};
+  if(prevDash&&!fromCache){var prev=prevDash.stations||[];for(var i2=0;i2<prev.length;i2++)prevMap[prev[i2].station]=prev[i2].livraisons;}
   _dashRows=[];
-  for(var j=0;j<sts.length;j++){var s=sts[j];_dashRows.push({rank:j+1,station:s.station,short:s.station.replace(/Station Marjan /gi,'').replace(/Station /gi,''),livraisons:s.livraisons||0,ventes:s.ventes||0,litres:s.litres||0,montant:s.montant||0,versements:s.versements||0,restant:s.restant!=null?s.restant:0,_changed:prevMap[s.station]!=null&&prevMap[s.station]!==s.montant});}
+  for(var j=0;j<sts.length;j++){
+    var s=sts[j];
+    var rd = s.restant!=null ? s.restant : 0;
+    var ac = Math.abs(rd);
+    _dashRows.push({
+      rank: j+1,
+      station: s.station,
+      short: s.station.replace(/Station Marjan /gi,'').replace(/Station /gi,''),
+      livraisons: s.livraisons||0,
+      livraisons_litres: s.livraisons_litres||0,
+      depenses: s.depenses||0,
+      versements: s.versements||0,
+      argent_caisse: ac,
+      restant: rd,
+      _changed: prevMap[s.station]!=null && prevMap[s.station]!==s.livraisons
+    });
+  }
   renderDash();
-  if(!fromCache)requestAnimationFrame(function(){rCharts(r);});
 }
 function renderDash(){
   var q=($('d-search').value||'').toLowerCase().trim();
   var filtered=q?_dashRows.filter(function(r){return r.short.toLowerCase().indexOf(q)>-1||r.station.toLowerCase().indexOf(q)>-1;}):_dashRows;
   $('d-cnt').textContent=filtered.length+' station'+(filtered.length>1?'s':'');
+
+  /* totaux pour la ligne de pied */
+  var totLiv=0, totLitres=0, totDep=0, totVer=0, totAC=0, totRD=0;
+  for(var i=0;i<filtered.length;i++){
+    totLiv    += filtered[i].livraisons;
+    totLitres += filtered[i].livraisons_litres;
+    totDep    += filtered[i].depenses;
+    totVer    += filtered[i].versements;
+    totAC     += filtered[i].argent_caisse;
+    totRD     += filtered[i].restant;
+  }
+
   var parts=[];
   for(var j=0;j<filtered.length;j++){
-    var s=filtered[j],rc=s.restant<0?'td':s.restant>0?'ts':'';
+    var s=filtered[j];
+    var rcR=s.restant<0?'td':s.restant>0?'ts':'';
+    var rcA=s.argent_caisse>0?'ts':'';
     parts.push('<tr class="clickable dash-row'+(s._changed?' row-upd':'')+'" data-st="'+escH(s.station)+'">'
       +'<td style="color:var(--t3);width:36px">'+s.rank+'</td>'
-      +'<td class="fw6">'+s.short+'</td>'
-      +'<td class="tr" style="color:var(--inf)">'+fmF(s.livraisons)+'</td>'
-      +'<td>'+fm(s.ventes)+'</td>'
-      +'<td class="tr">'+fm(s.litres)+'</td>'
-      +'<td class="tr fw7 ta">'+fmF(s.montant)+'</td>'
+      +'<td class="fw6">'+escH(s.short)+'</td>'
+      +'<td class="tr fw6" style="color:var(--inf)">'+fmF(s.livraisons)+'</td>'
+      +'<td class="tr" style="color:var(--inf)">'+fm(s.livraisons_litres)+' L</td>'
+      +'<td class="tr td">'+fmF(s.depenses)+'</td>'
       +'<td class="tr ts">'+fmF(s.versements)+'</td>'
-      +'<td class="tr fw8 '+rc+'">'+fmF(s.restant)+'</td>'
+      +'<td class="tr fw6 '+rcA+'">'+fmF(s.argent_caisse)+'</td>'
+      +'<td class="tr fw8 '+rcR+'">'+fmF(s.restant)+'</td>'
       +'</tr>');
   }
+
+  /* Ligne des totaux */
+  var rdTotCls = totRD < 0 ? 'td' : totRD > 0 ? 'ts' : '';
+  parts.push(
+    '<tr class="dash-total-row">'
+    +'<td colspan="2" style="font-size:10px;letter-spacing:.5px;text-transform:uppercase">TOTAL</td>'
+    +'<td class="tr" style="color:var(--inf)">'+fmF(totLiv)+'</td>'
+    +'<td class="tr" style="color:var(--inf)">'+fm(totLitres)+' L</td>'
+    +'<td class="tr td">'+fmF(totDep)+'</td>'
+    +'<td class="tr ts">'+fmF(totVer)+'</td>'
+    +'<td class="tr ts">'+fmF(totAC)+'</td>'
+    +'<td class="tr fw8 '+rdTotCls+'">'+fmF(totRD)+'</td>'
+    +'</tr>'
+  );
+
   var tbl=$('d-tbl');
   tbl.innerHTML=parts.join('')||'<tr><td colspan="8" style="text-align:center;padding:28px;color:var(--t3)">Aucune station</td></tr>';
   tbl.querySelectorAll('.dash-row').forEach(function(row){row.addEventListener('click',function(){goStation(row.dataset.st);});});
@@ -1091,68 +1148,16 @@ function sortDash(col){
   var asc=(col===_dashSort.col)?!_dashSort.asc:true;
   _dashSort={col:col,asc:asc};
   ths.forEach(function(th,i){th.classList.remove('sort-asc','sort-desc');if(i===col)th.classList.add(asc?'sort-asc':'sort-desc');});
-  var keys=['rank','short','livraisons','ventes','litres','montant','versements','restant'];
-  var key=keys[col]||'montant';
+  var keys=['rank','short','livraisons','livraisons_litres','depenses','versements','argent_caisse','restant'];
+  var key=keys[col]||'livraisons';
   _dashRows.sort(function(a,b){var av=a[key],bv=b[key];if(typeof av==='string')return asc?av.localeCompare(bv,'fr'):bv.localeCompare(av,'fr');return asc?av-bv:bv-av;});
   renderDash();
 }
 function goStation(stName){S.cs=stName;_sfBusy=false;navTo('station');}
 window.goStation=goStation;
-function gCC(){var s=getComputedStyle(document.documentElement);return{g:s.getPropertyValue('--cg').trim(),t:s.getPropertyValue('--ct').trim(),l:s.getPropertyValue('--cl').trim()};}
-function rCharts(d){
-  ['s','p','l'].forEach(function(k){if(S.ch[k]){try{S.ch[k].destroy();}catch(e){}S.ch[k]=null;}});
-  var c=gCC(),sts=d.stations||[],lb=[],mo=[],li=[];
-  for(var i=0;i<sts.length;i++){lb.push(sts[i].station.replace(/Station Marjan /gi,'').replace(/Station /gi,''));mo.push(sts[i].montant);li.push(sts[i].litres);}
-  var df={responsive:true,maintainAspectRatio:false,animation:{duration:250},plugins:{legend:{labels:{color:c.l,font:{family:"'Inter'",size:11}}}}};
-  S.ch.s=new Chart($('ch-st'),{type:'bar',data:{labels:lb,datasets:[{label:'CA (FCFA)',data:mo,backgroundColor:PL.map(function(p){return p+'28';}),borderColor:PL,borderWidth:2,borderRadius:8}]},options:Object.assign({},df,{scales:{x:{ticks:{color:c.t,font:{size:10}},grid:{display:false}},y:{ticks:{color:c.t,callback:function(v){return fm(v);}},grid:{color:c.g}}}})});
-  var pl=[],pv=[];for(var j=0;j<(d.topProducts||[]).length;j++){pl.push(d.topProducts[j].produit);pv.push(d.topProducts[j].montant);}
-  S.ch.p=new Chart($('ch-pr'),{type:'doughnut',data:{labels:pl,datasets:[{data:pv,backgroundColor:PL.slice(0,pl.length),borderWidth:0,spacing:3,borderRadius:6}]},options:Object.assign({},df,{cutout:'68%',plugins:{legend:{position:'bottom',labels:{color:c.l,padding:12,usePointStyle:true,font:{size:11}}}}})});
-  S.ch.l=new Chart($('ch-vol'),{type:'bar',data:{labels:lb,datasets:[{label:'Litres',data:li,backgroundColor:'rgba(59,130,246,.2)',borderColor:'#3b82f6',borderWidth:2,borderRadius:8}]},options:Object.assign({},df,{indexAxis:'y',scales:{x:{ticks:{color:c.t,callback:function(v){return fm(v);}},grid:{color:c.g}},y:{ticks:{color:c.t,font:{size:10}},grid:{display:false}}}})});
-}
-var _ts={};
-function sortTbl(tid,col){
-  var k=tid+':'+col;_ts[k]=!_ts[k];var asc=_ts[k];
-  var tbody=$(tid);if(!tbody)return;
-  var allRows=Array.prototype.slice.call(tbody.rows);
-  var rows=allRows.filter(function(r){return!r.style.fontWeight&&r.style.fontWeight!=='800';});
-  var totRow=allRows.find(function(r){return r.style.fontWeight==='800'||(r.getAttribute('style')&&r.getAttribute('style').indexOf('font-weight')>-1);});
-  rows.sort(function(a,b){var ac=(a.cells[col]||{}).textContent||'',bc=(b.cells[col]||{}).textContent||'';var an=parseFloat(ac.replace(/[^\d.,-]/g,'').replace(',','.').replace(/\s/g,'')),bn=parseFloat(bc.replace(/[^\d.,-]/g,'').replace(',','.').replace(/\s/g,''));if(!isNaN(an)&&!isNaN(bn))return asc?an-bn:bn-an;return asc?ac.localeCompare(bc,'fr'):bc.localeCompare(ac,'fr');});
-  var ths=tbody.closest('table').querySelectorAll('thead th');ths.forEach(function(th,i){th.classList.remove('sort-asc','sort-desc');if(i===col)th.classList.add(asc?'sort-asc':'sort-desc');});
-  var frag=document.createDocumentFragment();rows.forEach(function(r){frag.appendChild(r);});if(totRow)frag.appendChild(totRow);
-  while(tbody.firstChild)tbody.removeChild(tbody.firstChild);tbody.appendChild(frag);
-}
-function loadSecPwd(){api('apiGetSalesPassword',{token:S.tk}).then(function(r){if(r.ok)$('sec-cur').value=r.password;}).catch(function(e){toast(e.message,'error');});}
-function saveSecPwd(){var np=$('sec-new').value.trim();if(np.length<3)return toast('Min 3 car.','error');api('apiSetSalesPassword',{token:S.tk,newPassword:np}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){$('sec-cur').value=np;$('sec-new').value='';}}).catch(function(e){toast(e.message,'error');});}
-function loadCats(){api('apiListCategories',{token:S.tk}).then(function(r){if(r.ok){S.cat=r.categories;rCats();popCatSel();}}).catch(function(e){toast(e.message,'error');});}
-function rCats(){
-  var frag=document.createDocumentFragment();
-  (S.cat||[]).forEach(function(c){
-    var span=document.createElement('span');span.className='ctg';span.textContent=c;
-    if(cc()){var cx=document.createElement('span');cx.className='cx';cx.dataset.cat=c;cx.innerHTML='&times;';cx.addEventListener('click',function(){delCat(c);});span.appendChild(cx);}
-    frag.appendChild(span);
-  });
-  var cl=$('cat-list');cl.innerHTML='';
-  if((S.cat||[]).length===0){cl.innerHTML='<span style="color:var(--t3);font-size:12px">Aucune</span>';}
-  else{cl.appendChild(frag);}
-}
-function addCat(){var v=$('new-cat').value.trim();if(!v)return;api('apiAddCategory',{token:S.tk,categorie:v}).then(function(r){if(r.ok){S.cat=r.categories;$('new-cat').value='';rCats();popCatSel();}}).catch(function(e){toast(e.message,'error');});}
-function delCat(c){if(!confirm('Supprimer "'+c+'"?'))return;api('apiDeleteCategory',{token:S.tk,categorie:c}).then(function(r){if(r.ok){S.cat=r.categories;rCats();popCatSel();}}).catch(function(e){toast(e.message,'error');});}
-function loadCfgSt(){api('apiListConfigStations',{token:S.tk}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(s,i){h+='<tr><td style="color:var(--t3)">'+(i+1)+'</td><td class="fw6">'+escH(s.nom_station)+'</td><td style="color:var(--t3)">'+s.date_ajout+'</td><td class="ac">';if(cc())h+='<button class="btni btn-edit-st" data-n="'+escH(s.nom_station)+'"><i class="fas fa-pen"></i></button>';if(cd())h+='<button class="btni btn-del-st" data-n="'+escH(s.nom_station)+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h+='</td></tr>';});var tb=$('cfg-st-tbl');tb.innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--t3)">Aucune</td></tr>';tb.querySelectorAll('.btn-edit-st').forEach(function(b){b.addEventListener('click',function(){$('m-st-t').textContent='Modifier';$('m-st-old').value=b.dataset.n;$('m-st-n').value=b.dataset.n;opM('m-st');});});tb.querySelectorAll('.btn-del-st').forEach(function(b){b.addEventListener('click',function(){delSt(b.dataset.n);});});}).catch(function(e){toast(e.message,'error');});}
-function saveSt(){var n=$('m-st-n').value.trim(),old=$('m-st-old').value.trim();if(!n)return toast('Nom requis','error');api(old?'apiEditStation':'apiAddStation',old?{token:S.tk,oldName:old,newName:n}:{token:S.tk,nomStation:n}).then(function(r){if(r.ok){clM('m-st');S.st=r.stations;popSel();loadCfgSt();}}).catch(function(e){toast(e.message,'error');});}
-function delSt(n){if(!confirm('Supprimer "'+n+'"?'))return;api('apiDeleteStation',{token:S.tk,nomStation:n}).then(function(r){if(r.ok){S.st=r.stations;popSel();loadCfgSt();}}).catch(function(e){toast(e.message,'error');});}
-function loadCfgPr(){api('apiListProduits',{token:S.tk}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(p){h+='<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr"><span class="pt2">'+fm(p.prix_unitaire)+' F</span></td><td style="color:var(--t3)">'+p.date_modif+'</td><td class="ac">';if(cc())h+='<button class="btni btn-edit-pr" data-n="'+escH(p.produit)+'" data-x="'+p.prix_unitaire+'"><i class="fas fa-pen"></i></button>';if(cd())h+='<button class="btni btn-del-pr" data-n="'+escH(p.produit)+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h+='</td></tr>';});var tb=$('cfg-pr-tbl');tb.innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--t3)">Aucun</td></tr>';tb.querySelectorAll('.btn-edit-pr').forEach(function(b){b.addEventListener('click',function(){openProdM({p:b.dataset.n,x:b.dataset.x});});});tb.querySelectorAll('.btn-del-pr').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer?'))return;api('apiDeleteProduit',{token:S.tk,produit:b.dataset.n}).then(function(r){if(r.ok){S.pr=r.produits;rPS();loadCfgPr();}}).catch(function(e){toast(e.message,'error');});});});}).catch(function(e){toast(e.message,'error');});}
-function openProdM(d){$('m-pr-t').textContent=d?'Modifier':'Nouveau produit';$('m-pr-n').value=d?d.p:'';$('m-pr-n').readOnly=!!d;$('m-pr-p').value=d?d.x:'';opM('m-pr');}
-function saveProd(){var o={produit:$('m-pr-n').value.trim(),prix_unitaire:$('m-pr-p').value};if(!o.produit)return toast('Nom requis','error');api('apiUpsertProduit',{token:S.tk,obj:o}).then(function(r){if(r.ok){clM('m-pr');S.pr=r.produits;rPS();loadCfgPr();}}).catch(function(e){toast(e.message,'error');});}
-function loadPxSt(){var st=$('px-st-sel').value;if(!st){$('px-st-grid').innerHTML='';$('px-st-bar').style.display='none';return;}api('apiGetPrixStation',{token:S.tk,stationName:st}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(p){h+='<div class="psi"><div class="psl">'+escH(p.produit)+(p.is_custom?' <span class="bg bg-a" style="font-size:9px">custom</span>':'')+'</div><input type="number" step="1" value="'+p.prix_unitaire+'" data-pr="'+escH(p.produit)+'"'+(cc()?'':' readonly')+'><div class="psu">F/L</div></div>';});$('px-st-grid').innerHTML=h;$('px-st-bar').style.display=cc()?'block':'none';}).catch(function(e){toast(e.message,'error');});}
-function savePxSt(){var st=$('px-st-sel').value;if(!st)return;var inp=document.querySelectorAll('#px-st-grid input[data-pr]'),ps=[];inp.forEach(function(i){ps.push(api('apiSetPrixStation',{token:S.tk,stationName:st,produit:i.dataset.pr,prix_unitaire:i.value}));});Promise.all(ps).then(function(){toast('Prix enregistrés','success');loadPxSt();}).catch(function(e){toast(e.message,'error');});}
-function loadUsers(){api('apiListUsers',{token:S.tk}).then(function(r){if(!r.ok)return;var h='';r.users.forEach(function(u){var rb={admin:'bg-a',super_gerant:'bg-sg',directeur_commercial:'bg-c',inspecteur:'bg-b',gerant:'bg-g',pompiste:'bg-p'}[u.role]||'bg-b';var stDisp=u.station?(u.station.indexOf(',')>-1?u.station.split(',').length+' stations':u.station):'<span style="color:var(--t3)">Toutes</span>';h+='<tr><td class="fw6">'+escH(u.username)+'</td><td>'+escH(u.nom_complet)+'</td><td><span class="bg '+rb+'">'+rl(u.role)+'</span></td><td>'+stDisp+'</td><td>'+(u.telephone||'—')+'</td><td class="ac"><button class="btni btn-edit-usr" data-u="'+escH(u.username)+'"><i class="fas fa-pen"></i></button>'+(cd()?'<button class="btni btn-del-usr" data-u="'+escH(u.username)+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>';});var tb=$('usr-tbl');tb.innerHTML=h||'<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t3)">Aucun</td></tr>';tb.querySelectorAll('.btn-edit-usr').forEach(function(b){b.addEventListener('click',function(){editUsr(b.dataset.u);});});tb.querySelectorAll('.btn-del-usr').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer?'))return;api('apiDeleteUser',{token:S.tk,username:b.dataset.u}).then(function(r){if(r.ok)loadUsers();}).catch(function(e){toast(e.message,'error');});});});}).catch(function(e){toast(e.message,'error');});}
-function openUserM(d){$('m-usr-t').textContent=d?'Modifier':'Nouvel utilisateur';$('m-usr-u').value=d?d.username:'';$('m-usr-u').readOnly=!!d;$('m-usr-pw').value='';$('m-usr-n').value=d?d.nom_complet:'';$('m-usr-r').value=d?d.role:'';$('m-usr-s').value=d?(d.station||''):'';$('m-usr-t2').value=d?d.telephone:'';var isSGv=d&&d.role==='super_gerant';$('fg-station-single').style.display=isSGv?'none':'block';$('fg-station-multi').style.display=isSGv?'block':'none';if(isSGv)buildMultiStationGrid(d.station);opM('m-usr');}
-function editUsr(u){api('apiListUsers',{token:S.tk}).then(function(r){var x=(r.users||[]).filter(function(v){return v.username===u;})[0];if(x)openUserM(x);});}
-function saveUsr(){var role=$('m-usr-r').value,station;if(role==='super_gerant'){var cbs=$('m-usr-sm').querySelectorAll('input:checked'),sel=[];cbs.forEach(function(cb){sel.push(cb.value);});station=sel.join(',');}else{station=$('m-usr-s').value;}var o={username:$('m-usr-u').value.trim(),password:$('m-usr-pw').value,nom_complet:$('m-usr-n').value.trim(),role:role,station:station,telephone:$('m-usr-t2').value.trim()};if(!o.username)return toast('Username requis','error');if(role==='super_gerant'&&!station)return toast('Min 1 station','error');api('apiUpsertUser',{token:S.tk,userObj:o}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){clM('m-usr');loadUsers();}}).catch(function(e){toast(e.message,'error');});}
-/* ===== STATION ===== */
+/* ===================== STATION FULL ===================== */
 function initSt(){
   var sl=userStationList();
-  if(!S.cs||sl.indexOf(S.cs)===-1)S.cs=sl[0]||'';
   var tabs=$('st-tabs');tabs.innerHTML='';
   var frag=document.createDocumentFragment();
   sl.forEach(function(st){
@@ -1217,10 +1222,6 @@ function rRes(res,stockVal){
    +'<div class="sc sc-restant '+acBg+'"><div class="si"><i class="fas fa-piggy-bank"></i></div><div class="sl" style="font-size:11px;font-weight:800;letter-spacing:.6px">ARGENT EN CAISSE</div><div class="sv '+acTxt+'" style="font-size:22px">'+fmF(ac)+'</div><div style="font-size:9px;color:var(--t3);margin-top:4px">ABS(Restant dû) − Valeur stock</div></div>';
 }
 function rStk(stock){var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});(stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');$('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';}
-/* =====================================================
-   CORRECTIONS : édition/suppression réservées à admin
-   ===================================================== */
-/* VENTES — admin et inspecteur peuvent éditer/supprimer */
 function rVen(items){
   var h=[];
   var canE=cd();
@@ -1246,7 +1247,6 @@ function rVen(items){
   $('ven-tbl').querySelectorAll('.btn-edit-sale').forEach(function(b){b.addEventListener('click',function(){editSale(+b.dataset.id);});});
   $('ven-tbl').querySelectorAll('.btn-del-sale').forEach(function(b){b.addEventListener('click',function(){delSale(+b.dataset.id);});});
 }
-/* LIVRAISONS — admin et inspecteur peuvent éditer/supprimer */
 function rLiv(items){
   var h=[],tQ=0,tM=0;
   var canE=cd();
@@ -1273,7 +1273,6 @@ function rLiv(items){
   $('liv-tbl').querySelectorAll('.btn-edit-liv').forEach(function(b){b.addEventListener('click',function(){editLiv(+b.dataset.id);});});
   $('liv-tbl').querySelectorAll('.btn-del-liv').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer cette livraison?'))return;reqPwd('dliv',{id:+b.dataset.id});});});
 }
-/* VERSEMENTS — admin et inspecteur peuvent éditer/supprimer */
 function rVer(items){
   var h=[],tot=0;
   var canE=cd();
@@ -1312,7 +1311,6 @@ function rVer(items){
     });
   });
 }
-/* DÉPENSES — admin et inspecteur peuvent éditer/supprimer */
 function rDep(items){
   var h=[],tot=0;
   var canE=cd();
@@ -1351,7 +1349,6 @@ function rDep(items){
     });
   });
 }
-/* CONSO JAUGE — admin et inspecteur peuvent éditer/supprimer */
 function rCon(items){
   var h=[];
   var canE=cd();
@@ -1381,15 +1378,7 @@ function rCon(items){
     b.addEventListener('click',function(){
       var o=conItems[+b.dataset.idx];if(!o)return;
       $('m-con-t').textContent='Modifier relevé';
-      $('mc-dt').value=o.date||'';
-      $('mc-pr').value=o.produit||'';
-      $('mc-jo').value=o.jauge_ouverture||0;
-      $('mc-jf').value=o.jauge_fermeture||0;
-      $('mc-so').value=o.sortie||0;
-      $('mc-ob').value=o.observations||'';
-      $('mc-orig-dt').value=o.date||'';
-      $('mc-orig-pr').value=o.produit||'';
-      $('mc-row-line').value=b.dataset.rl||o._rowLine||0;
+      $('mc-dt').value=o.date||'';$('mc-pr').value=o.produit||'';$('mc-jo').value=o.jauge_ouverture||0;$('mc-jf').value=o.jauge_fermeture||0;$('mc-so').value=o.sortie||0;$('mc-ob').value=o.observations||'';$('mc-orig-dt').value=o.date||'';$('mc-orig-pr').value=o.produit||'';$('mc-row-line').value=b.dataset.rl||o._rowLine||0;
       var hint=$('mc-jo-hint');if(hint)hint.style.display='none';
       opM('m-con');
     });
@@ -1398,32 +1387,20 @@ function rCon(items){
     b.addEventListener('click',function(){
       var o=conItems[+b.dataset.idx];if(!o)return;
       if(!confirm('Supprimer ce relevé?'))return;
-      api('apiDeleteConso',{token:S.tk,obj:{
-        date:o.date,produit:o.produit,station:S.cs,_rowLine:+(b.dataset.rl||o._rowLine||0)
-      }})
+      api('apiDeleteConso',{token:S.tk,obj:{date:o.date,produit:o.produit,station:S.cs,_rowLine:+(b.dataset.rl||o._rowLine||0)}})
         .then(function(r){if(r.ok){toast('Supprimé','success');_sfBusy=false;loadSF();}else toast(r.message,'error');})
         .catch(function(e){toast(e.message,'error');});
     });
   });
 }
-/* ===== MODALS VENTE ===== */
+function gCC(){var s=getComputedStyle(document.documentElement);return{g:s.getPropertyValue('--cg').trim(),t:s.getPropertyValue('--ct').trim(),l:s.getPropertyValue('--cl').trim()};}
+/* ===================== MODALS VENTE ===================== */
 function openSaleM(d){
   $('m-sale-t').textContent=d?'Modifier vente #'+d.id:'Nouvelle vente';
-  $('ms-sale-id').value=d?d.id:'';
-  $('ms-dt').value=d?d.date:td();
-  $('ms-pr').value=d?d.produit:'';
-  $('ms-px').value=d?d.prix_unitaire:'';
-  $('ms-ia').value=d?(d.index_arrivee||0):'';
-  $('ms-idep').value=d?(d.index_depart||0):'';
-  $('ms-ob').value=d?d.observations||'':'';
-  calcSale();
-  opM('m-sale');
+  $('ms-sale-id').value=d?d.id:'';$('ms-dt').value=d?d.date:td();$('ms-pr').value=d?d.produit:'';$('ms-px').value=d?d.prix_unitaire:'';$('ms-ia').value=d?(d.index_arrivee||0):'';$('ms-idep').value=d?(d.index_depart||0):'';$('ms-ob').value=d?d.observations||'':'';
+  calcSale();opM('m-sale');
 }
-function editSale(id){
-  var o=(S.sc||[]).filter(function(v){return v.id===id;})[0];
-  if(!o)return toast('Vente introuvable','error');
-  reqPwd('edit',o);
-}
+function editSale(id){var o=(S.sc||[]).filter(function(v){return v.id===id;})[0];if(!o)return toast('Vente introuvable','error');reqPwd('edit',o);}
 function doDelSale(id,pwd){
   api('apiDeleteStationSale',{token:S.tk,stationName:S.cs,id:id,salesPassword:pwd})
     .then(function(r){if(r.ok){toast('Vente supprimée','success');_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');})
@@ -1447,17 +1424,11 @@ function saveSale(){
   var obj={id:id||0,date:dt,produit:pr,prix_unitaire:px,index_arrivee:ia,index_depart:id2,quantite_litres:qte,observations:ob};
   _saving=true;var sb=$('btn-save-sale');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api('apiUpsertStationSale',{token:S.tk,stationName:S.cs,obj:obj,salesPassword:S._lsp||null})
-    .then(function(r){
-      if(r.ok){
-        clM('m-sale');S._lsp=null;
-        toast(r.message,'success');
-        if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);
-        _sfBusy=false;loadSF();
-      }else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');})
+    .then(function(r){if(r.ok){clM('m-sale');S._lsp=null;toast(r.message,'success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');})
+    .catch(function(e){toast(e.message,'error');})
     .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
-/* ===== MODALS LIVRAISON ===== */
+/* ===================== MODALS LIVRAISON ===================== */
 function openLivM(d){
   $('m-liv-t').textContent=d?'Modifier livraison #'+d.id:'Nouvelle livraison';
   $('ml-id').value=d?d.id:'';$('ml-dt').value=d?d.date:td();$('ml-pr').value=d?d.produit:'';$('ml-qt').value=d?d.quantite_litres:'';$('ml-px').value=d?d.prix_unitaire:'';$('ml-ob').value=d?d.observations||'':'';opM('m-liv');
@@ -1478,13 +1449,11 @@ function saveLiv(){
   else{action='apiAddLivraison';params={token:S.tk,obj:Object.assign({station:S.cs},obj)};}
   _saving=true;var sb=$('btn-save-liv');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api(action,params)
-    .then(function(r){
-      if(r.ok){clM('m-liv');S._llp=null;toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
-      else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');})
+    .then(function(r){if(r.ok){clM('m-liv');S._llp=null;toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');})
+    .catch(function(e){toast(e.message,'error');})
     .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
-/* ===== MODALS VERSEMENT ===== */
+/* ===================== MODALS VERSEMENT ===================== */
 function openVerM(){$('m-ver-title').textContent='Nouveau versement';$('mv-id').value='';$('mv-dt').value=td();$('mv-mt').value='';$('mv-md').value='Espèce';$('mv-rf').value='';opM('m-ver');}
 function saveVer(){
   if(_saving)return toast('Enregistrement en cours…','info');
@@ -1496,13 +1465,11 @@ function saveVer(){
   else{action='apiAddVersement';params={token:S.tk,obj:Object.assign({station:S.cs},obj)};}
   _saving=true;var sb=$('btn-save-ver');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api(action,params)
-    .then(function(r){
-      if(r.ok){clM('m-ver');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
-      else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');})
+    .then(function(r){if(r.ok){clM('m-ver');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');})
+    .catch(function(e){toast(e.message,'error');})
     .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
-/* ===== MODALS DÉPENSE ===== */
+/* ===================== MODALS DÉPENSE ===================== */
 function openDepM(){$('m-dep-title').textContent='Nouvelle dépense';$('md-id').value='';$('md-dt').value=td();popCatSel();$('md-ct').value='';$('md-ds').value='';$('md-mt').value='';opM('m-dep');}
 function saveDep(){
   if(_saving)return toast('Enregistrement en cours…','info');
@@ -1515,56 +1482,96 @@ function saveDep(){
   else{action='apiAddDepense';params={token:S.tk,obj:Object.assign({station:S.cs},obj)};}
   _saving=true;var sb=$('btn-save-dep');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
   api(action,params)
-    .then(function(r){
-      if(r.ok){clM('m-dep');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
-      else toast(r.message||'Erreur','error');
-    }).catch(function(e){toast(e.message,'error');})
+    .then(function(r){if(r.ok){clM('m-dep');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');})
+    .catch(function(e){toast(e.message,'error');})
     .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
-/* ===== MODALS CONSO ===== */
+/* ===================== MODALS CONSO ===================== */
 function openConM(){
-  $('m-con-t').textContent='Nouveau relevé';
-  $('mc-dt').value=td();
-  $('mc-pr').value='';
-  $('mc-jo').value='';
-  $('mc-jf').value='';
-  $('mc-so').value='';
-  $('mc-ob').value='';
-  $('mc-orig-dt').value='';
-  $('mc-orig-pr').value='';
-  $('mc-row-line').value='0';
+  $('m-con-t').textContent='Nouveau relevé';$('mc-dt').value=td();$('mc-pr').value='';$('mc-jo').value='';$('mc-jf').value='';$('mc-so').value='';$('mc-ob').value='';$('mc-orig-dt').value='';$('mc-orig-pr').value='';$('mc-row-line').value='0';
   var hint=$('mc-jo-hint');if(hint)hint.style.display='none';
   opM('m-con');
 }
 function saveCon(){
   if(_saving)return toast('Enregistrement en cours…','info');
-  var dt=$('mc-dt').value,pr=$('mc-pr').value,jo=+$('mc-jo').value,jf=+$('mc-jf').value,ob=$('mc-ob').value;
-  var origDt=$('mc-orig-dt').value,origPr=$('mc-orig-pr').value;
-  var rowLine=+($('mc-row-line').value||0);
-  if(!dt)return toast('Date requise','error');
-  if(!pr)return toast('Produit requis','error');
-  var obj={date:dt,produit:pr,jauge_ouverture:jo,jauge_fermeture:jf,observations:ob,station:S.cs,_rowLine:rowLine};
-  var sb=$('btn-save-con');
-  _saving=true;if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
-  function _done(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}}
-  if(origDt&&origPr){
-    obj.orig_date=origDt;obj.orig_produit=origPr;
-    api('apiUpdateConso',{token:S.tk,obj:obj})
-      .then(function(r){
-        if(r.ok){clM('m-con');toast('Relevé mis à jour','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
-        else toast(r.message,'error');
-      }).catch(function(e){toast(e.message,'error');}).finally(_done);
-  }else{
-    api('apiAddConso',{token:S.tk,obj:obj})
-      .then(function(r){
-        if(r.ok){clM('m-con');toast('Relevé ajouté','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}
-        else toast(r.message,'error');
-      }).catch(function(e){toast(e.message,'error');}).finally(_done);
-  }
+  var isEdit=!!$('mc-orig-dt').value;
+  var obj={date:$('mc-dt').value,produit:$('mc-pr').value,jauge_ouverture:$('mc-jo').value,jauge_fermeture:$('mc-jf').value,station:S.cs,observations:$('mc-ob').value,orig_date:$('mc-orig-dt').value,orig_produit:$('mc-orig-pr').value,_rowLine:+($('mc-row-line').value||0)};
+  if(!obj.produit)return toast('Produit requis','error');
+  if(!obj.date)return toast('Date requise','error');
+  _saving=true;var sb=$('btn-save-con');if(sb){sb.disabled=true;sb.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';}
+  api(isEdit?'apiUpdateConso':'apiAddConso',{token:S.tk,obj:obj})
+    .then(function(r){if(r.ok){clM('m-con');toast(r.message||'OK','success');if(r.notify)_pushNotif(r.notify.type,r.notify.station,r.notify.detail);_sfBusy=false;loadSF();}else toast(r.message||'Erreur','error');})
+    .catch(function(e){toast(e.message,'error');})
+    .finally(function(){_saving=false;if(sb){sb.disabled=false;sb.innerHTML='<i class="fas fa-save"></i> Enregistrer';}});
 }
-/* Démarrage */
-window.addEventListener('DOMContentLoaded',function(){
-  checkSess();
-});
-</script></body>
+/* ===================== CONFIG ===================== */
+var _ts={};
+function sortTbl(tid,col){
+  var k=tid+':'+col;_ts[k]=!_ts[k];var asc=_ts[k];
+  var tbody=$(tid);if(!tbody)return;
+  var allRows=Array.prototype.slice.call(tbody.rows);
+  var rows=allRows.filter(function(r){return!r.style.fontWeight&&r.style.fontWeight!=='800';});
+  var totRow=allRows.find(function(r){return r.style.fontWeight==='800'||(r.getAttribute('style')&&r.getAttribute('style').indexOf('font-weight')>-1);});
+  rows.sort(function(a,b){var ac=(a.cells[col]||{}).textContent||'',bc=(b.cells[col]||{}).textContent||'';var an=parseFloat(ac.replace(/[^\d.,-]/g,'').replace(',','.').replace(/\s/g,'')),bn=parseFloat(bc.replace(/[^\d.,-]/g,'').replace(',','.').replace(/\s/g,''));if(!isNaN(an)&&!isNaN(bn))return asc?an-bn:bn-an;return asc?ac.localeCompare(bc,'fr'):bc.localeCompare(ac,'fr');});
+  var ths=tbody.closest('table').querySelectorAll('thead th');ths.forEach(function(th,i){th.classList.remove('sort-asc','sort-desc');if(i===col)th.classList.add(asc?'sort-asc':'sort-desc');});
+  var frag=document.createDocumentFragment();rows.forEach(function(r){frag.appendChild(r);});if(totRow)frag.appendChild(totRow);
+  while(tbody.firstChild)tbody.removeChild(tbody.firstChild);tbody.appendChild(frag);
+}
+function loadSecPwd(){api('apiGetSalesPassword',{token:S.tk}).then(function(r){if(r.ok)$('sec-cur').value=r.password;}).catch(function(e){toast(e.message,'error');});}
+function saveSecPwd(){var np=$('sec-new').value.trim();if(np.length<3)return toast('Min 3 car.','error');api('apiSetSalesPassword',{token:S.tk,newPassword:np}).then(function(r){toast(r.message,r.ok?'success':'error');if(r.ok){$('sec-cur').value=np;$('sec-new').value='';}}).catch(function(e){toast(e.message,'error');});}
+function loadCats(){api('apiListCategories',{token:S.tk}).then(function(r){if(r.ok){S.cat=r.categories;rCats();popCatSel();}}).catch(function(e){toast(e.message,'error');});}
+function rCats(){
+  var frag=document.createDocumentFragment();
+  (S.cat||[]).forEach(function(c){
+    var span=document.createElement('span');span.className='ctg';span.textContent=c;
+    if(cc()){var cx=document.createElement('span');cx.className='cx';cx.dataset.cat=c;cx.innerHTML='&times;';cx.addEventListener('click',function(){delCat(c);});span.appendChild(cx);}
+    frag.appendChild(span);
+  });
+  var cl=$('cat-list');cl.innerHTML='';
+  if((S.cat||[]).length===0){cl.innerHTML='<span style="color:var(--t3);font-size:12px">Aucune</span>';}
+  else{cl.appendChild(frag);}
+}
+function addCat(){var v=$('new-cat').value.trim();if(!v)return;api('apiAddCategory',{token:S.tk,categorie:v}).then(function(r){if(r.ok){S.cat=r.categories;$('new-cat').value='';rCats();popCatSel();}}).catch(function(e){toast(e.message,'error');});}
+function delCat(c){if(!confirm('Supprimer "'+c+'"?'))return;api('apiDeleteCategory',{token:S.tk,categorie:c}).then(function(r){if(r.ok){S.cat=r.categories;rCats();popCatSel();}}).catch(function(e){toast(e.message,'error');});}
+function loadCfgSt(){api('apiListConfigStations',{token:S.tk}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(s,i){h+='<tr><td style="color:var(--t3)">'+(i+1)+'</td><td class="fw6">'+escH(s.nom_station)+'</td><td style="color:var(--t3)">'+s.date_ajout+'</td><td class="ac">';if(cc())h+='<button class="btni btn-edit-st" data-n="'+escH(s.nom_station)+'"><i class="fas fa-pen"></i></button>';if(cd())h+='<button class="btni btn-del-st" data-n="'+escH(s.nom_station)+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h+='</td></tr>';});var tb=$('cfg-st-tbl');tb.innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--t3)">Aucune</td></tr>';tb.querySelectorAll('.btn-edit-st').forEach(function(b){b.addEventListener('click',function(){$('m-st-t').textContent='Modifier';$('m-st-old').value=b.dataset.n;$('m-st-n').value=b.dataset.n;opM('m-st');});});tb.querySelectorAll('.btn-del-st').forEach(function(b){b.addEventListener('click',function(){delSt(b.dataset.n);});});}).catch(function(e){toast(e.message,'error');});}
+function saveSt(){var n=$('m-st-n').value.trim(),old=$('m-st-old').value.trim();if(!n)return toast('Nom requis','error');api(old?'apiEditStation':'apiAddStation',old?{token:S.tk,oldName:old,newName:n}:{token:S.tk,nomStation:n}).then(function(r){if(r.ok){clM('m-st');S.st=r.stations;popSel();loadCfgSt();}}).catch(function(e){toast(e.message,'error');});}
+function delSt(n){if(!confirm('Supprimer "'+n+'"?'))return;api('apiDeleteStation',{token:S.tk,nomStation:n}).then(function(r){if(r.ok){S.st=r.stations;popSel();loadCfgSt();}}).catch(function(e){toast(e.message,'error');});}
+function loadCfgPr(){api('apiListProduits',{token:S.tk}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(p){h+='<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr"><span class="pt2">'+fm(p.prix_unitaire)+' F</span></td><td style="color:var(--t3)">'+p.date_modif+'</td><td class="ac">';if(cc())h+='<button class="btni btn-edit-pr" data-n="'+escH(p.produit)+'" data-x="'+p.prix_unitaire+'"><i class="fas fa-pen"></i></button>';if(cd())h+='<button class="btni btn-del-pr" data-n="'+escH(p.produit)+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>';h+='</td></tr>';});var tb=$('cfg-pr-tbl');tb.innerHTML=h||'<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--t3)">Aucun</td></tr>';tb.querySelectorAll('.btn-edit-pr').forEach(function(b){b.addEventListener('click',function(){openProdM({p:b.dataset.n,x:b.dataset.x});});});tb.querySelectorAll('.btn-del-pr').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer?'))return;api('apiDeleteProduit',{token:S.tk,produit:b.dataset.n}).then(function(r){if(r.ok){S.pr=r.produits;rPS();loadCfgPr();}}).catch(function(e){toast(e.message,'error');});});});}).catch(function(e){toast(e.message,'error');});}
+function openProdM(d){$('m-pr-t').textContent=d?'Modifier':'Nouveau produit';$('m-pr-n').value=d?d.p:'';$('m-pr-n').readOnly=!!d;$('m-pr-p').value=d?d.x:'';opM('m-pr');}
+function saveProd(){var o={produit:$('m-pr-n').value.trim(),prix_unitaire:$('m-pr-p').value};if(!o.produit)return toast('Nom requis','error');api('apiUpsertProduit',{token:S.tk,obj:o}).then(function(r){if(r.ok){clM('m-pr');S.pr=r.produits;rPS();loadCfgPr();}}).catch(function(e){toast(e.message,'error');});}
+function loadPxSt(){var st=$('px-st-sel').value;if(!st){$('px-st-grid').innerHTML='';$('px-st-bar').style.display='none';return;}api('apiGetPrixStation',{token:S.tk,stationName:st}).then(function(r){if(!r.ok)return;var h='';r.items.forEach(function(p){h+='<div class="psi"><div class="psl">'+escH(p.produit)+(p.is_custom?' <span class="bg bg-a" style="font-size:9px">custom</span>':'')+'</div><input type="number" step="1" value="'+p.prix_unitaire+'" data-pr="'+escH(p.produit)+'"'+(cc()?'':' readonly')+'><div class="psu">F/L</div></div>';});$('px-st-grid').innerHTML=h;$('px-st-bar').style.display=cc()?'block':'none';}).catch(function(e){toast(e.message,'error');});}
+function savePxSt(){var st=$('px-st-sel').value;if(!st)return;var inp=document.querySelectorAll('#px-st-grid input[data-pr]'),ps=[];inp.forEach(function(i){ps.push(api('apiSetPrixStation',{token:S.tk,stationName:st,produit:i.dataset.pr,prix_unitaire:i.value}));});Promise.all(ps).then(function(){toast('Prix enregistrés','success');loadPxSt();}).catch(function(e){toast(e.message,'error');});}
+function loadUsers(){api('apiListUsers',{token:S.tk}).then(function(r){if(!r.ok)return;var h='';r.users.forEach(function(u){var rb={admin:'bg-a',super_gerant:'bg-sg',directeur_commercial:'bg-c',inspecteur:'bg-b',gerant:'bg-g',pompiste:'bg-p'}[u.role]||'bg-b';var stDisp=u.station?(u.station.indexOf(',')>-1?u.station.split(',').length+' stations':u.station):'<span style="color:var(--t3)">Toutes</span>';h+='<tr><td class="fw6">'+escH(u.username)+'</td><td>'+escH(u.nom_complet)+'</td><td><span class="bg '+rb+'">'+rl(u.role)+'</span></td><td>'+stDisp+'</td><td>'+(u.telephone||'—')+'</td><td class="ac"><button class="btni btn-edit-usr" data-u="'+escH(u.username)+'"><i class="fas fa-pen"></i></button>'+(cd()?'<button class="btni btn-del-usr" data-u="'+escH(u.username)+'" style="color:var(--err)"><i class="fas fa-trash-alt"></i></button>':'')+'</td></tr>';});var tb=$('usr-tbl');tb.innerHTML=h||'<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t3)">Aucun</td></tr>';tb.querySelectorAll('.btn-edit-usr').forEach(function(b){b.addEventListener('click',function(){editUsr(b.dataset.u);});});tb.querySelectorAll('.btn-del-usr').forEach(function(b){b.addEventListener('click',function(){if(!confirm('Supprimer?'))return;api('apiDeleteUser',{token:S.tk,username:b.dataset.u}).then(function(r){if(r.ok)loadUsers();}).catch(function(e){toast(e.message,'error');});});});}).catch(function(e){toast(e.message,'error');});}
+function openUserM(u){
+  $('m-usr-t').textContent=u?'Modifier utilisateur':'Nouvel utilisateur';
+  $('m-usr-u').value=u?u.username:'';$('m-usr-u').readOnly=!!u;
+  $('m-usr-pw').value='';$('m-usr-n').value=u?u.nom_complet:'';$('m-usr-t2').value=u?u.telephone:'';
+  $('m-usr-r').value=u?u.role:'gerant';
+  var isSGv=(u&&u.role==='super_gerant');
+  $('fg-station-single').style.display=isSGv?'none':'block';$('fg-station-multi').style.display=isSGv?'block':'none';
+  if(isSGv){buildMultiStationGrid(u?u.station:'');}
+  else{$('m-usr-s').value=u?u.station:'';}
+  opM('m-usr');
+}
+function editUsr(username){
+  api('apiListUsers',{token:S.tk}).then(function(r){
+    if(!r.ok)return;
+    var u=null;for(var i=0;i<r.users.length;i++){if(r.users[i].username===username){u=r.users[i];break;}}
+    if(u)openUserM(u);
+  }).catch(function(e){toast(e.message,'error');});
+}
+function saveUsr(){
+  var u={username:$('m-usr-u').value.trim(),password:$('m-usr-pw').value,nom_complet:$('m-usr-n').value.trim(),telephone:$('m-usr-t2').value.trim(),role:$('m-usr-r').value};
+  var isSGv=(u.role==='super_gerant');
+  if(isSGv){
+    var checked=document.querySelectorAll('#m-usr-sm input:checked');
+    var stations=[];checked.forEach(function(cb){stations.push(cb.value);});u.station=stations.join(',');
+  }else{u.station=$('m-usr-s').value;}
+  if(!u.username)return toast('Identifiant requis','error');
+  api('apiUpsertUser',{token:S.tk,userObj:u}).then(function(r){if(r.ok){clM('m-usr');toast(r.message,'success');loadUsers();}else toast(r.message,'error');}).catch(function(e){toast(e.message,'error');});
+}
+/* ===================== INIT ===================== */
+document.addEventListener('DOMContentLoaded',function(){checkSess();});
+</script>
+</body>
 </html>
