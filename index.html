@@ -337,15 +337,25 @@ tbody tr.row-upd{animation:rowFlash 1.4s ease}
         <div class="ct"><i class="fas fa-list"></i> Liste des stations</div>
         <div class="dash-search"><i class="fas fa-search"></i><input id="d-search" placeholder="Rechercher une station…"><span class="row-cnt" id="d-cnt"></span><button class="btni" id="d-search-clr" title="Effacer"><i class="fas fa-times"></i></button></div>
         <div class="tw"><table id="d-table">
+          <colgroup>
+            <col style="width:42px">
+            <col style="min-width:140px">
+            <col style="width:130px">
+            <col style="width:100px">
+            <col style="width:120px">
+            <col style="width:120px">
+            <col style="width:130px">
+            <col style="width:120px">
+          </colgroup>
           <thead><tr>
-            <th class="sortable" data-col="0">#</th>
+            <th class="sortable" data-col="0" style="text-align:center">#</th>
             <th class="sortable" data-col="1">Station</th>
-            <th class="sortable" data-col="2" style="color:var(--inf)">Livraison (F)</th>
-            <th class="sortable" data-col="3" style="color:var(--inf)">Litres</th>
-            <th class="sortable" data-col="4" style="color:var(--err)">Dépenses</th>
-            <th class="sortable" data-col="5" style="color:var(--ok)">Versements</th>
-            <th class="sortable" data-col="6">Argent en caisse</th>
-            <th class="sortable" data-col="7">Restant dû</th>
+            <th class="sortable" data-col="2" style="text-align:right;color:var(--inf)">Livraison (F)</th>
+            <th class="sortable" data-col="3" style="text-align:right;color:var(--inf)">Litres</th>
+            <th class="sortable" data-col="4" style="text-align:right;color:var(--err)">Dépenses</th>
+            <th class="sortable" data-col="5" style="text-align:right;color:var(--ok)">Versements</th>
+            <th class="sortable" data-col="6" style="text-align:right">Argent caisse</th>
+            <th class="sortable" data-col="7" style="text-align:right">Restant dû</th>
           </tr></thead>
           <tbody id="d-tbl"></tbody>
         </table></div>
@@ -1378,6 +1388,7 @@ function buildNav(){
   if(gv()){
     h+='<div class="s-sec">Dashboard</div><div class="ni" data-p="dashboard"><i class="fas fa-chart-pie"></i><span>Tableau de bord</span></div>';
     if(cc()){h+='<div class="s-sec">Configuration</div><div class="ni" data-p="config-stations"><i class="fas fa-map-marker-alt"></i><span>Stations</span></div><div class="ni" data-p="config-produits"><i class="fas fa-tags"></i><span>Produits & Prix</span></div><div class="ni" data-p="config-categories"><i class="fas fa-folder-open"></i><span>Catégories</span></div><div class="ni" data-p="security"><i class="fas fa-shield-alt"></i><span>Sécurité</span></div><div class="ni" data-p="users"><i class="fas fa-users-cog"></i><span>Utilisateurs</span></div>';}
+    h+='<div class="s-sec">Ventes</div><div class="ni" data-p="station"><i class="fas fa-gas-pump"></i><span>Ventes stations</span></div>';
   }
   var sl=userStationList();
   if(sl.length && !isAd()){
@@ -1478,7 +1489,7 @@ function renderDash(){
   for(var j=0;j<filtered.length;j++){
     var s=filtered[j],rcR=s.restant<0?'td':s.restant>0?'ts':'',rcA=s.argent_caisse>0?'ts':'';
     parts.push('<tr class="clickable dash-row'+(s._changed?' row-upd':'')+'" data-st="'+escH(s.station)+'">'
-      +'<td style="color:var(--t3);width:36px">'+s.rank+'</td>'
+      +'<td style="color:var(--t3);text-align:center">'+s.rank+'</td>'
       +'<td class="fw6">'+escH(s.short)+'</td>'
       +'<td class="tr fw6" style="color:var(--inf)">'+fmF(s.livraisons)+'</td>'
       +'<td class="tr" style="color:var(--inf)">'+fm(s.livraisons_litres)+' L</td>'
