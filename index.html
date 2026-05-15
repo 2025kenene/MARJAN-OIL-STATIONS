@@ -717,7 +717,7 @@ function buildPermissions(user){
   return {
     role:role,
     globalView:['admin','directeur_commercial','inspecteur','super_gerant'].indexOf(role)>-1,
-    canEdit:['admin','directeur_commercial','gerant','pompiste','super_gerant'].indexOf(role)>-1,
+    canEdit:['admin','directeur_commercial','gerant','pompiste','super_gerant','inspecteur'].indexOf(role)>-1,
     canDelete:['admin','directeur_commercial','inspecteur','super_gerant'].indexOf(role)>-1,
     canConfig:role==='admin'
   };
@@ -830,7 +830,8 @@ function userStationList(){
   if(S.u.station){var parts=S.u.station.split(',').map(function(s){return s.trim();}).filter(Boolean);if(parts.length)return parts;}
   return S.st;
 }
-function reqPwd(type,data){var r=S.u?String(S.u.role||'').toLowerCase():'';if(r==='admin'||r==='super_gerant'){execPwd(type,data,null);return;}_pa={t:type,d:data};$('pw-in').value='';$('pw-err').style.display='none';opM('m-pwd');}
+function isDaha(){var u=S.u;if(!u)return false;var r=String(u.role||'').toLowerCase();if(r!=='inspecteur')return false;var n=((u.nom_complet||'')+(u.username||'')+(u.station||'')).toLowerCase();return n.indexOf('daha')>-1;}
+function reqPwd(type,data){var r=S.u?String(S.u.role||'').toLowerCase():'';if(r==='admin'||isDaha()){execPwd(type,data,null);return;}_pa={t:type,d:data};$('pw-in').value='';$('pw-err').style.display='none';opM('m-pwd');}
 function doPwdOk(){if(!_pa)return;var pw=$('pw-in').value;if(!pw){$('pw-err').style.display='block';return;}var t=_pa.t,d=_pa.d;_pa=null;clM('m-pwd');execPwd(t,d,pw);}
 function execPwd(t,d,pw){switch(t){case'edit':S._lsp=pw;openSaleM(d);break;case'del':doDelSale(d.id,pw);break;case'eliv':S._llp=pw;openLivM(d);break;case'dliv':doDelLiv(d.id,pw);break;}}
 
@@ -939,10 +940,11 @@ async function sbApiGetStationFull(p){
   var livByPr={},venByPr={};
   livraisons.forEach(function(r){livByPr[r.produit]=(livByPr[r.produit]||0)+(r.quantite_litres||0);});
   sales.forEach(function(r){venByPr[r.produit]=(venByPr[r.produit]||0)+(r.quantite_litres||0);});
-  var stock=produits.map(function(p){var lL=livByPr[p.produit]||0,vL=venByPr[p.produit]||0;return{produit:p.produit,livraisons_litres:lL,ventes_litres:vL,stock_litres:lL-vL};}).filter(function(p){return p.livraisons_litres>0||p.ventes_litres>0;});
   /* lastReadings */
   var lastReadings={};
   (conRes.data||[]).forEach(function(r){if(!lastReadings[r.produit]||r.date>lastReadings[r.produit].date)lastReadings[r.produit]={date:r.date,jauge_fermeture:r.jauge_fermeture||0};});
+  /* Stock = Total Livraisons - Ventes */
+  var stock=produits.map(function(p){var lL=livByPr[p.produit]||0,vL=venByPr[p.produit]||0;return{produit:p.produit,livraisons_litres:lL,ventes_litres:vL,stock_litres:lL-vL};}).filter(function(p){return p.livraisons_litres>0||p.ventes_litres>0;});
   return{ok:true,sales:sales,livraisons:livraisons,versements:versements,depenses:depenses,conso:conso,stock:stock,lastReadings:lastReadings,produits:produits,stationPrix:stationPrix,categories:categories,resume:{total_livraisons:totalLiv,total_versements:totalVer,total_depenses:totalDep,total_ventes:totalVen,montant_restant:montantRestant},permissions:S.pm};
 }
 
@@ -1339,7 +1341,12 @@ function bindEvents(){
     }else{if(hint)hint.style.display='none';}
   });
   $('ml-pr').addEventListener('change',function(){var o=this.options[this.selectedIndex];if(o&&o.dataset.px)$('ml-px').value=o.dataset.px;});
+  $('ml-dt').addEventListener('change',function(){});
   $('ms-pr').addEventListener('change',function(){var o=this.options[this.selectedIndex];if(o&&o.dataset.px)$('ms-px').value=o.dataset.px;calcSale();});
+  $('ms-dt').addEventListener('change',function(){});
+  $('mv-dt').addEventListener('change',function(){});
+  $('mc-pr').addEventListener('change',function(){});
+  $('mc-dt').addEventListener('change',function(){});
   $('ms-px').addEventListener('input',calcSale);
   $('m-usr-r').addEventListener('change',function(){var isSGv=(this.value==='super_gerant');$('fg-station-single').style.display=isSGv?'none':'block';$('fg-station-multi').style.display=isSGv?'block':'none';if(isSGv)buildMultiStationGrid();});
   }catch(err){console.error('bindEvents error',err);toast('Erreur bindEvents: '+err.message,'error');}
@@ -1465,7 +1472,7 @@ function _applyDashData(r,fromCache,prevDash){
   var acBg=argentCaisse>0?'positive':argentCaisse===0?'zero':'';
   var acTxt=argentCaisse<0?'td':'ts';
   var rdBg=totalRestant<0?'':totalRestant===0?'zero':'positive';
-  var rdTxt=totalRestant<0?'td':totalRestant>0?'ts':'';
+  var rdTxt=totalRestant<0?'td':totalRestant>0?'ta':'';
   $('d-stats').innerHTML=
     '<div class="sc"><div class="si bl"><i class="fas fa-truck"></i></div><div class="sl">Livraison (total)</div><div class="sv" style="color:var(--inf)">'+fmF(totalLiv)+'</div></div>'
    +'<div class="sc"><div class="si bl"><i class="fas fa-oil-can"></i></div><div class="sl">Litres (total)</div><div class="sv" style="color:var(--inf)">'+fm(totalLitres)+' L</div></div>'
@@ -1577,7 +1584,8 @@ function rResChart(res){
 }
 function rRes(res,stockVal){
   if(!res)return;stockVal=stockVal||0;
-  var mr=res.montant_restant||0,rcClass=mr>0?'positive':mr===0?'zero':'',mc=mr<0?'td':'ts';
+  var mr=res.montant_restant||0,rcClass=mr>0?'positive':mr===0?'zero':'',mc=mr<0?'td':mr>0?'ta':'';
+  /* Argent en caisse = ABS(Restant dû) − Valeur stock */
   var ac=Math.abs(mr)-stockVal,acBg=ac>0?'positive':ac===0?'zero':'',acTxt=ac<0?'td':'ts';
   $('st-res').innerHTML=
     '<div class="sc"><div class="si bl"><i class="fas fa-truck"></i></div><div class="sl">Livraisons</div><div class="sv">'+fmF(res.total_livraisons||0)+'</div></div>'
@@ -1591,7 +1599,7 @@ function rStk(stock){
   var rows=[],tL=0,tV=0,tS=0,tM=0,pxMap={};
   var px=(S.sp&&S.sp.length)?S.sp:S.pr;px.forEach(function(p){pxMap[p.produit]=p.prix_unitaire;});
   (stock||[]).forEach(function(p){var sl=p.stock_litres||0,pu=pxMap[p.produit]||0,ms=sl*pu;tL+=(p.livraisons_litres||0);tV+=(p.ventes_litres||0);tS+=sl;tM+=ms;rows.push('<tr><td class="fw6">'+escH(p.produit)+'</td><td class="tr">'+fm(p.livraisons_litres||0)+'</td><td class="tr">'+fm(p.ventes_litres||0)+'</td><td class="tr '+(sl>0?'ts':sl<0?'td':'')+'">'+fm(sl)+'</td><td class="tr fw7 ta">'+fmF(ms)+'</td></tr>');});
-  if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');
+  if(rows.length)rows.push('<tr style="font-weight:800;background:var(--accg);border-top:2px solid var(--accb)"><td>TOTAL</td><td class="tr">'+fm(tL)+'</td><td class="tr">'+fm(tV)+'</td><td class="tr '+(tS>0?'ts':tS<0?'td':'')+'">'+fm(tS)+'</td><td class="tr ta">'+fmF(tM)+'</td></tr>');
   $('stk-tbl').innerHTML=rows.length?rows.join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune donnée</td></tr>';
 }
 function rVen(items){
